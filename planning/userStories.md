@@ -1,4 +1,4 @@
-User stories
+##User stories
 
 As a logged in user I can create a document because I want to use it to write down my stories/experience/essay/group project.
 
@@ -15,7 +15,6 @@ As a logged in user I can share the document via inviting other people to view/e
 As a logged in user I can see what is being edited on the document because I want to see other people’s opinion on the document real-time.
 
 As a logged in user I can edit the document while another person is also editing the document because I want us to work on the document at the same time.
-	
 As a logged in user I can see the document shared by another user on my dashboard because I want to see what is being shared to me from other users.
 
 As a logged in user I can click on the document shared by another user because the other user allows me to view the details of the document.
