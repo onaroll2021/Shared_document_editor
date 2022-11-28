@@ -16,7 +16,11 @@ const io = socketio(server);
 //});
 
 io.on("connection", (socket) => {
-  console.log("Hi");
+  socket.on("send-changes", (delta) => {
+    //socket.broadcast.emit;
+
+    console.log(delta);
+  });
 });
 
 app.get("/", (req, res) => {
