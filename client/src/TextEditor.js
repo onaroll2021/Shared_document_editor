@@ -3,6 +3,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 
+//  set toolbar
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
   ["blockquote", "code-block"],
@@ -27,6 +28,7 @@ export default function TextEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
 
+  //connect socket
   useEffect(() => {
     const connectSocket = io();
     setSocket(connectSocket);
@@ -34,13 +36,14 @@ export default function TextEditor() {
       connectSocket.disconnect();
     };
   }, []);
+
+  //create event handler- text change
   useEffect(() => {
     if (socket == null || quill == null) return;
     const handler = (delta, oldDelta, source) => {
       if (source !== "user") return;
       socket.emit("send-changes", delta);
     };
-
     quill.on("text-change", handler);
 
     return () => {
@@ -48,6 +51,20 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
+  //create event handler- receive text change
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+    const handler = (delta) => {
+      quill.updateContents(delta);
+    };
+    socket.on("receive-changes", handler);
+
+    return () => {
+      socket.off("receive-changes", handler);
+    };
+  }, [socket, quill]);
+
+  //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
     wrapper.innerHTML = "";

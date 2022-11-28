@@ -1,7 +1,6 @@
 const PORT = 3001;
 const http = require("http");
 const express = require("express");
-/// require socket.io
 const socketio = require("socket.io");
 
 const app = express();
@@ -15,17 +14,11 @@ const io = socketio(server);
 //  },
 //});
 
+// socket connect in server
 io.on("connection", (socket) => {
   socket.on("send-changes", (delta) => {
-    //socket.broadcast.emit;
-
-    console.log(delta);
+    socket.broadcast.emit("receive-changes", delta);
   });
 });
 
-app.get("/", (req, res) => {
-  return res.json({ greetings: "hello world" });
-});
-
-////////////?
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
