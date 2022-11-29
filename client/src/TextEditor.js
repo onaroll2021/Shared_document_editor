@@ -4,6 +4,8 @@ import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 
+const SAVE_INTERVAL_MS = 2000;
+
 //  set toolbar
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -76,6 +78,17 @@ export default function TextEditor() {
     });
     socket.emit("get-document", documentId);
   }, [socket, quill, documentId]);
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    const interval = setInterval(() => {
+      socket.emit("save-document", quill.getContents());
+    }, SAVE_INTERVAL_MS);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [socket, quill]);
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
