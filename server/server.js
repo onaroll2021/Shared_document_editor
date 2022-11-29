@@ -9,15 +9,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-//const io = require("socket.io")(3001, {
-//  cors: {
-//    origin: "http://localhost:3000",
-//    methods: ["GET", "POST"],
-//  },
-//});
-
+//create mongoose connection
 mongoose
-  //.connect("mongodb://localhost/google-docs-clone", {
   .connect(
     "mongodb+srv://william0225:3vcTf%40-hxTXRak3@cluster0.ixblkvn.mongodb.net/?retryWrites=true&w=majority"
   )
@@ -44,6 +37,7 @@ io.on("connection", (socket) => {
   })
 });
 
+//create helper function to retrieve or create document
 const defaultValue = ""
 
 async function findOrCreateDocument(URL) {
