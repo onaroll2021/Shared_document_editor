@@ -7,7 +7,10 @@ const Document = require("./Document");
 const User = require("./User");
 const { findDocumentByUserID, findUserByID } = require("./queries");
 
+
 const app = express();
+app.use(express.urlencoded({ extended: true })); 
+
 const server = http.createServer(app);
 const io = socketio(server);
 
@@ -59,5 +62,11 @@ findUserByID("63866ba3d03a71f9898745b8");
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-app.get("/users/dashboard");
+app.get("/users/dashboard", (req, res) => {
+
+});
 app.get("/Login");
+app.post("/Login", (req, res) => {
+  console.log("req.body", req.body);
+  res.redirect("/users/dashboard")
+  });

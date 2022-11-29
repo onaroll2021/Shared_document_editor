@@ -3,13 +3,12 @@ const User = require("./User");
 
 const findDocumentByUserID = (id) => {
   Document.find({ creator: id }).then((data) => {
-    console.log(data);
+
   });
 };
 
 const findUserByID = (id) => {
   User.find({ _id: id }).then((data) => {
-    console.log(data);
   });
 };
 //create new user

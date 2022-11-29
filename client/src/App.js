@@ -1,4 +1,6 @@
 import TextEditor from "./TextEditor";
+import Dashboard from "./Dashboard";
+import Login from "./Login";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +22,8 @@ function App() {
           element={<Navigate to={`/documents/${generateRandomString()}`} />}
         ></Route>
         <Route path="/documents/:id" element={<TextEditor />}></Route>
+        <Route path="users/dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
