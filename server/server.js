@@ -49,3 +49,5 @@ async function findOrCreateDocument(URL) {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
+app.get("/users/dashboard");
+app.get("/Login");
