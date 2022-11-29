@@ -3,7 +3,8 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
-const Document = require("./Document")
+const Document = require("./Document");
+const User = require("./User");
 
 const app = express();
 const server = http.createServer(app);
@@ -23,28 +24,51 @@ mongoose
   });
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on('get-document', async documentId => {
-    const document = await findOrCreateDocument(documentId)
-    socket.join(documentId)
-    socket.emit("load-document", document.data)
+  socket.on("get-document", async (documentId) => {
+    const document = await findOrCreateDocument(documentId);
+    socket.join(documentId);
+    socket.emit("load-document", document.data);
 
     socket.on("send-changes", (delta) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta);
     });
-    socket.on("save-document", async data => {
-      await Document.findOneAndUpdate({ URL: documentId }, { data })
-    })
-  })
+    socket.on("save-document", async (data) => {
+      await Document.findOneAndUpdate({ URL: documentId }, { data: data });
+    });
+  });
 });
 
-//create helper function to retrieve or create document
-const defaultValue = ""
+///////////////////////
+//const user1 = new User({
+//  _id: new mongoose.Types.ObjectId(),
+//  name: "Ning Li",
+//  email: "lining04111223@gmail.com",
+//  password: "123",
+//  profilePic: "12234556787654321",
+//});
 
+//user1
+//  .save()
+//  .then(() => {
+//    console.log("Saved to MongoDB.");
+//  })
+//  .catch((err) => {
+//    console.log("saved Failed.");
+//    console.log(err);
+//  });
+
+const defaultValue = "";
+
+//findOrCreateDocument
 async function findOrCreateDocument(URL) {
   if (URL == null) return;
-  const document = await Document.findOne( { URL: URL } )
-  if (document) return document
-  return await Document.create({ URL: URL, data: defaultValue})
+  const document = await Document.findOne({ URL: URL });
+  if (document) return document;
+  return await Document.create({
+    URL: URL,
+    data: defaultValue,
+    creator: "63866ba3d03a71f9898745b8",
+  });
 }
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
