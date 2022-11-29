@@ -5,6 +5,7 @@ const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const Document = require("./Document");
 const User = require("./User");
+const { findDocumentByUserID, findUserByID } = require("./queries");
 
 const app = express();
 const server = http.createServer(app);
@@ -38,25 +39,6 @@ io.on("connection", (socket) => {
   });
 });
 
-///////////////////////
-//const user1 = new User({
-//  _id: new mongoose.Types.ObjectId(),
-//  name: "Ning Li",
-//  email: "lining04111223@gmail.com",
-//  password: "123",
-//  profilePic: "12234556787654321",
-//});
-
-//user1
-//  .save()
-//  .then(() => {
-//    console.log("Saved to MongoDB.");
-//  })
-//  .catch((err) => {
-//    console.log("saved Failed.");
-//    console.log(err);
-//  });
-
 const defaultValue = "";
 
 //findOrCreateDocument
@@ -70,6 +52,10 @@ async function findOrCreateDocument(URL) {
     creator: "63866ba3d03a71f9898745b8",
   });
 }
+
+//select data
+findDocumentByUserID("63866ba3d03a71f9898745b8");
+findUserByID("63866ba3d03a71f9898745b8");
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
