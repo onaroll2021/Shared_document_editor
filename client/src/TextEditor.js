@@ -66,16 +66,16 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
+  //set document id
   useEffect(() => {
-    if(socket == null || quill == null) return 
+    if (socket == null || quill == null) return;
 
-    socket.once("load-document", document => {
-      quill.setContents(document)
-      quill.enable()
-    })
-    socket.emit("get-document", documentId)
-  }, [socket, quill, documentId])
-
+    socket.once("load-document", (document) => {
+      quill.setContents(document);
+      quill.enable();
+    });
+    socket.emit("get-document", documentId);
+  }, [socket, quill, documentId]);
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
@@ -90,7 +90,7 @@ export default function TextEditor() {
       },
     });
     createQuill.disable();
-    createQuill.setText('Loading...'); 
+    createQuill.setText("Loading...");
     setQuill(createQuill);
   }, []);
 
