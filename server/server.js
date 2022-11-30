@@ -17,7 +17,6 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 // const bodyParser = require("body-parser");
-const User = require("./User");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +27,7 @@ const io = socketio(server);
 // Middleware
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   session({
@@ -104,11 +103,10 @@ app.post("/login", (req, res, next) => {
         return res.redirect(`/users/dashboard`);
       });
     }
-    
   })(req, res, next);
 });
 
-// app.post('/login', 
+// app.post('/login',
 //   passport.authenticate('local', { failureRedirect: '/login' }),
 //   function(req, res) {
 //     res.redirect("/users/dashboard");
