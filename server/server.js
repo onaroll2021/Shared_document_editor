@@ -10,6 +10,13 @@ const bcrypt = require("bcryptjs");
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const Document = require("./Document");
+const User = require("./User");
+const {
+  findDocumentByUserID,
+  findUserByID,
+  findDocumentByEmail,
+  findUserByEmail,
+} = require("./queries");
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
@@ -20,24 +27,7 @@ const User = require("./User");
 
 //--------------------------------- Begin of MIDDLEWARE ------------------------------------------
 const app = express();
-app.use(express.urlencoded({ extended: true })); 
-// Configure Sessions Middleware
-app.use(
-  session({
-    secret: "secretcode",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-// Configure More Middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser("secretcode"));
-
-app.use(passport.initialize());
-app.use(passport.session());
-require("./passportConfig")(passport);
-
+app.use(express.urlencoded({ extended: true }));
 
 const server = http.createServer(app);
 const io = socketio(server);
@@ -90,18 +80,23 @@ io.on("connection", (socket) => {
 
 const defaultValue = "";
 
-//findOrCreateDocument
 async function findOrCreateDocument(URL) {
+  const findUserarry = await findUserByEmail("lining04111223@gmail.com");
+
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
   if (document) return document;
   return await Document.create({
     URL: URL,
     data: defaultValue,
-    creator: "63866ba3d03a71f9898745b8",
+    creator: findUserarry[0]._id,
   });
 }
 
+//select data
+//findDocumentByUserID("63866ba3d03a71f9898745b8");
+////findUserByID("63866ba3d03a71f9898745b8");
+//findDocumentByEmail("lining04111223@gmail.com");
 // Routes
 app.post("/login", (req, res, next) => {
   console.log(req.body);
@@ -112,8 +107,8 @@ app.post("/login", (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) throw err;
         // res.send("Successfully Authenticated");
-        console.log(req.user);
-        return res.redirect("/users/dashboard");
+        // console.log(req.user);
+        return res.redirect(`/users/dashboard`);
       });
     }
     
