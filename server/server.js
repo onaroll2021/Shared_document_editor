@@ -99,9 +99,9 @@ app.post("/login", (req, res) => {
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        // res.send("Successfully Authenticated");
+        res.send("Successfully Authenticated");
         // console.log(req.user);
-        return res.redirect(`/users/dashboard`);
+        // return res.redirect(`/users/dashboard`);
       });
     }
     
