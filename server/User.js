@@ -18,7 +18,6 @@ const User = new Schema({
 
   profilePic: {
     type: String,
-    // required: true,
   },
 
   documents: {
