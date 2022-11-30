@@ -17,7 +17,7 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 // const bodyParser = require("body-parser");
-const User = require("./User");
+// const User = require("./User");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -91,7 +91,7 @@ async function findOrCreateDocument(URL) {
 ////findUserByID("63866ba3d03a71f9898745b8");
 //findDocumentByEmail("lining04111223@gmail.com");
 // Routes
-app.post("/login", (req, res, next) => {
+app.post("/login", (req, res) => {
   console.log(req.body);
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
@@ -105,7 +105,7 @@ app.post("/login", (req, res, next) => {
       });
     }
     
-  })(req, res, next);
+  })(req, res);
 });
 
 // app.post('/login', 
@@ -139,9 +139,9 @@ app.get("/users/dashboard", (req, res) => {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-app.get("/users/dashboard", (req, res) => {});
-app.get("/Login");
-app.post("/Login", (req, res) => {
-  console.log("req.body", req.body);
-  res.redirect("/users/dashboard");
-});
+// app.get("/users/dashboard", (req, res) => {});
+// app.get("/Login");
+// app.post("/Login", (req, res) => {
+//   console.log("req.body", req.body);
+//   res.redirect("/users/dashboard");
+// });
