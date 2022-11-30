@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 const User = require("./User");
 const bcrypt = require("bcryptjs");
 const localStrategy = require("passport-local").Strategy;
@@ -60,10 +59,10 @@ module.exports = function (passport) {
   });
   passport.deserializeUser((id, cb) => {
     User.findOne({ _id: id }, (err, user) => {
-      const userInformation = {
-        username: user.username,
-      };
-      cb(err, userInformation);
+      // const userInformation = {
+      //   username: user.username,
+      // };
+      cb(err, user);
     });
   });
 };

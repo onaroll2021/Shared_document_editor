@@ -1,9 +1,14 @@
 import React, {useState} from "react";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Application() {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  const navigate = useNavigate();
+
 
   const login = () => {
     Axios({
@@ -14,7 +19,10 @@ export default function Application() {
       },
       withCredentials: true,
       url: "/login",
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      console.log(res);
+      navigate("/users/dashboard");
+  });
   };
 
   return (
