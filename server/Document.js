@@ -17,7 +17,7 @@ const Document = new Schema({
     ref: "User",
   },
 
-  veiw_access: {
+  view_access: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },

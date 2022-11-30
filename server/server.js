@@ -84,7 +84,6 @@ async function findOrCreateDocument(URL) {
 //findDocumentByEmail("lining04111223@gmail.com");
 // Routes
 app.post("/login", (req, res) => {
-  console.log(req.body);
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.send("No User Exists");
@@ -136,6 +135,7 @@ app.post("/signup", (req, res) => {
 });
 
 app.get("/users/dashboard", (req, res) => {
+
   res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
 });
 

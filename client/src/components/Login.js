@@ -20,7 +20,7 @@ export default function Application() {
       withCredentials: true,
       url: "/login",
     }).then((res) => {
-      console.log(res);
+      console.log("res", res);
       navigate("/users/dashboard");
   });
   };
