@@ -12,15 +12,12 @@ const {
   findUserByEmail,
 } = require("./queries");
 const passport = require("passport");
-const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 // const bodyParser = require("body-parser");
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-
 const server = http.createServer(app);
 const io = socketio(server);
 
@@ -90,17 +87,17 @@ async function findOrCreateDocument(URL) {
 ////findUserByID("63866ba3d03a71f9898745b8");
 //findDocumentByEmail("lining04111223@gmail.com");
 // Routes
-app.post("/login", (req, res, next) => {
+app.post("/login", (req, res) => {
   console.log(req.body);
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.send("No User Exists");
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        // res.send("Successfully Authenticated");
+        res.send("Successfully Authenticated");
         // console.log(req.user);
-        return res.redirect(`/users/dashboard`);
+        // return res.redirect(`/users/dashboard`);
       });
     }
   })(req, res, next);
@@ -125,8 +122,17 @@ app.post("/signup", (req, res) => {
         password: hashedPassword,
       });
       await newUser.save();
-      res.send("User Created");
-      res.redirect("/login");
+      passport.authenticate("local", (err, user) => {
+        if (err) throw err;
+        if (!user) res.send("No User Exists");
+        else {
+          req.logIn(user, (err) => {
+            if (err) throw err;
+            res.send("Successfully Authenticated");
+            console.log(req.user);
+          });
+        }
+      })(req, res);
     }
   });
 });
@@ -137,9 +143,9 @@ app.get("/users/dashboard", (req, res) => {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-app.get("/users/dashboard", (req, res) => {});
-app.get("/Login");
-app.post("/Login", (req, res) => {
-  console.log("req.body", req.body);
-  res.redirect("/users/dashboard");
-});
+// app.get("/users/dashboard", (req, res) => {});
+// app.get("/Login");
+// app.post("/Login", (req, res) => {
+//   console.log("req.body", req.body);
+//   res.redirect("/users/dashboard");
+// });

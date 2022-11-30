@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Application() {
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const signUp = () => {
     Axios({
@@ -16,7 +19,10 @@ export default function Application() {
       },
       withCredentials: true,
       url: "/signup",
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      console.log(res);
+      navigate("/users/dashboard");
+    });
   };
 
   return (
