@@ -33,8 +33,9 @@ const Document = new Schema({
   },
 
   access_level: {
-    type: Array,
-    default: [],
+    type: String,
+    enum: ["easy", "moderate", "strict"],
+    default: "easy",
   },
 
   dateTime: {
