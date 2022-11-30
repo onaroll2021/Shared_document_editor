@@ -17,20 +17,26 @@ const Document = new Schema({
     ref: "User",
   },
 
-  veiw_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  veiw_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
-  edit_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  veiw_edit_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
-  share_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  share_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
   access_level: {
     type: String,

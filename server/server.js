@@ -84,8 +84,12 @@ async function findOrCreateDocument(URL) {
 
 //select data
 //findDocumentByUserID("63866ba3d03a71f9898745b8");
-////findUserByID("63866ba3d03a71f9898745b8");
+//async function aaa() {
+//  const aa = findUserByID("63866ba3d03a71f9898745b8");
+//  console.log("aa", aa);
+//}
 //console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
+
 // Routes
 app.post("/login", (req, res) => {
   console.log(req.body);
