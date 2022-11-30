@@ -12,23 +12,15 @@ const {
   findUserByEmail,
 } = require("./queries");
 const passport = require("passport");
-const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-// const bodyParser = require("body-parser");
-// const User = require("./User");
-
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-
 const server = http.createServer(app);
 const io = socketio(server);
 
 // Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(
   session({
@@ -93,7 +85,7 @@ async function findOrCreateDocument(URL) {
 // Routes
 app.post("/login", (req, res) => {
   console.log(req.body);
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.send("No User Exists");
     else {
@@ -127,8 +119,18 @@ app.post("/signup", (req, res) => {
         password: hashedPassword,
       });
       await newUser.save();
-      res.send("User Created");
-      res.redirect("/login");
+      passport.authenticate("local", (err, user) => {
+        if (err) throw err;
+        if (!user) res.send("No User Exists");
+        else {
+          req.logIn(user, (err) => {
+            if (err) throw err;
+            res.send("Successfully Authenticated");
+            console.log(req.user);
+          });
+        }
+        
+      })(req, res);
     }
   });
 });

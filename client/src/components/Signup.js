@@ -21,7 +21,7 @@ export default function Application() {
       url: "/signup",
     }).then((res) => {
       console.log(res);
-      navigate("/login");
+      navigate("/users/dashboard");
     });
   };
 
