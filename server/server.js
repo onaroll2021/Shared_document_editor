@@ -1,12 +1,6 @@
 const PORT = 3001;
 const http = require("http");
 const express = require("express");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const passport = require("passport");
-const passportLocal = require("passport-local").Strategy;
-const cookieParser = require("cookie-parser");
-const bcrypt = require("bcryptjs");
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const Document = require("./Document");
@@ -25,7 +19,6 @@ const session = require("express-session");
 // const bodyParser = require("body-parser");
 const User = require("./User");
 
-//--------------------------------- Begin of MIDDLEWARE ------------------------------------------
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
@@ -146,44 +139,9 @@ app.get("/users/dashboard", (req, res) => {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-app.get('/users/dashboard');
-
+app.get("/users/dashboard", (req, res) => {});
 app.get("/Login");
-
-app.get("/register");
-
-app.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) throw err;
-    if (!user) res.send("No User Exists");
-    else {
-      req.logIn(user, (err) => {
-        if (err) throw err;
-        res.send("Successfully Authenticated");
-      });
-    }
-  })(req, res, next);
+app.post("/Login", (req, res) => {
+  console.log("req.body", req.body);
+  res.redirect("/users/dashboard");
 });
-
-app.post('/register', (req, res) => {
-  User.findOne({username: req.body.username}, async (err, doc) => {
-    if(err) throw err;
-    if(doc) res.send("User Already Exists");
-    if(!doc) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10)
-      const newUser = new User({
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email
-      });
-      await newUser.save();
-      res.send("user created!")
-    }
-  })
-});
-
-app.get("/user", (req, res) => {
-  res.send(req.user);
-  console.log(req.body)
-})
-
