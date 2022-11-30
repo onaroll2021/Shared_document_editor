@@ -17,7 +17,7 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 // const bodyParser = require("body-parser");
-const User = require("./User");
+
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
