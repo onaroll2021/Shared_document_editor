@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 
 export default function Dashboard() {
@@ -22,4 +22,4 @@ export default function Dashboard() {
       {data ? <h1>Welcome Back {data.username}</h1> : null}
     </div>
   );
-};
+}

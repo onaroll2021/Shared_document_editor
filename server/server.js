@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
 const defaultValue = "";
 
 async function findOrCreateDocument(URL) {
-  const findUserarry = await findUserByEmail("lining04111223@gmail.com");
+  const findUserarry = await findUserByEmail("abc@mail.com");
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -85,7 +85,7 @@ async function findOrCreateDocument(URL) {
 //select data
 //findDocumentByUserID("63866ba3d03a71f9898745b8");
 ////findUserByID("63866ba3d03a71f9898745b8");
-//findDocumentByEmail("lining04111223@gmail.com");
+//console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
 // Routes
 app.post("/login", (req, res) => {
   console.log(req.body);
@@ -100,7 +100,7 @@ app.post("/login", (req, res) => {
         // return res.redirect(`/users/dashboard`);
       });
     }
-  })(req, res, next);
+  })(req, res);
 });
 
 // app.post('/login',
@@ -137,8 +137,10 @@ app.post("/signup", (req, res) => {
   });
 });
 
-app.get("/users/dashboard", (req, res) => {
-  res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
+app.get("/users/dashboard", async (req, res) => {
+  const findDocument = await findDocumentByEmail(req.user.email);
+  res.send(findDocument);
+  console.log(findDocument); // The req.user stores the entire user that has been authenticated inside of it.
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
