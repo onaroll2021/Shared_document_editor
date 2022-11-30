@@ -17,7 +17,12 @@ const User = new Schema({
   },
 
   profilePic: {
+<<<<<<< HEAD
     type: String
+=======
+    type: String,
+    // required: true,
+>>>>>>> 784d43f7d06af504fad2417481cd5e1f54253374
   },
 
   documents: {
@@ -26,4 +31,8 @@ const User = new Schema({
   },
 });
 
+<<<<<<< HEAD
 module.exports = model("User", User);
+=======
+module.exports = model("User", User);
+>>>>>>> 784d43f7d06af504fad2417481cd5e1f54253374
