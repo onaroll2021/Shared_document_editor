@@ -143,7 +143,7 @@ app.post("/api/signup", (req, res) => {
 
 app.get("/api/users/dashboard", async (req, res) => {
   const findDocument = await findDocumentByEmail(req.user.email);
-  const dataForDashboard = {userDocuments: findDocument, user: req.user};
+  const dataForDashboard = { userDocuments: findDocument, user: req.user };
   console.log(dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
   res.send(dataForDashboard);
 });
