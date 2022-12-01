@@ -9,9 +9,9 @@ import {
   Navigate,
 } from "react-router-dom";
 
-const generateRandomString = () => {
-  return Math.random().toString(36).substring(2, 14);
-};
+// const generateRandomString = () => {
+//   return Math.random().toString(36).substring(2, 14);
+// };
 
 //create App component
 function App() {
@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={`/documents/${generateRandomString()}`} />}
+          element={<Navigate to={"/login"} />}
         ></Route>
         <Route path="/documents/:id" element={<TextEditor />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
