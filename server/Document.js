@@ -6,6 +6,11 @@ const Document = new Schema({
     type: String,
   },
 
+  title: {
+    type: String,
+    trim: true,
+  },
+
   data: {
     required: true,
     type: Object,
@@ -22,15 +27,19 @@ const Document = new Schema({
     ref: "User",
   },
 
-  edit_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  veiw_edit_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
-  share_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  share_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
   access_level: {
     type: String,

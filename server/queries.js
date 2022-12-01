@@ -2,7 +2,7 @@ const Document = require("./Document");
 const User = require("./User");
 
 const findDocumentByUserID = async (id) => {
-  let documents = await Document.find({ creator: id });
+  let documents = await Document.find({ creator: id }).populate("creator");
   return documents;
 };
 

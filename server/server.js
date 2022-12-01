@@ -84,8 +84,12 @@ async function findOrCreateDocument(URL) {
 
 //select data
 //findDocumentByUserID("63866ba3d03a71f9898745b8");
-////findUserByID("63866ba3d03a71f9898745b8");
+//async function aaa() {
+//  const aa = findUserByID("63866ba3d03a71f9898745b8");
+//  console.log("aa", aa);
+//}
 //console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
+
 // Routes
 app.post("/login", (req, res) => {
   passport.authenticate("local", (err, user) => {
@@ -137,10 +141,10 @@ app.post("/signup", (req, res) => {
 });
 
 app.get("/users/dashboard", async (req, res) => {
-  const user = req.user;
-  await findDocumentByEmail(req.user.email)
-  .then((documents) => res.send({documents: documents, user: user}));
-   // The req.user stores the entire user that has been authenticated inside of it.
+  const findDocument = await findDocumentByEmail(req.user.email);
+  const dataForDashboard = {userDocuments: findDocument, user: req.user};
+  console.log(dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
+  res.send(dataForDashboard);
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
