@@ -24,7 +24,7 @@ const documents = data? data.userDocuments.map(document => {
       <Document 
         key={document._id}
         id={document._id}
-        url={document.url}
+        url={document.URL}
         creator={document.creator}
       />
     )
