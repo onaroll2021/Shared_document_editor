@@ -18,7 +18,7 @@ export default function Application() {
         password: loginPassword,
       },
       withCredentials: true,
-      url: "/login",
+      url: "/api/login",
     }).then((res) => {
       navigate("/users/dashboard");
   });

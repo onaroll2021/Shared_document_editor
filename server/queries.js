@@ -12,8 +12,8 @@ const findUserByID = async (id) => {
 };
 
 const findDocumentByEmail = async (email) => {
-  const documents = await User.find({ email: email });
-  return findDocumentByUserID(documents[0]._id);
+  const users = await User.find({ email: email });
+  return findDocumentByUserID(users[0]._id);
 };
 
 //return whole user
