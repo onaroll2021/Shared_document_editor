@@ -6,6 +6,11 @@ const Document = new Schema({
     type: String,
   },
 
+  title: {
+    type: String,
+    trim: true,
+  },
+
   data: {
     required: true,
     type: Object,
