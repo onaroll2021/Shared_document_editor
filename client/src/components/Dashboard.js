@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import Header from "./Header";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
@@ -17,6 +18,10 @@ export default function Dashboard() {
 
   return (
     <div>
+      <Header />
+      <section>
+        
+      </section>
       <h1>Get User</h1>
       <button onClick={getUser}>Submit</button>
       {data ? <h1>Welcome Back {data.username}</h1> : null}
