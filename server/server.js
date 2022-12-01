@@ -137,9 +137,10 @@ app.post("/signup", (req, res) => {
 });
 
 app.get("/users/dashboard", async (req, res) => {
-  const findDocument = await findDocumentByEmail(req.user.email);
-  res.send(findDocument);
-  console.log(findDocument); // The req.user stores the entire user that has been authenticated inside of it.
+  const user = req.user;
+  await findDocumentByEmail(req.user.email)
+  .then((documents) => res.send({documents: documents, user: user}));
+   // The req.user stores the entire user that has been authenticated inside of it.
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
