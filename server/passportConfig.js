@@ -8,17 +8,13 @@ module.exports = function (passport) {
       User.findOne({ username: username }, (err, user) => {
         if (err) throw err;
         if (!user) {
-          console.log("Badddd");
           return done(null, false);
         }
-        console.log("user", user);
         bcrypt.compare(password, user.password, (err, result) => {
           if (err) throw err;
           if (result === true) {
-            console.log("Goood");
             return done(null, user);
           } else {
-            console.log("Falllllse");
             return done(null, false);
           }
         });
@@ -26,15 +22,11 @@ module.exports = function (passport) {
     })
   );
 
-
   passport.serializeUser((user, cb) => {
     cb(null, user.id);
   });
   passport.deserializeUser((id, cb) => {
     User.findOne({ _id: id }, (err, user) => {
-      // const userInformation = {
-      //   username: user.username,
-      // };
       cb(err, user);
     });
   });

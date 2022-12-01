@@ -66,7 +66,7 @@ export default function Dashboard() {
           </div>
           <div>
             <div className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700">
-              <img layout="fill" src="https://links.papareact.com/pju" />
+              <img alt="" layout="fill" src="https://links.papareact.com/pju" />
             </div>
             <p className="ml-2 mt-2 font-semibold text-sm text-gray-700">
               Blank
