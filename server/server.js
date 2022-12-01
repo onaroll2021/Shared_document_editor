@@ -91,7 +91,7 @@ async function findOrCreateDocument(URL) {
 //console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
 
 // Routes
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   console.log(req.body);
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
@@ -113,7 +113,7 @@ app.post("/login", (req, res) => {
 //     res.redirect("/users/dashboard");
 //   });
 
-app.post("/signup", (req, res) => {
+app.post("/api/signup", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) throw err;
     if (doc) res.send("User Already Exists");
@@ -141,7 +141,7 @@ app.post("/signup", (req, res) => {
   });
 });
 
-app.get("/users/dashboard", async (req, res) => {
+app.get("/api/users/dashboard", async (req, res) => {
   const findDocument = await findDocumentByEmail(req.user.email);
   const dataForDashboard = {userDocuments: findDocument, user: req.user};
   console.log(dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.

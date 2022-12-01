@@ -12,7 +12,7 @@ export default function Dashboard() {
     Axios({
       method: "GET",
       // withCredentials: true,
-      url: "/users/dashboard",
+      url: "/api/users/dashboard",
     }).then((res) => {
       setData(res.data);
       console.log(res.data);
