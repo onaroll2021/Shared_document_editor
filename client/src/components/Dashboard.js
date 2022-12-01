@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import Header from "./Header";
-import { Image } from "@material-tailwind/react";
 
 
 export default function Dashboard() {
