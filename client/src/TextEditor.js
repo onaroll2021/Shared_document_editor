@@ -99,7 +99,7 @@ export default function TextEditor() {
   const handleSend = async () => {
     setSent(true)
     try {
-      await axios.post("/send_mail", {
+      await axios.post("/api/send_mail", {
         text
       })
     } catch (error) {
@@ -127,7 +127,7 @@ export default function TextEditor() {
   return (
   <div>
     {!sent ? (
-        <form onSubmit={handleSend}><input type="text" value={text} onChange={(e) => {
+        <form onSubmit={ handleSend } ><input type="text" value={text} onChange={(e) => {
           setText(e.target.value)
         }} />
         <button type="submit" >send email</button>
