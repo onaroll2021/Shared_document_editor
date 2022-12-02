@@ -18,6 +18,7 @@ export default function Application() {
         password: loginPassword,
       },
       withCredentials: true,
+      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/login",
     }).then((res) => {
       navigate("/users/dashboard");

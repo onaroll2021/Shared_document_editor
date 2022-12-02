@@ -15,15 +15,20 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-// const bodyParser = require("body-parser");
+// const cors = require("cors");
+
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
 // Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
+//     methods: ["GET", "POST"],
+//   })
+// );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -107,11 +112,7 @@ app.post("/api/login", (req, res) => {
   })(req, res);
 });
 
-// app.post('/login',
-//   passport.authenticate('local', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.redirect("/users/dashboard");
-//   });
+
 
 app.post("/api/signup", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
@@ -150,9 +151,3 @@ app.get("/api/users/dashboard", async (req, res) => {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-// app.get("/users/dashboard", (req, res) => {});
-// app.get("/Login");
-// app.post("/Login", (req, res) => {
-//   console.log("req.body", req.body);
-//   res.redirect("/users/dashboard");
-// });
