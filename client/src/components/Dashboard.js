@@ -138,7 +138,7 @@ export default function Dashboard(props) {
 >>>>>>> 7cfd186 (pass state from app.js)
           </div>
           <div>
-            {data ? (
+            {props.documents ? (
               <div className="flex flex-col-reverse">{documents}</div>
             ) : (
               <div>

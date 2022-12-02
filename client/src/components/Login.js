@@ -62,7 +62,7 @@ export default function Login() {
             className='border relative bg-gray-100 p-2'/>
           </div>
           <button onClick={login} className='w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white'>Sign In</button>
-          <p className='flex items-center'><Checkbox />Remember me</p>
+          <div className='flex items-center'><Checkbox />Remember me</div>
           <p className='text-center mt-8'>Not a member? <a href="/signup" className="text-blue underline">Sign up now</a></p>
         </form>
       </div>
