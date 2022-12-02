@@ -28,7 +28,7 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-export default function TextEditor() {
+export default function TextEditor(props) {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
@@ -77,8 +77,11 @@ export default function TextEditor() {
       quill.setContents(document);
       quill.enable();
     });
-    socket.emit("get-document", documentId);
-  }, [socket, quill, documentId]);
+    console.log(props.email);
+    const userEmail = props.email;
+    socket.emit("get-document", documentId, userEmail);
+  }, [socket, quill, documentId, props.email]);
+
   useEffect(() => {
     if (socket == null || quill == null) return;
 

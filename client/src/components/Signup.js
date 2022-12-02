@@ -12,6 +12,7 @@ export default function Application() {
   const signUp = () => {
     Axios({
       method: "POST",
+      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: {
         username: newUsername,
         email: newEmail,

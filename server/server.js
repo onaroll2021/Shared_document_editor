@@ -26,8 +26,12 @@ const io = socketio(server);
 //const cors = require("cors");
 
 // Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
+//     methods: ["GET", "POST"],
+//   })
+// );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -58,8 +62,8 @@ mongoose
 
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on("get-document", async (documentId) => {
-    const document = await findOrCreateDocument(documentId);
+  socket.on("get-document", async (documentId, userEmail) => {
+    const document = await findOrCreateDocument(documentId, userEmail);
     socket.join(documentId);
     socket.emit("load-document", document.data);
 
@@ -74,8 +78,8 @@ io.on("connection", (socket) => {
 
 const defaultValue = "";
 
-async function findOrCreateDocument(URL) {
-  const findUserarry = await findUserByEmail("abc@mail.com");
+async function findOrCreateDocument(URL, email) {
+  const findUserarry = await findUserByEmail(email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -112,11 +116,7 @@ app.post("/api/login", (req, res) => {
   })(req, res);
 });
 
-// app.post('/login',
-//   passport.authenticate('local', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.redirect("/users/dashboard");
-//   });
+
 
 app.post("/api/signup", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
@@ -186,9 +186,3 @@ app.post("/api/send_mail", async (req, res) => {
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-// app.get("/users/dashboard", (req, res) => {});
-// app.get("/Login");
-// app.post("/Login", (req, res) => {
-//   console.log("req.body", req.body);
-//   res.redirect("/users/dashboard");
-// });
