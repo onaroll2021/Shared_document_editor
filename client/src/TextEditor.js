@@ -3,6 +3,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -90,6 +91,21 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
+  //set state for email send
+  const [sent, setSent] = useState(false);
+  const [text, setText] = useState("");
+
+  const handleSend = async () => {
+    setSent(true)
+    try {
+      await axios.post("/send_mail", {
+        text
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
@@ -107,5 +123,19 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return <div className="container" ref={wrapperRef}></div>;
+  return (
+  <div>
+    {!sent ? (
+        <form onSubmit={handleSend}><input type="text" value={text} onChange={(e) => {
+          setText(e.target.value)
+        }} />
+        <button type="submit" >send email</button>
+        </form>
+    ) : (
+      <h1> Email sent</h1>
+    )}
+
+  <div className="container" ref={wrapperRef}></div>
+  </div>
+  );
 }

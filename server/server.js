@@ -21,6 +21,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+//CONFIG FOR MAILING
+require("dotenv").config()
+const bodyParser = require("body-parser")
+const nodemailer = require("nodemailer")
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 // Middleware
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -156,3 +163,27 @@ server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 //   console.log("req.body", req.body);
 //   res.redirect("/users/dashboard");
 // });
+
+//nodemailer part
+app.post("/send_mail", async (req, res) => {
+  console.log("req.body", req.body)
+  let {text} = req.body;
+  const transport = nodemailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS
+    }
+  })
+
+  await transport.sendMail({
+    from: process.env.MAIL_FROM,
+    to: "lukeli.onaroll@gmail.com",
+    subject: "test email",
+    html: `<div><h2>here is your email</h2>
+    <p>${text}</p>
+    <p>All the best, myFriend</p>
+    </div>`
+  })
+})
