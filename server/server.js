@@ -18,7 +18,6 @@ const session = require("express-session");
 require("dotenv").config();
 
 const { resolve } = require("path");
-//const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 
 const app = express();
@@ -42,8 +41,6 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConfig")(passport);
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
 //app.use(cors());
 
 //create mongoose connection
