@@ -1,3 +1,4 @@
+require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const http = require("http");
 const express = require("express");
@@ -15,7 +16,6 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-require("dotenv").config();
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
@@ -160,9 +160,10 @@ app.post("/api/send_mail", async (req, res) => {
     port: process.env.MAIL_PORT,
     auth: {
       user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
+      pass: process.env.MAIL_PASS
+    }
   });
+  console.log("text:", text);
 
   await transport.sendMail({
     from: process.env.MAIL_FROM,
@@ -179,8 +180,8 @@ app.post("/api/send_mail", async (req, res) => {
         <p>${text}</p>
     
         <p>All the best, Darwin</p>
-         </div>
-    `,
+      </div>
+    `
   });
 });
 

@@ -113,7 +113,9 @@ export default function TextEditor(props) {
 
   return (
     <>
-      <Documentheader />
+      <Documentheader 
+        url={documentId}
+      />
       <div className="container" ref={wrapperRef}></div>
     </>
   );
