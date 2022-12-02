@@ -22,6 +22,10 @@ const findUserByEmail = async (email) => {
   return userarry;
 };
 
+Document.updateOne({ id: "XXXXx" }, { title: "Carl Benson" }).then((meg) => {
+  console.log(meg);
+});
+
 module.exports = {
   findDocumentByUserID,
   findUserByID,

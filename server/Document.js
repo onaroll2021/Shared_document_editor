@@ -9,6 +9,7 @@ const Document = new Schema({
   title: {
     type: String,
     trim: true,
+    default: "Mydocument",
   },
 
   data: {
