@@ -4,6 +4,7 @@ import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Documentheader from "./components/Header-document";
 
 const SAVE_INTERVAL_MS = 2000;
 

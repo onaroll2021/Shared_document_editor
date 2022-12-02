@@ -1,4 +1,4 @@
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
@@ -15,11 +15,15 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-// const bodyParser = require("body-parser");
+require("dotenv").config();
+
+const { resolve } = require("path");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
+//const cors = require("cors");
 
 //CONFIG FOR MAILING
 require("dotenv").config()
@@ -44,6 +48,7 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConfig")(passport);
+//app.use(cors());
 
 //create mongoose connection
 mongoose
@@ -151,8 +156,39 @@ app.post("/api/signup", (req, res) => {
 app.get("/api/users/dashboard", async (req, res) => {
   const findDocument = await findDocumentByEmail(req.user.email);
   const dataForDashboard = { userDocuments: findDocument, user: req.user };
-  console.log(dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
+  //console.log("aaaaa", dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
   res.send(dataForDashboard);
+});
+
+app.post("/api/send_mail", async (req, res) => {
+  let { text } = req.body;
+  const transport = nodemailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+
+  await transport.sendMail({
+    from: process.env.MAIL_FROM,
+    to: "test@test.com",
+    subject: "test email",
+    html: `<div className="email" style="
+        border: 1px solid black;
+        padding: 20px;
+        font-family: sans-serif;
+        line-height: 2;
+        font-size: 20px; 
+        ">
+        <h2>Here is your email!</h2>
+        <p>${text}</p>
+    
+        <p>All the best, Darwin</p>
+         </div>
+    `,
+  });
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
