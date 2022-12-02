@@ -53,8 +53,8 @@ mongoose
 
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on("get-document", async (documentId) => {
-    const document = await findOrCreateDocument(documentId);
+  socket.on("get-document", async (documentId, userEmail) => {
+    const document = await findOrCreateDocument(documentId, userEmail);
     socket.join(documentId);
     socket.emit("load-document", document.data);
 
@@ -69,8 +69,8 @@ io.on("connection", (socket) => {
 
 const defaultValue = "";
 
-async function findOrCreateDocument(URL) {
-  const findUserarry = await findUserByEmail("abc@mail.com");
+async function findOrCreateDocument(URL, email) {
+  const findUserarry = await findUserByEmail(email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
