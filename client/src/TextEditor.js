@@ -3,6 +3,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import Documentheader from "./components/Header-document";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -107,5 +108,10 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return <div className="container" ref={wrapperRef}></div>;
+  return (
+    <>
+      <Documentheader />
+      <div className="container" ref={wrapperRef}></div>
+    </>
+  );
 }

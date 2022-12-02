@@ -18,10 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={"/login"} />}
-        ></Route>
+        <Route path="/" element={<Navigate to={"/login"} />}></Route>
         <Route path="/documents/:id" element={<TextEditor />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
