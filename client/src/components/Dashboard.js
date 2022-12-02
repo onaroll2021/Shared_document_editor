@@ -116,7 +116,7 @@ export default function Dashboard(props) {
           <div className="flex flex-col-reverse">{documents}</div>
           </div>
           <div>
-            {data ? (
+            {props.documents ? (
               <div className="flex flex-col-reverse">{documents}</div>
             ) : (
               <div>
