@@ -17,6 +17,7 @@ export default function Dashboard() {
       setData(res.data);
     });
   }, []);
+  console.log("dddd", data);
 
   const documents = data ? (
     data.userDocuments.map((document) => {
@@ -25,6 +26,7 @@ export default function Dashboard() {
         <Document
           key={document._id}
           id={document._id}
+          title={document.title}
           url={document.URL}
           creator={document.creator}
           date={document.dateTime}
@@ -85,6 +87,7 @@ export default function Dashboard() {
         <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
           <div className="flex items-center justify-between pb-5">
             <h2 className="font-medium flex-grow">My Documents</h2>
+            <p className="mr-12">Document Title</p>
             <p className="mr-12">Date Created</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"

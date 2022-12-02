@@ -159,6 +159,13 @@ app.get("/api/users/dashboard", async (req, res) => {
   res.send(dataForDashboard);
 });
 
+app.get("/api/users/documentHeader", async (req, res) => {
+  const findDocument = await findDocumentByEmail(req.user.email);
+  const dataForDashboard = { userDocuments: findDocument, user: req.user };
+  //console.log("aaaaa", dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
+  res.send(dataForDashboard);
+});
+
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
 // app.get("/users/dashboard", (req, res) => {});

@@ -1,21 +1,23 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IconButton, Button, Input } from "@material-tailwind/react";
 
-export default function Documentheader() {
+export default function Documentheader(props) {
   const [sent, setSent] = useState(false);
   const [text, setText] = useState("");
-  const [title, setTitle] = useState(false);
-  const handleSend = async (e) => {
-    setSent(true);
-    try {
-      await axios.post("api/send_mail", {
-        text,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [data, setData] = useState(null);
+  const title = props.title;
+
+  //const handleSend = async () => {
+  //  setSent(true);
+  //  try {
+  //    await axios.post("/send_mail", {
+  //      text,
+  //    });
+  //  } catch (error) {
+  //    console.error(error);
+  //  }
+  //};
 
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
@@ -38,27 +40,33 @@ export default function Documentheader() {
         </IconButton>
 
         {!title ? (
-          <div>
+          <>
             {" "}
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
             <div className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md">
               <Input label="Tittle" />
             </div>
-          </div>
+          </>
         ) : (
           <h1>XXXX</h1>
         )}
       </div>
 
-      <div className="flex flex-end space-x-2">
+      <div className="flex flex-end">
         {!sent ? (
-          <form onSubmit={handleSend}>
-            <input
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <Button type="submit">Share</Button>
+          <form className="flex flex-end">
+            <>
+              <Input
+                label="Share message"
+                className="mr-3 mt-1"
+                type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+              <Button className="ml-2" type="submit">
+                Share
+              </Button>
+            </>
           </form>
         ) : (
           <h1>Email Sent</h1>

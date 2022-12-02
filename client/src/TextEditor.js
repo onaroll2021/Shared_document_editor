@@ -80,6 +80,7 @@ export default function TextEditor() {
     });
     socket.emit("get-document", documentId);
   }, [socket, quill, documentId]);
+
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -95,17 +96,18 @@ export default function TextEditor() {
   //set state for email send
   const [sent, setSent] = useState(false);
   const [text, setText] = useState("");
+  const [title, setTitle] = useState(null);
 
   const handleSend = async () => {
-    setSent(true)
+    setSent(true);
     try {
       await axios.post("/send_mail", {
-        text
-      })
+        text,
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
@@ -124,19 +126,51 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return (
-  <div>
-    {!sent ? (
-        <form onSubmit={handleSend}><input type="text" value={text} onChange={(e) => {
-          setText(e.target.value)
-        }} />
-        <button type="submit" >send email</button>
-        </form>
-    ) : (
-      <h1> Email sent</h1>
-    )}
+  useEffect(() => {
+    axios({
+      method: "GET",
+      // withCredentials: true,
+      url: "/api/users/documentHeader",
+    }).then((res) => {
+      setTitle(res.data);
+    });
+  }, []);
 
-  <div className="container" ref={wrapperRef}></div>
-  </div>
+  const documents = title ? (
+    console.log(
+      "title",
+      title.userDocuments.filter((document) => (document.URL = documentId))
+    )
+  ) : (
+    <></>
+  );
+
+  return (
+    <div>
+      <Documentheader
+        key={document._id}
+        id={document._id}
+        title={document.title}
+        url={document.URL}
+        creator={document.creator}
+        date={document.dateTime}
+      />
+      {!sent ? (
+        <form onSubmit={handleSend}>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+          />
+          <button type="submit">send email</button>
+        </form>
+      ) : (
+        <h1> Email sent</h1>
+      )}
+
+      <div className="container" ref={wrapperRef}></div>
+    </div>
   );
 }
