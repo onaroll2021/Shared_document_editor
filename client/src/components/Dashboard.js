@@ -5,12 +5,13 @@ import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard(props) {
+export default function Dashboard() {
 // useEffect(() => {
 //   props.fetchData
 // })
 
   const [documents, setDocuments] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     Axios({
@@ -18,6 +19,7 @@ export default function Dashboard(props) {
       url: "/api/users/dashboard",
     }).then((res) => {
       setDocuments(res.data.userDocuments);
+      setUser(res.data.user);
       console.log(res.data);
     }).catch((err) => {
       console.log(err.message);
@@ -46,6 +48,7 @@ export default function Dashboard(props) {
         url={document.URL}
         creator={document.creator}
         date={dateCreated}
+        user={user}
       />
     );
   });
@@ -86,7 +89,7 @@ export default function Dashboard(props) {
           <div>
             <div
               className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700"
-              onClick={() => navigate(newLink)}
+              onClick={() => navigate(newLink,{state:{user: user}})}
             >
               <img layout="fill" src="https://links.papareact.com/pju" alt="" />
             </div>

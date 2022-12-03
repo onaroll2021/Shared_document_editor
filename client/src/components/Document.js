@@ -7,7 +7,7 @@ export default function Document(props) {
   const navigate = useNavigate();
   return (
 
-    <div onClick={() => navigate(documentLink)}
+    <div onClick={() => navigate(documentLink,{state:{user: props.user}})}
       className="flex items-center p-4 rounded-lg hover:bg-gray-100 text-gray-700 text-sm cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="black" className="w-6 h-6">
