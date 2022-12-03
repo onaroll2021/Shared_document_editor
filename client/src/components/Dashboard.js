@@ -6,19 +6,23 @@ import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard(props) {
-  // const [data, setData] = useState(null);
+// useEffect(() => {
+//   props.fetchData
+// })
 
-  // useEffect(() => {
-  //   Axios({
-  //     method: "GET",
-  //     // withCredentials: true,
-  //     // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  //     url: "/api/users/dashboard",
-  //   }).then((res) => {
-  //     setData(res.data);
-  //     console.log(res.data);
-  //   });
-  // }, []);
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    Axios({
+      method: "GET",
+      url: "/api/users/dashboard",
+    }).then((res) => {
+      setDocuments(res.data.userDocuments);
+      console.log(res.data);
+    }).catch((err) => {
+      console.log(err.message);
+    });
+  }, []);
 
   // const documents = data ? data.userDocuments.map(document => {
   //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
@@ -33,7 +37,7 @@ export default function Dashboard(props) {
   //   );
   // }) : <></>;
 
-  const documents = props.documents.map(document => {
+  const documentsList = documents.map(document => {
     const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
     return (
       <Document
@@ -113,7 +117,7 @@ export default function Dashboard(props) {
             </svg>
           </ div>
           <div>
-          <div className="flex flex-col-reverse">{documents}</div>
+          <div className="flex flex-col-reverse">{documentsList}</div>
           </div>
         </div>
       </section>

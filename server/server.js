@@ -24,6 +24,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 //const cors = require("cors");
+// const bodyParser = require("body-parser")
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
 
 // Middleware
 // app.use(
@@ -32,7 +35,7 @@ const io = socketio(server);
 //     methods: ["GET", "POST"],
 //   })
 // );
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
@@ -153,21 +156,28 @@ app.get("/api/users/dashboard", async (req, res) => {
   res.send(dataForDashboard);
 });
 
+
+// nodemailer
 app.post("/api/send_mail", async (req, res) => {
   let { text } = req.body;
   const transport = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
+    secure: false, // TLS requires secureConnection to be false
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS
+    },
+    tls: {
+      ciphers:'SSLv3'
     }
   });
   console.log("text:", text);
+  console.log("host:", process.env.MAIL_HOST);
 
   await transport.sendMail({
     from: process.env.MAIL_FROM,
-    to: "test@test.com",
+    to: "thomastank0926@gmail.com",
     subject: "test email",
     html: `<div className="email" style="
         border: 1px solid black;
@@ -184,6 +194,36 @@ app.post("/api/send_mail", async (req, res) => {
     `
   });
 });
+
+
+// gmail API
+// const fs = require('fs');
+// const path = require('path');
+// const sendMail = require('./gmail');
+
+// const main = async (text) => {
+
+//   const options = {
+//     to: 'yongjia3@ualberta.ca',
+//     subject: 'Hello Luke 🚀',
+//     html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
+//     textEncoding: 'base64',
+//     headers: [
+//       { key: 'X-Application-Developer', value: 'Luke Li' },
+//       { key: 'X-Application-Version', value: 'v1.0.0.2' },
+//     ],
+//   };
+
+//   const messageId = await sendMail(options);
+//   return messageId;
+// };
+
+// app.post("/api/send_mail", async (req, res) => {
+//   let { text } = req.body;
+//   main(text)
+//   .then((messageId) => console.log('Message sent successfully:', messageId))
+//   .catch((err) => console.error(err));
+// });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 

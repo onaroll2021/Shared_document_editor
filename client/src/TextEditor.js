@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import Axios from "axios";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
@@ -28,10 +29,24 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-export default function TextEditor(props) {
+export default function TextEditor() {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+
+  //get user information
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    Axios({
+      method: "GET",
+      url: "/api/users/dashboard",
+    }).then((res) => {
+      setUser(res.data.user);
+      console.log(res.data.user);
+    }).catch((err) => {
+      console.log(err.message);
+    });
+  }, []);
 
   //connect socket
   useEffect(() => {
@@ -77,10 +92,10 @@ export default function TextEditor(props) {
       quill.setContents(document);
       quill.enable();
     });
-    console.log(props.email);
-    const userEmail = props.email;
+    console.log(user.email);
+    const userEmail = user.email;
     socket.emit("get-document", documentId, userEmail);
-  }, [socket, quill, documentId, props.email]);
+  }, [socket, quill, documentId, user.email]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
