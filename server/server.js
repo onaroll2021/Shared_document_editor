@@ -19,10 +19,6 @@ const session = require("express-session");
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
-=======
-// const cors = require("cors");
-
->>>>>>> 7cfd186 (pass state from app.js)
 
 const app = express();
 const server = http.createServer(app);
@@ -181,7 +177,7 @@ app.post("/api/send_mail", async (req, res) => {
 
   await transport.sendMail({
     from: process.env.MAIL_FROM,
-    to: "thomastank0926@gmail.com",
+    to: "tank@test.com",
     subject: "test email",
     html: `<div className="email" style="
         border: 1px solid black;
@@ -208,7 +204,7 @@ app.post("/api/send_mail", async (req, res) => {
 // const main = async (text) => {
 
 //   const options = {
-//     to: 'yongjia3@ualberta.ca',
+//     to: 'tank@mail.ca',
 //     subject: 'Hello Luke 🚀',
 //     html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
 //     textEncoding: 'base64',

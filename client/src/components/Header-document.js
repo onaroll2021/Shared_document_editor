@@ -5,14 +5,14 @@ import { IconButton, Button, Input } from "@material-tailwind/react";
 
 export default function Documentheader(props) {
   const [sent, setSent] = useState(false);
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const [title, setTitle] = useState(false);
 
   console.log("url", props.url);
 
   const handleSend = async () => {
     setSent(true);
-    setText(props.url);
+    // setText(props.url);
     const documentUrl = `http://localhost:3000/documents/${props.url}`
     try {
       await axios.post("/api/send_mail", {

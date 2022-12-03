@@ -4,7 +4,6 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Documentheader from "./components/Header-document";
 
 const SAVE_INTERVAL_MS = 2000;
@@ -30,7 +29,7 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-export default function TextEditor(props) {
+export default function TextEditor() {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
@@ -109,21 +108,6 @@ export default function TextEditor(props) {
       clearInterval(interval);
     };
   }, [socket, quill]);
-
-  //set state for email send
-  const [sent, setSent] = useState(false);
-  const [text, setText] = useState("");
-
-  const handleSend = async () => {
-    setSent(true)
-    try {
-      await axios.post("/send_mail", {
-        text
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
