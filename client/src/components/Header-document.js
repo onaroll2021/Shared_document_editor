@@ -2,15 +2,21 @@ import axios from "axios";
 import React, { useState } from "react";
 import { IconButton, Button, Input } from "@material-tailwind/react";
 
-export default function Documentheader() {
+
+export default function Documentheader(props) {
   const [sent, setSent] = useState(false);
   const [text, setText] = useState("");
   const [title, setTitle] = useState(false);
-  const handleSend = async (e) => {
+
+  console.log("url", props.url);
+
+  const handleSend = async () => {
     setSent(true);
+    setText(props.url);
+    const documentUrl = `http://localhost:3000/documents/${props.url}`
     try {
-      await axios.post("api/send_mail", {
-        text,
+      await axios.post("/api/send_mail", {
+        text: documentUrl
       });
     } catch (error) {
       console.error(error);
@@ -52,14 +58,7 @@ export default function Documentheader() {
 
       <div className="flex flex-end space-x-2">
         {!sent ? (
-          <form onSubmit={handleSend}>
-            <input
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <Button type="submit">Share</Button>
-          </form>
+            <Button onClick={handleSend} >Share</Button>
         ) : (
           <h1>Email Sent</h1>
         )}

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const http = require("http");
 const express = require("express");
@@ -15,8 +16,6 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-<<<<<<< HEAD
-require("dotenv").config();
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
@@ -29,12 +28,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 //const cors = require("cors");
-
-//CONFIG FOR MAILING
-require("dotenv").config();
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// const bodyParser = require("body-parser")
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
 
 // Middleware
 // app.use(
@@ -43,7 +39,7 @@ app.use(bodyParser.json());
 //     methods: ["GET", "POST"],
 //   })
 // );
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
@@ -164,35 +160,74 @@ app.get("/api/users/dashboard", async (req, res) => {
   res.send(dataForDashboard);
 });
 
-server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
-// app.get("/users/dashboard", (req, res) => {});
-// app.get("/Login");
-// app.post("/Login", (req, res) => {
-//   console.log("req.body", req.body);
-//   res.redirect("/users/dashboard");
-// });
-
-//nodemailer part
-app.post("/send_mail", async (req, res) => {
-  console.log("req.body", req.body);
+// nodemailer
+app.post("/api/send_mail", async (req, res) => {
   let { text } = req.body;
   const transport = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
+    secure: false, // TLS requires secureConnection to be false
     auth: {
       user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
+      pass: process.env.MAIL_PASS
     },
+    tls: {
+      ciphers:'SSLv3'
+    }
   });
+  console.log("text:", text);
+  console.log("host:", process.env.MAIL_HOST);
 
   await transport.sendMail({
     from: process.env.MAIL_FROM,
-    to: "lukeli.onaroll@gmail.com",
+    to: "thomastank0926@gmail.com",
     subject: "test email",
-    html: `<div><h2>here is your email</h2>
-    <p>${text}</p>
-    <p>All the best, myFriend</p>
-    </div>`,
+    html: `<div className="email" style="
+        border: 1px solid black;
+        padding: 20px;
+        font-family: sans-serif;
+        line-height: 2;
+        font-size: 20px; 
+        ">
+        <h2>Here is your email!</h2>
+        <p>${text}</p>
+    
+        <p>All the best, Darwin</p>
+      </div>
+    `
   });
 });
+
+
+// gmail API
+// const fs = require('fs');
+// const path = require('path');
+// const sendMail = require('./gmail');
+
+// const main = async (text) => {
+
+//   const options = {
+//     to: 'yongjia3@ualberta.ca',
+//     subject: 'Hello Luke 🚀',
+//     html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
+//     textEncoding: 'base64',
+//     headers: [
+//       { key: 'X-Application-Developer', value: 'Luke Li' },
+//       { key: 'X-Application-Version', value: 'v1.0.0.2' },
+//     ],
+//   };
+
+//   const messageId = await sendMail(options);
+//   return messageId;
+// };
+
+// app.post("/api/send_mail", async (req, res) => {
+//   let { text } = req.body;
+//   main(text)
+//   .then((messageId) => console.log('Message sent successfully:', messageId))
+//   .catch((err) => console.error(err));
+// });
+
+server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
+

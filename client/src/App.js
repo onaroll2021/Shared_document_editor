@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import React from "react";
+// import Axios from "axios";
 import TextEditor from "./TextEditor";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -18,7 +18,7 @@ import {
 //create App component
 function App() {
 
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   // const [data, setData] = useState({});
   // const [state, setState] = useState({
   //   user: {},
@@ -26,6 +26,9 @@ function App() {
   // });
 
   // useEffect(() => {
+  // }, []);
+  
+  // const fetchData = () => {
   //   Axios({
   //     method: "GET",
   //     // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -35,40 +38,8 @@ function App() {
   //     // setState({user:res.data.user, documents:res.data.userDocuments});
   //     console.log(res.data);
   //   });
-  // }, []);
-
-  useEffect(() => {
-    Axios({
-      method: "GET",
-      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url: "/api/users/dashboard",
-    }).then((res) => {
-      setUser(prev => ({...prev, user:res.data.user}));
-      // setState({user:res.data.user, documents:res.data.userDocuments});
-      console.log(res.data);
-    });
-  }, []);
-
-
-  // return (
-  //   <Router>
-  //     <Routes>
-  //       <Route
-  //         path="/"
-  //         element={<Navigate to={"/login"} />}
-  //       ></Route>
-  //       <Route path="/documents/:id" element={<TextEditor
-  //         key={state.user._id}
-  //         email={state.user.email}
-  //       />}></Route>
-  //       <Route path="/signup" element={<Signup />}></Route>
-  //       <Route path="/login" element={<Login />}></Route>
-  //       <Route path="users/dashboard" element={<Dashboard
-  //         documents={state.documents}
-  //       />} />
-  //     </Routes>
-  //   </Router>
-  // );
+    
+  // }
 
 
   return (
@@ -79,12 +50,15 @@ function App() {
           element={<Navigate to={"/login"} />}
         ></Route>
         <Route path="/documents/:id" element={<TextEditor
-          key={user._id}
-          email={user.email}
+          // key={state.user._id}
+          // email={state.user.email}
         />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="users/dashboard" element={<Dashboard />} />
+        <Route path="users/dashboard" element={<Dashboard
+          // documents={state.documents}
+          // fetchData={fetchData}
+        />} />
       </Routes>
     </Router>
   );

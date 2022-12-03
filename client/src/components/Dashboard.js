@@ -5,38 +5,26 @@ import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const [data, setData] = useState(null);
+export default function Dashboard(props) {
+// useEffect(() => {
+//   props.fetchData
+// })
+
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     Axios({
       method: "GET",
-      // withCredentials: true,
-      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/users/dashboard",
     }).then((res) => {
-      setData(res.data);
+      setDocuments(res.data.userDocuments);
       console.log(res.data);
+    }).catch((err) => {
+      console.log(err.message);
     });
   }, []);
 
-  const documents = data ? data.userDocuments.map((document => {
-    const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
-    return (
-      <Document
-        key={document._id}
-        id={document._id}
-        url={document.URL}
-        creator={document.creator}
-        date={dateCreated}
-      />
-    );
-  })
-  ) : (
-  <></>);
-
   // const documents = data ? data.userDocuments.map(document => {
-  // const documents = props.documents.map(document => {
   //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
   //   return (
   //     <Document
@@ -49,7 +37,7 @@ export default function Dashboard() {
   //   );
   // }) : <></>;
 
-  const documents = props.documents.map(document => {
+  const documentsList = documents.map(document => {
     const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
     return (
       <Document
@@ -61,7 +49,6 @@ export default function Dashboard() {
       />
     );
   });
-  // });
 
   // console.log("what is this", data.userDocuments);
 
@@ -130,16 +117,7 @@ export default function Dashboard() {
             </svg>
           </ div>
           <div>
-          <div className="flex flex-col-reverse">{documents}</div>
-          </div>
-          <div>
-            {data ? (
-              <div className="flex flex-col-reverse">{documents}</div>
-            ) : (
-              <div>
-                <h1>Loading...</h1>
-              </div>
-            )}
+          <div className="flex flex-col-reverse">{documentsList}</div>
           </div>
         </div>
       </section>
