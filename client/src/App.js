@@ -18,12 +18,24 @@ import {
 //create App component
 function App() {
 
-  // const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
   // const [data, setData] = useState({});
-  const [state, setState] = useState({
-    user: {},
-    documents: []
-  });
+  // const [state, setState] = useState({
+  //   user: {},
+  //   documents: []
+  // });
+
+  // useEffect(() => {
+  //   Axios({
+  //     method: "GET",
+  //     // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  //     url: "/api/users/dashboard",
+  //   }).then((res) => {
+  //     setState(prev => ({...prev, user:res.data.user, documents:res.data.userDocuments}));
+  //     // setState({user:res.data.user, documents:res.data.userDocuments});
+  //     console.log(res.data);
+  //   });
+  // }, []);
 
   useEffect(() => {
     Axios({
@@ -31,11 +43,32 @@ function App() {
       // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/users/dashboard",
     }).then((res) => {
-      setState(prev => ({...prev, user:res.data.user, documents:res.data.userDocuments}));
+      setUser(prev => ({...prev, user:res.data.user}));
       // setState({user:res.data.user, documents:res.data.userDocuments});
       console.log(res.data);
     });
   }, []);
+
+
+  // return (
+  //   <Router>
+  //     <Routes>
+  //       <Route
+  //         path="/"
+  //         element={<Navigate to={"/login"} />}
+  //       ></Route>
+  //       <Route path="/documents/:id" element={<TextEditor
+  //         key={state.user._id}
+  //         email={state.user.email}
+  //       />}></Route>
+  //       <Route path="/signup" element={<Signup />}></Route>
+  //       <Route path="/login" element={<Login />}></Route>
+  //       <Route path="users/dashboard" element={<Dashboard
+  //         documents={state.documents}
+  //       />} />
+  //     </Routes>
+  //   </Router>
+  // );
 
 
   return (
@@ -46,14 +79,12 @@ function App() {
           element={<Navigate to={"/login"} />}
         ></Route>
         <Route path="/documents/:id" element={<TextEditor
-          key={state.user._id}
-          email={state.user.email}
+          key={user._id}
+          email={user.email}
         />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="users/dashboard" element={<Dashboard
-          documents={state.documents}
-        />} />
+        <Route path="users/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

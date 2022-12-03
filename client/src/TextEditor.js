@@ -78,7 +78,7 @@ export default function TextEditor(props) {
       quill.setContents(document);
       quill.enable();
     });
-    console.log(props.email);
+    console.log("props.email", props.email);
     const userEmail = props.email;
     socket.emit("get-document", documentId, userEmail);
   }, [socket, quill, documentId, props.email]);
