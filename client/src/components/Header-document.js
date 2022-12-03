@@ -9,11 +9,14 @@ export default function Documentheader(props) {
   const [title, setTitle] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
   const navigate = useNavigate();
-  const handleSend = async (e) => {
+
+  const handleSend = async () => {
     setSent(true);
+    // setText(props.url);
+    const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
-      await axios.post("api/send_mail", {
-        text,
+      await axios.post("/api/send_mail", {
+        text: documentUrl,
       });
     } catch (error) {
       console.error(error);
@@ -78,20 +81,9 @@ export default function Documentheader(props) {
         )}
       </div>
 
-      <div className="flex flex-end">
+      <div className="flex flex-end space-x-2">
         {!sent ? (
-          <form className="flex flex-end" onSubmit={handleSend}>
-            <Input
-              label="Share message"
-              className="mr-3 mt-1"
-              type="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <Button className="ml-2" type="submit">
-              Share
-            </Button>
-          </form>
+          <Button onClick={handleSend}>Share</Button>
         ) : (
           <h1>Email Sent</h1>
         )}

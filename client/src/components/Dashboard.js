@@ -1,40 +1,57 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import Header from "./Header";
-//import moment from "moment";
+import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const [data, setData] = useState(null);
+export default function Dashboard(props) {
+  // useEffect(() => {
+  //   props.fetchData
+  // })
+
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     Axios({
       method: "GET",
-      // withCredentials: true,
       url: "/api/users/dashboard",
-    }).then((res) => {
-      setData(res.data);
-    });
-  }, []);
-  console.log(data);
-  const documents = data ? (
-    data.userDocuments.map((document) => {
-      //const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
-      return (
-        <Document
-          key={document._id}
-          id={document._id}
-          title={document.title}
-          url={document.URL}
-          creator={document.creator}
-          date={document.dateTime}
-        />
-      );
     })
-  ) : (
-    <></>
-  );
+      .then((res) => {
+        setDocuments(res.data.userDocuments);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  // const documents = data ? data.userDocuments.map(document => {
+  //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
+  //   return (
+  //     <Document
+  //       key={document._id}
+  //       id={document._id}
+  //       url={document.URL}
+  //       creator={document.creator}
+  //       date={dateCreated}
+  //     />
+  //   );
+  // }) : <></>;
+
+  const documentsList = documents.map((document) => {
+    const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
+    return (
+      <Document
+        key={document._id}
+        id={document._id}
+        title={document.title}
+        url={document.URL}
+        creator={document.creator}
+        date={dateCreated}
+      />
+    );
+  });
 
   // console.log("what is this", data.userDocuments);
 
@@ -103,13 +120,7 @@ export default function Dashboard() {
             </svg>
           </div>
           <div>
-            {data ? (
-              <div className="flex flex-col-reverse">{documents}</div>
-            ) : (
-              <div>
-                <h1>hahahahhaha</h1>
-              </div>
-            )}
+            <div className="flex flex-col-reverse">{documentsList}</div>
           </div>
         </div>
       </section>
