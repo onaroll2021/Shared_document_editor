@@ -159,72 +159,72 @@ app.get("/api/users/dashboard", async (req, res) => {
 
 
 // nodemailer
-app.post("/api/send_mail", async (req, res) => {
-  let { text } = req.body;
-  const transport = nodemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
-    secure: false, // TLS requires secureConnection to be false
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS
-    },
-    tls: {
-      ciphers:'SSLv3'
-    }
-  });
-  console.log("text:", text);
-  console.log("host:", process.env.MAIL_HOST);
+// app.post("/api/send_mail", async (req, res) => {
+//   let { text } = req.body;
+//   const transport = nodemailer.createTransport({
+//     host: process.env.MAIL_HOST,
+//     port: process.env.MAIL_PORT,
+//     secure: false, // TLS requires secureConnection to be false
+//     auth: {
+//       user: process.env.MAIL_USER,
+//       pass: process.env.MAIL_PASS
+//     },
+//     tls: {
+//       ciphers:'SSLv3'
+//     }
+//   });
+//   console.log("text:", text);
+//   console.log("host:", process.env.MAIL_HOST);
 
-  await transport.sendMail({
-    from: process.env.MAIL_FROM,
-    to: "tank@test.com",
-    subject: "test email",
-    html: `<div className="email" style="
-        border: 1px solid black;
-        padding: 20px;
-        font-family: sans-serif;
-        line-height: 2;
-        font-size: 20px; 
-        ">
-        <h2>Here is your email!</h2>
-        <p>${text}</p>
+//   await transport.sendMail({
+//     from: process.env.MAIL_FROM,
+//     to: "tank@test.com",
+//     subject: "test email",
+//     html: `<div className="email" style="
+//         border: 1px solid black;
+//         padding: 20px;
+//         font-family: sans-serif;
+//         line-height: 2;
+//         font-size: 20px; 
+//         ">
+//         <h2>Here is your email!</h2>
+//         <p>${text}</p>
     
-        <p>All the best, Darwin</p>
-      </div>
-    `
-  });
-});
+//         <p>All the best, Darwin</p>
+//       </div>
+//     `
+//   });
+// });
 
 
 // gmail API
-// const fs = require('fs');
-// const path = require('path');
-// const sendMail = require('./gmail');
+const fs = require('fs');
+const path = require('path');
+const sendMail = require('./gmail');
 
-// const main = async (text) => {
+const main = async (text) => {
 
-//   const options = {
-//     to: 'tank@mail.ca',
-//     subject: 'Hello Luke 🚀',
-//     html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
-//     textEncoding: 'base64',
-//     headers: [
-//       { key: 'X-Application-Developer', value: 'Luke Li' },
-//       { key: 'X-Application-Version', value: 'v1.0.0.2' },
-//     ],
-//   };
+  const options = {
+    to: '729298218@qq.com',
+    subject: 'Hello Luke 🚀',
+    html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
+    textEncoding: 'base64',
+    headers: [
+      { key: 'X-Application-Developer', value: 'Luke Li' },
+      { key: 'X-Application-Version', value: 'v1.0.0.2' },
+    ],
+  };
 
-//   const messageId = await sendMail(options);
-//   return messageId;
-// };
+  const messageId = await sendMail(options);
+  return messageId;
+};
 
-// app.post("/api/send_mail", async (req, res) => {
-//   let { text } = req.body;
-//   main(text)
-//   .then((messageId) => console.log('Message sent successfully:', messageId))
-//   .catch((err) => console.error(err));
-// });
+app.post("/api/send_mail", async (req, res) => {
+  let { text } = req.body;
+  main(text)
+  .then((messageId) => console.log('Message sent successfully:', messageId))
+  .catch((err) => console.error(err));
+});
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
 
