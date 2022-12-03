@@ -85,6 +85,7 @@ const defaultValue = "";
 
 async function findOrCreateDocument(URL, email) {
   const findUserarry = await findUserByEmail(email);
+  console.log("email", email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });

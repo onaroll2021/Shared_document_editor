@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import Axios from "axios";
+// import Axios from "axios";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Documentheader from "./components/Header-document";
 
 const SAVE_INTERVAL_MS = 2000;
@@ -33,22 +33,24 @@ export default function TextEditor() {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+  const location = useLocation();
+
+  const userEmail = location.state.user.email;
+  console.log(userEmail);
 
   //get user information
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    Axios({
-      method: "GET",
-      url: "/api/users/dashboard",
-    })
-      .then((res) => {
-        setUser(res.data.user);
-        console.log(res.data.user);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  // const [user, setUser] = useState({});
+  // useEffect(() => {
+  //   Axios({
+  //     method: "GET",
+  //     url: "/api/users/dashboard",
+  //   }).then((res) => {
+  //     setUser(res.data.user);
+  //     console.log(res.data.user);
+  //   }).catch((err) => {
+  //     console.log(err.message);
+  //   });
+  // }, []);
 
   //connect socket
   useEffect(() => {
@@ -94,10 +96,10 @@ export default function TextEditor() {
       quill.setContents(document);
       quill.enable();
     });
-    console.log(user.email);
-    const userEmail = user.email;
+    // const userEmail = location.state.user.email;
+    // console.log(userEmail);
     socket.emit("get-document", documentId, userEmail);
-  }, [socket, quill, documentId, user.email]);
+  }, [socket, quill, documentId, userEmail]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
