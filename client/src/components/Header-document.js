@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IconButton, Button, Input } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
-export default function Documentheader() {
+export default function Documentheader(props) {
   const [sent, setSent] = useState(false);
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -22,6 +22,17 @@ export default function Documentheader() {
 
   const handleEnterPress = () => {
     setChangeTittle(true);
+    axios({
+      method: "POST",
+      // withCredentials: true,
+      data: {
+        title: title,
+        URL: props.url,
+      },
+      url: "/api/users/changeTitle",
+    }).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

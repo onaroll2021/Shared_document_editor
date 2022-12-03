@@ -127,7 +127,7 @@ export default function TextEditor() {
 
   return (
     <div>
-      <Documentheader />
+      <Documentheader url={documentId} />
       {!sent ? (
         <form onSubmit={handleSend}>
           <input

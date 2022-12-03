@@ -25,6 +25,7 @@ export default function Dashboard() {
         <Document
           key={document._id}
           id={document._id}
+          title={document.title}
           url={document.URL}
           creator={document.creator}
           date={document.dateTime}

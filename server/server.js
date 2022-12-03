@@ -78,7 +78,6 @@ io.on("connection", (socket) => {
     });
   });
 });
-
 const defaultValue = "";
 
 async function findOrCreateDocument(URL) {
@@ -165,6 +164,18 @@ app.get("/api/users/dashboard", async (req, res) => {
   };
   //console.log("aaaaa", dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
   res.send(dataForDashboard);
+});
+
+//change title
+
+const changeTitleByURL = async (title, URL) => {
+  let changeTitle = await Document.updateOne({ URL: URL }, { title: title });
+  return changeTitle;
+};
+
+app.post("/api/users/changeTitle", async (req, res) => {
+  console.log("title", req.body.title);
+  await changeTitleByURL(req.body.title, req.body.URL);
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
