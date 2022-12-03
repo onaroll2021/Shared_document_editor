@@ -97,16 +97,17 @@ export default function TextEditor() {
   const [text, setText] = useState("");
 
   const handleSend = async () => {
-    setSent(true)
+    setSent(true);
     try {
       await axios.post("/send_mail", {
-        text
-      })
+        text,
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
+  console.log("ss", documentId);
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
@@ -125,18 +126,24 @@ export default function TextEditor() {
   }, []);
 
   return (
-  <div>
-    {!sent ? (
-        <form onSubmit={handleSend}><input type="text" value={text} onChange={(e) => {
-          setText(e.target.value)
-        }} />
-        <button type="submit" >send email</button>
+    <div>
+      <Documentheader />
+      {!sent ? (
+        <form onSubmit={handleSend}>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+          />
+          <button type="submit">send email</button>
         </form>
-    ) : (
-      <h1> Email sent</h1>
-    )}
+      ) : (
+        <h1> Email sent</h1>
+      )}
 
-  <div className="container" ref={wrapperRef}></div>
-  </div>
+      <div className="container" ref={wrapperRef}></div>
+    </div>
   );
 }

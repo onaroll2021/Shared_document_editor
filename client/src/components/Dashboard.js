@@ -17,7 +17,7 @@ export default function Dashboard() {
       setData(res.data);
     });
   }, []);
-
+  console.log(data);
   const documents = data ? (
     data.userDocuments.map((document) => {
       //const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');

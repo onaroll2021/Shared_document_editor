@@ -22,13 +22,23 @@ const findUserByEmail = async (email) => {
   return userarry;
 };
 
-Document.updateOne({ id: "XXXXx" }, { title: "Carl Benson" }).then((meg) => {
-  console.log(meg);
-});
+Document.updateOne({ id: "documentId" }, { title: "Carl Benson" }).then(
+  (meg) => {
+    console.log(meg);
+  }
+);
+
+const findByTitle = async (text) => {
+  let seachtext = await Document.find({
+    title: { $regex: text, $options: "i" },
+  });
+  return seachtext;
+};
 
 module.exports = {
   findDocumentByUserID,
   findUserByID,
   findDocumentByEmail,
   findUserByEmail,
+  findByTitle,
 };

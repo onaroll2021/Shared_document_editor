@@ -10,6 +10,7 @@ const {
   findUserByID,
   findDocumentByEmail,
   findUserByEmail,
+  findByTitle,
 } = require("./queries");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
@@ -151,10 +152,17 @@ app.post("/api/signup", (req, res) => {
     }
   });
 });
-
 app.get("/api/users/dashboard", async (req, res) => {
   const findDocument = await findDocumentByEmail(req.user.email);
-  const dataForDashboard = { userDocuments: findDocument, user: req.user };
+  //console.log(findDocument);
+  //Search tittle contain "AA"
+  const search = await findByTitle("AA");
+  console.log("search", search);
+  const dataForDashboard = {
+    userDocuments: findDocument,
+    user: req.user,
+    searchedDocuments: search,
+  };
   //console.log("aaaaa", dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
   res.send(dataForDashboard);
 });
