@@ -68,6 +68,7 @@ mongoose
 io.on("connection", (socket) => {
   socket.on("get-document", async (documentId, userEmail) => {
     const document = await findOrCreateDocument(documentId, userEmail);
+    console.log("AA", userEmail);
     socket.join(documentId);
     socket.emit("load-document", document.data);
 
