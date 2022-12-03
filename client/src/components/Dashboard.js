@@ -5,19 +5,22 @@ import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const [data, setData] = useState(null);
+export default function Dashboard(props) {
+  // const [data, setData] = useState(null);
 
-  useEffect(() => {
-    Axios({
-      method: "GET",
-      // withCredentials: true,
-      url: "/api/users/dashboard",
-    }).then((res) => {
-      setData(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   Axios({
+  //     method: "GET",
+  //     // withCredentials: true,
+  //     // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  //     url: "/api/users/dashboard",
+  //   }).then((res) => {
+  //     setData(res.data);
+  //     console.log(res.data);
+  //   });
+  // }, []);
 
+<<<<<<< HEAD
   const documents = data ? (
     data.userDocuments.map((document) => {
       const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
@@ -34,6 +37,33 @@ export default function Dashboard() {
   ) : (
     <></>
   );
+=======
+  // const documents = data ? data.userDocuments.map(document => {
+  //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
+  //   return (
+  //     <Document
+  //       key={document._id}
+  //       id={document._id}
+  //       url={document.URL}
+  //       creator={document.creator}
+  //       date={dateCreated}
+  //     />
+  //   );
+  // }) : <></>;
+
+  const documents = props.documents.map(document => {
+    const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
+    return (
+      <Document
+        key={document._id}
+        id={document._id}
+        url={document.URL}
+        creator={document.creator}
+        date={dateCreated}
+      />
+    );
+  });
+>>>>>>> 7cfd186 (pass state from app.js)
 
   // console.log("what is this", data.userDocuments);
 
@@ -100,6 +130,12 @@ export default function Dashboard() {
                 d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
               />
             </svg>
+<<<<<<< HEAD
+=======
+          </ div>
+          <div>
+          <div className="flex flex-col-reverse">{documents}</div>
+>>>>>>> 7cfd186 (pass state from app.js)
           </div>
           <div>
             {data ? (

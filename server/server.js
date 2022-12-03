@@ -15,10 +15,15 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
+<<<<<<< HEAD
 require("dotenv").config();
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
+=======
+// const cors = require("cors");
+
+>>>>>>> 7cfd186 (pass state from app.js)
 
 const app = express();
 const server = http.createServer(app);
@@ -32,8 +37,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
+//     methods: ["GET", "POST"],
+//   })
+// );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -118,11 +127,7 @@ app.post("/api/login", (req, res) => {
   })(req, res);
 });
 
-// app.post('/login',
-//   passport.authenticate('local', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.redirect("/users/dashboard");
-//   });
+
 
 app.post("/api/signup", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
