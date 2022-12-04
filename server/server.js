@@ -85,7 +85,7 @@ const defaultValue = "";
 
 async function findOrCreateDocument(URL, email) {
   const findUserarry = await findUserByEmail(email);
-  console.log("email", email);
+  console.log("!!!email", email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -152,6 +152,7 @@ app.post("/api/signup", (req, res) => {
 });
 
 app.get("/api/users/dashboard", async (req, res) => {
+  // console.log("333req.user:", req.user);
   const findDocument = await findDocumentByEmail(req.user.email);
   //console.log(findDocument);
   //Search tittle contain "AA"
