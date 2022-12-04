@@ -50,6 +50,7 @@ export default function Dashboard() {
         title={document.title}
         url={document.URL}
         creator={document.creator.username}
+        editAccess={document.veiw_edit_access}
         date={dateCreated}
         user={user}
       />
@@ -107,6 +108,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between pb-5">
             <h2 className="font-medium flex-grow">My Documents</h2>
             <p className="mr-12">Creator</p>
+            <p className="mr-12">Editor</p>
             <p className="mr-12">Date Created</p>
             <p className="mr-12">Delete</p>
             <svg

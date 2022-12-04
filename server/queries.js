@@ -2,7 +2,7 @@ const Document = require("./Document");
 const User = require("./User");
 
 const findDocumentByUserID = async (id) => {
-  let documents = await Document.find({ veiw_edit_access: id });
+  let documents = await Document.find({ veiw_edit_access: id }).populate("creator").populate("veiw_edit_access");
   return documents;
 };
 

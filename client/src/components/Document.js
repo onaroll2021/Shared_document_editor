@@ -5,6 +5,13 @@ import { Button } from "@material-tailwind/react";
 export default function Document(props) {
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
+  let editor = "";
+  const editorArr = props.editAccess.filter(editor => editor.username !== props.creator);
+  if (editorArr) {
+    editorArr.forEach(e => {editor = editor + e.username + " "});
+    editor.trimEnd();
+  }
+
   return (
     <div
       onClick={() => navigate(documentLink, { state: { user: props.user } })}
@@ -27,6 +34,7 @@ export default function Document(props) {
 
       <p className="flex-grow pl-5 w-10 pr-10 truncate">{props.title}</p>
       <p className="pr-5 text-sm">{props.creator}</p>
+      <p className="pr-5 text-sm">{editor}</p>
       <p className="pr-5 text-sm">{props.date}</p>
       <Button color="red">Delete </Button>
 
