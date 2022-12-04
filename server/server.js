@@ -94,6 +94,7 @@ async function findOrCreateDocument(URL, email) {
     URL: URL,
     data: defaultValue,
     creator: findUserarry[0]._id,
+    veiw_edit_access: [findUserarry[0]._id]
   });
 }
 
