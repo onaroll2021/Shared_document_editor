@@ -49,7 +49,7 @@ export default function Dashboard() {
         id={document._id}
         title={document.title}
         url={document.URL}
-        creator={document.creator}
+        creator={document.creator.username}
         date={dateCreated}
         user={user}
       />
@@ -106,7 +106,9 @@ export default function Dashboard() {
         <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
           <div className="flex items-center justify-between pb-5">
             <h2 className="font-medium flex-grow">My Documents</h2>
+            <p className="mr-12">Creator</p>
             <p className="mr-12">Date Created</p>
+            <p className="mr-12">Delete</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

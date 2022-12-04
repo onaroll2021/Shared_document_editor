@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-// import { Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 export default function Document(props) {
   const documentLink = "/documents/" + props.url;
@@ -26,7 +26,9 @@ export default function Document(props) {
       </svg>
 
       <p className="flex-grow pl-5 w-10 pr-10 truncate">{props.title}</p>
+      <p className="pr-5 text-sm">{props.creator}</p>
       <p className="pr-5 text-sm">{props.date}</p>
+      <Button color="red">Delete </Button>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"

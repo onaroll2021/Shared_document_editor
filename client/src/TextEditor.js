@@ -36,6 +36,7 @@ export default function TextEditor() {
   const location = useLocation();
 
   const userEmail = location.state.user.email;
+  console.log(location);
   console.log(userEmail);
 
   //get user information
