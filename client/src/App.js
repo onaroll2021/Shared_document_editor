@@ -17,7 +17,6 @@ import {
 
 //create App component
 function App() {
-
   // const [user, setUser] = useState({});
   // const [data, setData] = useState({});
   // const [state, setState] = useState({
@@ -27,7 +26,7 @@ function App() {
 
   // useEffect(() => {
   // }, []);
-  
+
   // const fetchData = () => {
   //   Axios({
   //     method: "GET",
@@ -38,27 +37,37 @@ function App() {
   //     // setState({user:res.data.user, documents:res.data.userDocuments});
   //     console.log(res.data);
   //   });
-    
-  // }
 
+  // }
 
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to={"/login"} />}></Route>
         <Route
-          path="/"
-          element={<Navigate to={"/login"} />}
+          path="/users"
+          element={<Navigate to={"users/dashboard"} />}
         ></Route>
-        <Route path="/documents/:id" element={<TextEditor
-          // key={state.user._id}
-          // email={state.user.email}
-        />}></Route>
+        <Route
+          path="/documents/:id"
+          element={
+            <TextEditor
+            // key={state.user._id}
+            // email={state.user.email}
+            />
+          }
+        ></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="users/dashboard" element={<Dashboard
-          // documents={state.documents}
-          // fetchData={fetchData}
-        />} />
+        <Route
+          path="users/dashboard"
+          element={
+            <Dashboard
+            // documents={state.documents}
+            // fetchData={fetchData}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

@@ -1,11 +1,29 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import Axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 
 export default function Document(props) {
+  const [deleteDocument, setDeleteDocument] = useState(false);
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
-  return (
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    setDeleteDocument(true);
+    Axios({
+      method: "POST",
+      data: {
+        id: props.id,
+      },
+      url: "/api/users/delete",
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
+  //check deleteDocument state first
+  return !deleteDocument ? (
     <div
       onClick={() => navigate(documentLink, { state: { user: props.user } })}
       className="flex items-center p-4 rounded-lg hover:bg-gray-100 text-gray-700 text-sm cursor-pointer"
@@ -28,7 +46,10 @@ export default function Document(props) {
       <p className="flex-grow pl-5 w-10 pr-10 truncate">{props.title}</p>
       <p className="pr-5 text-sm">{props.creator}</p>
       <p className="pr-5 text-sm">{props.date}</p>
-      <Button color="red">Delete </Button>
+
+      <Button color="red" onClick={handleDelete}>
+        Delete
+      </Button>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -45,5 +66,7 @@ export default function Document(props) {
         />
       </svg>
     </div>
+  ) : (
+    <Link to="#" />
   );
 }

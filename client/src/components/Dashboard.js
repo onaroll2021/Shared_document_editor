@@ -4,6 +4,7 @@ import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@material-tailwind/react";
 
 export default function Dashboard() {
   // useEffect(() => {
@@ -12,6 +13,7 @@ export default function Dashboard() {
 
   const [documents, setDocuments] = useState([]);
   const [user, setUser] = useState({});
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     Axios({
@@ -21,7 +23,8 @@ export default function Dashboard() {
       .then((res) => {
         setDocuments(res.data.userDocuments);
         setUser(res.data.user);
-        console.log(res.data);
+        console.log("XXXX", res.data);
+        console.log("fffff", res.data.userDocuments);
       })
       .catch((err) => {
         console.log(err.message);
@@ -56,6 +59,15 @@ export default function Dashboard() {
     );
   });
 
+  //search function
+  const searchResult = (arr, query) => {
+    let result = arr.filter((el) =>
+      el.title.toLowerCase().includes(query.toLowerCase())
+    );
+    console.log("search", result);
+    setDocuments(result);
+  };
+  console.log("mysearch", search);
   // console.log("what is this", data.userDocuments);
 
   const generateRandomString = () => {
@@ -105,7 +117,38 @@ export default function Dashboard() {
       <section className="bg-white px-10 md:px-0">
         <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
           <div className="flex items-center justify-between pb-5">
-            <h2 className="font-medium flex-grow">My Documents</h2>
+            <form
+              className="mx-5 md:mx-10 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+              onSubmit={() => {
+                searchResult(documents, search);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                color="gray"
+                size="3xl"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Search Document"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-grow px-5 text-base bg-transparent outline-none"
+              />
+            </form>
+
+            <p className="mr-12 flex-grow">Title</p>
             <p className="mr-12">Creator</p>
             <p className="mr-12">Date Created</p>
             <p className="mr-12">Delete</p>
@@ -124,6 +167,7 @@ export default function Dashboard() {
               />
             </svg>
           </div>
+
           <div>
             <div className="flex flex-col-reverse">{documentsList}</div>
           </div>
