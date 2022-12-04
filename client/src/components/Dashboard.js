@@ -9,10 +9,9 @@ import { Context } from "../App";
 export default function Dashboard() {
 
   const info = useContext(Context);
-  const data = info.state.data;
-  const setData = info.setData;
-  const [documents, setDocuments] = useState([]);
-  const [user, setUser] = useState({});
+  const user = info.state.data.user;
+  const documents = info.state.data.documents;
+  const setData= info.setData;
 
   useEffect(() => {
     Axios({
@@ -20,27 +19,14 @@ export default function Dashboard() {
       url: "/api/users/dashboard",
     })
       .then((res) => {
-        setDocuments(res.data.userDocuments);
-        setUser(res.data.user);
-        console.log(res.data);
+        console.log("res", res.data);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
-
-  // const documents = data ? data.userDocuments.map(document => {
-  //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
-  //   return (
-  //     <Document
-  //       key={document._id}
-  //       id={document._id}
-  //       url={document.URL}
-  //       creator={document.creator}
-  //       date={dateCreated}
-  //     />
-  //   );
-  // }) : <></>;
+  // console.log("dashb-info", info.state)
 
   const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../assets/login2.png";
@@ -15,6 +15,8 @@ export default function Login() {
   const loginPassword = info.state.loginPassword;
   const setLoginUsername = info.setLoginUsername;
   const setLoginPassword = info.setLoginPassword;
+  const setLoginStatus = info.setLoginStatus;
+  const setRequiredDirectURL = info.setRequiredDirectURL;
   const navigate = useNavigate();
   
   const login = () => {
@@ -28,7 +30,14 @@ export default function Login() {
       // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/login",
     }).then((res) => {
-      navigate("/users/dashboard");
+      if (res.data === 'Successfully Authenticated') {
+        setLoginStatus(true);
+      if (info.state.requiredDirectURL === "") {
+        navigate("/users/dashboard");
+      } else {
+          navigate(`/documents/${info.state.requiredDirectURL}`);     
+      }
+    };
   });
   };
 

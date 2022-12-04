@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 // import Axios from "axios";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Documentheader from "./components/Header-document";
+import {Context} from "./App";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -31,28 +32,13 @@ const toolbarOptions = [
 
 export default function TextEditor() {
 
+  const info = useContext(Context);
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+  const navigate = useNavigate();
   const location = useLocation();
-
-  const userEmail = location.state.user.email;
-  console.log(location);
-  console.log(userEmail);
-
-  //get user information
-  // const [user, setUser] = useState({});
-  // useEffect(() => {
-  //   Axios({
-  //     method: "GET",
-  //     url: "/api/users/dashboard",
-  //   }).then((res) => {
-  //     setUser(res.data.user);
-  //     console.log(res.data.user);
-  //   }).catch((err) => {
-  //     console.log(err.message);
-  //   });
-  // }, []);
+  const setRequiredDirectURL = info.setRequiredDirectURL;
 
   //connect socket
   useEffect(() => {
@@ -98,10 +84,9 @@ export default function TextEditor() {
       quill.setContents(document);
       quill.enable();
     });
-    // const userEmail = location.state.user.email;
-    // console.log(userEmail);
-    socket.emit("get-document", documentId, userEmail);
-  }, [socket, quill, documentId, userEmail]);
+
+    socket.emit("get-document", documentId);
+  }, [socket, quill, documentId]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
@@ -114,6 +99,10 @@ export default function TextEditor() {
       clearInterval(interval);
     };
   }, [socket, quill]);
+
+  useEffect(() => {
+    setRequiredDirectURL("");
+  }, [])
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
@@ -132,10 +121,15 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return (
-    <>
-      <Documentheader url={documentId} />
-      <div className="container" ref={wrapperRef}></div>
-    </>
-  );
+  if (info.state.loginStatus) {
+    return (
+      <>
+        <Documentheader url={documentId} />
+        <div className="container" ref={wrapperRef}></div>
+      </>
+    );
+  } else {
+    setRequiredDirectURL(location.pathname.replace("/documents/", ""));
+    navigate('/login');
+  }
 }

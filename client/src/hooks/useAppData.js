@@ -4,18 +4,18 @@ export default function useAppData () {
   const [state, setState] = useState({
     loginUsername: "",
     loginPassword: "",
-    documents: [],
-    user: [], 
-    /*data:{
-      userDocuments: findDocument, 
-      user: req.user, user includes 
-    }*/
+    loginStatus: false,
+    data: {
+      documents: [], 
+      user: {},
+    },
     sent: false,
     text: "",
     title: false,
     newUsername: "",
     newEmail: "",
     newPassword: "",
+    requiredDirectURL: "",
   });
   const setLoginUsername = loginUsername => {
     return setState({ ...state, loginUsername })
@@ -23,11 +23,11 @@ export default function useAppData () {
   const setLoginPassword = loginPassword => {
     return setState({ ...state, loginPassword })
   }
-  const setUser = user => {
-    return setState({ ...state, user })
+  const setLoginStatus = loginStatus => {
+    return setState({ ...state, loginStatus })
   }
-  const setDocuments = documents => {
-    return setState({ ...state, documents })
+  const setData = data => {
+    return setState({ ...state, data })
   }
   const setSent = sent => {
     return setState({ ...state, sent })
@@ -39,25 +39,29 @@ export default function useAppData () {
     return setState({ ...state, title })
   }
   const setNewUsername = newUsername => {
-    return setNewUsername({ ...state, newUsername })
+    return setState({ ...state, newUsername })
   }
   const setNewEmail = newEmail => {
-    return setNewEmail({ ...state, newEmail })
+    return setState({ ...state, newEmail })
   }
   const setNewPassword = newPassword => {
-    return setNewPassword({ ...state, newPassword })
+    return setState({ ...state, newPassword })
+  }
+  const setRequiredDirectURL = requiredDirectURL => {
+    return setState({ ...state, requiredDirectURL})
   }
   return {
     state,
     setLoginUsername,
     setLoginPassword,
-    setUser,
-    setDocuments,
+    setLoginStatus,
+    setData,
     setSent,
     setText,
     setTitle,
     setNewUsername,
     setNewEmail,
     setNewPassword,
+    setRequiredDirectURL
   }
 } 

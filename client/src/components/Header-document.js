@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Documentheader(props) {
 
-
   const info = useContext(Context);
   const sent = info.state.sent;
   const setSent = info.setSent;
@@ -38,7 +37,6 @@ export default function Documentheader(props) {
 
   const handleSend = async () => {
     setSent(true);
-    // setText(props.url);
     const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
       await axios.post("/api/send_mail", {

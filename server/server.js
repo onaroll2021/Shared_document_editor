@@ -66,9 +66,8 @@ mongoose
 
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on("get-document", async (documentId, userEmail) => {
-    const document = await findOrCreateDocument(documentId, userEmail);
-    console.log("AA", userEmail);
+  socket.on("get-document", async (documentId) => {
+    const document = await findOrCreateDocument(documentId);
     socket.join(documentId);
     socket.emit("load-document", document.data);
 
@@ -149,13 +148,12 @@ app.post("/api/signup", (req, res) => {
 });
 
 app.get("/api/users/dashboard", async (req, res) => {
+  // console.log("dash-get-req.user", req.user);
   const findDocument = await findDocumentByEmail(req.user.email);
-  //console.log(findDocument);
-  //Search tittle contain "AA"
   const search = await findByTitle("AA");
-  //console.log("search", search);
+  // console.log("findDocument-server", findDocument)
   const dataForDashboard = {
-    userDocuments: findDocument,
+    documents: findDocument,
     user: req.user,
     searchedDocuments: search,
   };
