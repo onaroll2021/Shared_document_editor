@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { IconButton, Button, Input, Checkbox, Switch } from "@material-tailwind/react";
+import React, { useState } from "react";
+import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Documentheader(props) {
@@ -11,9 +11,13 @@ export default function Documentheader(props) {
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
 
-  const handleChange = () => {
+  const clickCheckbox = () => {
     setChecked(!checked);
   };
+
+  const canShare = () => {
+    return props.userId !== props.creatorId;
+  }
 
   const handleSend = async () => {
     setSent(true);
@@ -96,26 +100,35 @@ export default function Documentheader(props) {
         
           <>
             <form
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
               onSubmit={event => event.preventDefault()} 
               autoComplete="off"
             >
-              <Input
-                label="Share with"
-                name="share"
-                type="text"
-                value={shareWithEmail}
-                onChange={(event) => setShareWithEmail(event.target.value)}
-              />
-              <div className='flex items-center'>
-                <Checkbox
-                  checked={checked}
-                  value={checked}
-                  onChange={handleChange}
+              <fieldset
+                className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
+                disabled={canShare()}
+              >
+                <Input
+                  label="Share with"
+                  name="share"
+                  type="text"
+                  value={shareWithEmail}
+                  onChange={(event) => setShareWithEmail(event.target.value)}
                 />
-                  View Only
-              </div>
-              <Button onClick={handleSend}>Share</Button>
+                <div className='flex items-center'>
+                  <Checkbox
+                    checked={checked}
+                    value={checked}
+                    onChange={clickCheckbox}
+                    label={"View Only"}
+                  />
+                </div>
+                <Button
+                  className="mx-3"
+                  onClick={handleSend}
+                >
+                  Share
+                </Button>
+              </fieldset>
             </form>
           </>
 
