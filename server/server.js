@@ -227,12 +227,12 @@ const fs = require("fs");
 const path = require("path");
 const sendMail = require("./gmail");
 
-const main = async (text, email) => {
+const main = async (text, email, senderName, receiverName) => {
 
   const options = {
     to: email,
-    subject: 'Hello Buddy 🚀',
-    html: `<p>🙋🏻‍♀️  &mdash; This document is shared to you: /n ${text}</p>`,
+    subject: `Hello ${receiverName} 🚀`,
+    html: `<p>🙋🏻‍♀️  &mdash; ${senderName} shared a document with you: \n ${text}</p>`,
     textEncoding: 'base64',
     headers: [
       { key: "X-Application-Developer", value: "Luke Li" },
@@ -262,11 +262,13 @@ const addEditorByURL = async (email, URL, viewOnly) => {
 };
 
 app.post("/api/send_mail", async (req, res) => {
-  let { text, sendToEmail, url, viewOnly } = req.body;
+  let { text, sendToEmail, url, viewOnly, senderName } = req.body;
+  const receiver = await User.findOne({email: sendToEmail});
+  const receiverName = receiver.username;
   console.log("text: ", text);
   console.log("sendToEmail: ", sendToEmail);
   addEditorByURL(sendToEmail, url, viewOnly)
-  .then(() => main(text, sendToEmail))
+  .then(() => main(text, sendToEmail, senderName, receiverName))
   .then((messageId) => console.log('Message sent successfully:', messageId))
   .catch((err) => console.error(err));
 });

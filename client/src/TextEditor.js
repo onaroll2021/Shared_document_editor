@@ -37,6 +37,7 @@ export default function TextEditor() {
 
   const userEmail = location.state.user.email;
   const userId = location.state.user._id;
+  const userName = location.state.user.username;
   const creatorId = location.state.creatorId;
   const editorArr = location.state.editorArr;
 
@@ -147,6 +148,7 @@ export default function TextEditor() {
         url={documentId}
         userEmail={userEmail}
         userId={userId}
+        userName={userName}
         creatorId={creatorId}
         editorArr={editorArr}
       />

@@ -4,7 +4,7 @@ import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Documentheader(props) {
-  const [sent, setSent] = useState(false);
+  // const [sent, setSent] = useState(false);
   const [shareWithEmail, setShareWithEmail] = useState("");
   const [title, setTitle] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
@@ -16,7 +16,7 @@ export default function Documentheader(props) {
   };
 
   const canShare = () => {
-    return props.userId !== props.creatorId;
+    return props.creatorId? (props.userId === props.creatorId): true;
   }
 
   const canChangeTitle = () => {
@@ -26,12 +26,12 @@ export default function Documentheader(props) {
         editor.push(element._id)
       });
     }
-    const result = editor.includes(props.userId);
+    const result = props.creatorId? editor.includes(props.userId): true;
     return result;
   }
 
   const handleSend = async () => {
-    setSent(true);
+    // setSent(true);
     setShareWithEmail("");
     setChecked(false);
     const sendFromEmail = props.userEmail;
@@ -43,7 +43,8 @@ export default function Documentheader(props) {
         sendToEmail: sendToEmail,
         text: documentUrl,
         url: url,
-        viewOnly: checked
+        viewOnly: checked,
+        senderName: props.userName
     }).catch( (error) => {
       console.log(error);
     })
@@ -121,7 +122,7 @@ export default function Documentheader(props) {
             >
               <fieldset
                 className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
-                disabled={canShare()}
+                disabled={!canShare()}
               >
                 <Input
                   label="Share with"
