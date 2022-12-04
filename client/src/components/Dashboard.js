@@ -41,11 +41,9 @@ export default function Dashboard() {
   //   );
   // }) : <></>;
 
-  const sortedDoc = documents.sort(
-    (objA, objB) => Number(objB.dateTime) - Number(objA.dateTime)
-  );
 
-  const documentsList = sortedDoc.map((document) => {
+
+  const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).startOf('second').fromNow();
     return (
       <Document
@@ -134,7 +132,7 @@ export default function Dashboard() {
             </svg>
           </div>
           <div>
-            <div className="flex flex-col-reverse">{documentsList}</div>
+            <div>{documentsList}</div>
           </div>
         </div>
       </section>
