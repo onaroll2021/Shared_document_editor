@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
     const document = await findOrCreateDocument(documentId, userEmail);
     console.log("AA", userEmail);
     socket.join(documentId);
-    socket.emit("load-document", document.data);
+    socket.emit("load-document", document);
 
     socket.on("send-changes", (delta) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta);
