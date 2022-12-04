@@ -89,7 +89,11 @@ async function findOrCreateDocument(URL, email) {
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
-  if (document) return document;
+  if (document) {
+    if (document.view_access.includes(findUserarry[0]._id) || document.view_edit_access.includes(findUserarry[0]._id)) {
+      return document;
+    }
+  }
   return await Document.create({
     URL: URL,
     data: defaultValue,
