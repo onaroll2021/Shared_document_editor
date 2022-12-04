@@ -25,6 +25,7 @@ export default function Login() {
         password: loginPassword,
       },
       withCredentials: true,
+      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/login",
     }).then((res) => {
       navigate("/users/dashboard");
@@ -64,7 +65,7 @@ export default function Login() {
           </div>
           <button onClick={login} className='w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white'>Sign In</button>
           <div className='flex items-center'><Checkbox />Remember me</div>
-          <p className='text-center mt-8'>Not a member?<a href="/signup" className="text-blue underline">Sign up now</a></p>
+          <p className='text-center mt-8'>Not a member? <a href="/signup" className="text-blue underline">Sign up now</a></p>
         </form>
       </div>
 		</div>

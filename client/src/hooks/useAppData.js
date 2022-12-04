@@ -4,7 +4,12 @@ export default function useAppData () {
   const [state, setState] = useState({
     loginUsername: "",
     loginPassword: "",
-    data: null,
+    documents: [],
+    user: [], 
+    /*data:{
+      userDocuments: findDocument, 
+      user: req.user, user includes 
+    }*/
     sent: false,
     text: "",
     title: false,
@@ -18,8 +23,11 @@ export default function useAppData () {
   const setLoginPassword = loginPassword => {
     return setState({ ...state, loginPassword })
   }
-  const setData = data => {
-    return setState({ ...state, data })
+  const setUser = user => {
+    return setState({ ...state, user })
+  }
+  const setDocuments = documents => {
+    return setState({ ...state, documents })
   }
   const setSent = sent => {
     return setState({ ...state, sent })
@@ -43,7 +51,8 @@ export default function useAppData () {
     state,
     setLoginUsername,
     setLoginPassword,
-    setData,
+    setUser,
+    setDocuments,
     setSent,
     setText,
     setTitle,

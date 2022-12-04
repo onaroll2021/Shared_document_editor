@@ -1,3 +1,4 @@
+require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const http = require("http");
 const express = require("express");
@@ -10,12 +11,12 @@ const {
   findUserByID,
   findDocumentByEmail,
   findUserByEmail,
+  findByTitle,
 } = require("./queries");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-require("dotenv").config();
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
@@ -24,17 +25,18 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 //const cors = require("cors");
-
-//CONFIG FOR MAILING
-require("dotenv").config()
-const bodyParser = require("body-parser")
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+// const bodyParser = require("body-parser")
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
 
 // Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
+//     methods: ["GET", "POST"],
+//   })
+// );
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   session({
@@ -64,8 +66,9 @@ mongoose
 
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on("get-document", async (documentId) => {
-    const document = await findOrCreateDocument(documentId);
+  socket.on("get-document", async (documentId, userEmail) => {
+    const document = await findOrCreateDocument(documentId, userEmail);
+    console.log("AA", userEmail);
     socket.join(documentId);
     socket.emit("load-document", document.data);
 
@@ -80,8 +83,9 @@ io.on("connection", (socket) => {
 
 const defaultValue = "";
 
-async function findOrCreateDocument(URL) {
-  const findUserarry = await findUserByEmail("abc@mail.com");
+async function findOrCreateDocument(URL, email) {
+  const findUserarry = await findUserByEmail(email);
+  console.log("email", email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -116,12 +120,6 @@ app.post("/api/login", (req, res) => {
   })(req, res);
 });
 
-// app.post('/login',
-//   passport.authenticate('local', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.redirect("/users/dashboard");
-//   });
-
 app.post("/api/signup", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) throw err;
@@ -152,12 +150,69 @@ app.post("/api/signup", (req, res) => {
 
 app.get("/api/users/dashboard", async (req, res) => {
   const findDocument = await findDocumentByEmail(req.user.email);
-  const dataForDashboard = { userDocuments: findDocument, user: req.user };
+  //console.log(findDocument);
+  //Search tittle contain "AA"
+  const search = await findByTitle("AA");
+  //console.log("search", search);
+  const dataForDashboard = {
+    userDocuments: findDocument,
+    user: req.user,
+    searchedDocuments: search,
+  };
   //console.log("aaaaa", dataForDashboard); // The req.user stores the entire user that has been authenticated inside of it.
   res.send(dataForDashboard);
 });
 
-//nodemailer part
+//change title
+const changeTitleByURL = async (title, URL) => {
+  let changeTitle = await Document.updateOne({ URL: URL }, { title: title });
+  return changeTitle;
+};
+
+app.post("/api/users/changeTitle", async (req, res) => {
+  console.log("title", req.body.title);
+  await changeTitleByURL(req.body.title, req.body.URL);
+});
+
+// nodemailer
+// app.post("/api/send_mail", async (req, res) => {
+//   let { text } = req.body;
+//   const transport = nodemailer.createTransport({
+//     host: process.env.MAIL_HOST,
+//     port: process.env.MAIL_PORT,
+//     secure: false, // TLS requires secureConnection to be false
+//     auth: {
+//       user: process.env.MAIL_USER,
+//       pass: process.env.MAIL_PASS
+//     },
+//     tls: {
+//       ciphers:'SSLv3'
+//     }
+//   });
+//   console.log("text:", text);
+//   console.log("host:", process.env.MAIL_HOST);
+
+//   await transport.sendMail({
+//     from: process.env.MAIL_FROM,
+//     to: "tank@test.com",
+//     subject: "test email",
+//     html: `<div className="email" style="
+//         border: 1px solid black;
+//         padding: 20px;
+//         font-family: sans-serif;
+//         line-height: 2;
+//         font-size: 20px; 
+//         ">
+//         <h2>Here is your email!</h2>
+//         <p>${text}</p>
+    
+//         <p>All the best, Darwin</p>
+//       </div>
+//     `
+//   });
+// });
+
+// gmail API
 const fs = require('fs');
 const path = require('path');
 const sendMail = require('./gmail');
@@ -187,4 +242,3 @@ app.post("/api/send_mail", async (req, res) => {
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
-

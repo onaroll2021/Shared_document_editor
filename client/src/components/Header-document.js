@@ -3,6 +3,7 @@ import { useEffect, useContext, useState } from "react";
 import { IconButton, Button, Input } from "@material-tailwind/react";
 import { Context } from "../App";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Documentheader(props) {
 
@@ -13,55 +14,63 @@ export default function Documentheader(props) {
   const text = info.state.text;
   const setText = info.setText;
   let location = useLocation();
-  console.log("location", location);
   const neededURL = location.pathname.replace("/documents/", "");
-  console.log("needeURL", neededURL)
   
   // const url = info.state.data.user
 
-  const documents = info.state.data.userDocuments
+  // const documents = info.state.data.userDocuments
   // userDocument array
-  const findDoc = () =>  {
-    const shrinkedURL = document.URL.replace("http://localhost:3000/documents/", "");
-    for (const document of documents ) {
-      if ( shrinkedURL == props.url ) {
-        return document;
-      } else {
-        return null;
-      }
-    }
-  }
-  const requireDoc = findDoc();
-  console.log("requireDoc", requireDoc)
+  // const findDoc = () =>  {
+  //   const shrinkedURL = document.URL.replace("http://localhost:3000/documents/", "");
+  //   for (const document of documents ) {
+  //     if ( shrinkedURL === props.url ) {
+  //       return document;
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
+  // const requireDoc = findDoc();
+  // console.log("requireDoc", requireDoc)
   const [title, setTitle] = useState();
+  const [changeTittle, setChangeTittle] = useState(false);
+  const navigate = useNavigate();
 
-
-
-  const handleSend = async() => {
+  const handleSend = async () => {
     setSent(true);
+    // setText(props.url);
+    const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
       await axios.post("/api/send_mail", {
-        text,
+        text: documentUrl,
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  // useEffect(() => {
-  //   axios({
-  //     method: "GET",
-  //     // withCredentials: true,
-  //     url: `/api/documents/${props.url}`,
-  //   }).then((res) => {
-  //     setData(res.data);
-  //   });
-  // }, []);
+  const handleEnterPress = () => {
+    setChangeTittle(true);
+    axios({
+      method: "POST",
+      // withCredentials: true,
+      data: {
+        title: title,
+        URL: props.url,
+      },
+      url: "/api/users/changeTitle",
+    }).then((res) => {
+      console.log(res);
+    });
+  };
 
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
       <div className="flex space-x-5">
-        <IconButton className="h-20 w-20 mt-1">
+        <IconButton
+          className="h-20 w-20 mt-1"
+          onClick={() => navigate("/users/dashboard")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -78,32 +87,29 @@ export default function Documentheader(props) {
           </svg>
         </IconButton>
 
-        {!title ? (
-          <div>
+        {!changeTittle ? (
+          <>
             {" "}
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
-            <div className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md">
-              <Input 
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}/>
-            </div>
-          </div>
+            <form
+              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+              onSubmit={handleEnterPress}
+            >
+              <Input
+                label="Tittle"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </form>
+          </>
         ) : (
-          <h1>XXXX</h1>
+          <h1 className="ml-2 mt-3 text-gray-700 text-2xl">{title}</h1>
         )}
       </div>
 
       <div className="flex flex-end space-x-2">
         {!sent ? (
-          <form onSubmit={handleSend}>
-            <Input
-              type="text"
-              value={title}
-              onChange={(e) => setText(e.target.value)}
-            />
-            <Button type="submit">Share</Button>
-          </form>
+          <Button onClick={handleSend}>Share</Button>
         ) : (
           <h1>Email Sent</h1>
         )}

@@ -9,6 +9,7 @@ const Document = new Schema({
   title: {
     type: String,
     trim: true,
+    default: "Mydocument",
   },
 
   data: {
@@ -22,10 +23,12 @@ const Document = new Schema({
     ref: "User",
   },
 
-  view_access: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
+  view_access: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 
   veiw_edit_access: [
     {

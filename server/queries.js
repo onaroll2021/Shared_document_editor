@@ -22,9 +22,17 @@ const findUserByEmail = async (email) => {
   return userarry;
 };
 
+const findByTitle = async (text) => {
+  let seachtext = await Document.find({
+    title: { $regex: text, $options: "i" },
+  });
+  return seachtext;
+};
+
 module.exports = {
   findDocumentByUserID,
   findUserByID,
   findDocumentByEmail,
   findUserByEmail,
+  findByTitle,
 };

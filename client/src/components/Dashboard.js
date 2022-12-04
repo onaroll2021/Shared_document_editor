@@ -11,33 +11,54 @@ export default function Dashboard() {
   const info = useContext(Context);
   const data = info.state.data;
   const setData = info.setData;
+  const [documents, setDocuments] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     Axios({
       method: "GET",
-      // withCredentials: true,
       url: "/api/users/dashboard",
-    }).then((res) => {
-      setData(res.data);
-    });
+    })
+      .then((res) => {
+        setDocuments(res.data.userDocuments);
+        setUser(res.data.user);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, []);
 
-  const documents = data ? (
-    data.userDocuments.map((document) => {
-      const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
-      return (
-        <Document
-          key={document._id}
-          id={document._id}
-          url={document.URL}
-          creator={document.creator}
-          date={dateCreated}
-        />
-      );
-    })
-  ) : (
-    <></>
-  );
+  // const documents = data ? data.userDocuments.map(document => {
+  //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
+  //   return (
+  //     <Document
+  //       key={document._id}
+  //       id={document._id}
+  //       url={document.URL}
+  //       creator={document.creator}
+  //       date={dateCreated}
+  //     />
+  //   );
+  // }) : <></>;
+
+  const documentsList = documents.map((document) => {
+    const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
+    return (
+      <Document
+        key={document._id}
+        id={document._id}
+        title={document.title}
+        url={document.URL}
+        creator={document.creator.username}
+        date={dateCreated}
+        user={user}
+      />
+    );
+  });
+
+  // console.log("what is this", data.userDocuments);
+
   const generateRandomString = () => {
     return Math.random().toString(36).substring(2, 14);
   };
@@ -72,7 +93,7 @@ export default function Dashboard() {
           <div>
             <div
               className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700"
-              onClick={() => navigate(newLink)}
+              onClick={() => navigate(newLink, { state: { user: user } })}
             >
               <img layout="fill" src="https://links.papareact.com/pju" alt="" />
             </div>
@@ -86,7 +107,9 @@ export default function Dashboard() {
         <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
           <div className="flex items-center justify-between pb-5">
             <h2 className="font-medium flex-grow">My Documents</h2>
+            <p className="mr-12">Creator</p>
             <p className="mr-12">Date Created</p>
+            <p className="mr-12">Delete</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -103,13 +126,7 @@ export default function Dashboard() {
             </svg>
           </div>
           <div>
-            {data ? (
-              <div className="flex flex-col-reverse">{documents}</div>
-            ) : (
-              <div>
-                <h1>hahahahhaha</h1>
-              </div>
-            )}
+            <div className="flex flex-col-reverse">{documentsList}</div>
           </div>
         </div>
       </section>
