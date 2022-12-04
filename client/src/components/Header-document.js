@@ -19,6 +19,17 @@ export default function Documentheader(props) {
     return props.userId !== props.creatorId;
   }
 
+  const canChangeTitle = () => {
+    let editor = [];
+    if (props.editorArr) {
+      props.editorArr.forEach(element => {
+        editor.push(element._id)
+      });
+    }
+    const result = editor.includes(props.userId);
+    return result;
+  }
+
   const handleSend = async () => {
     setSent(true);
     setShareWithEmail("");
@@ -81,15 +92,20 @@ export default function Documentheader(props) {
             {" "}
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
             <form
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
               onSubmit={handleEnterPress}
             >
-              <Input
-                label="Tittle"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <fieldset
+                className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+                disabled={!canChangeTitle()}
+              >
+                <Input
+                  label="Tittle"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </fieldset>
             </form>
+            
           </>
         ) : (
           <h1 className="ml-2 mt-3 text-gray-700 text-2xl">{title}</h1>

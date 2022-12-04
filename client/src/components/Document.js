@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 export default function Document(props) {
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
+
   let editor = "";
   const editorArr = props.editAccess.filter(editor => editor.username !== props.creator);
   if (editorArr) {
@@ -21,7 +22,7 @@ export default function Document(props) {
 
   return (
     <div
-      onClick={() => navigate(documentLink, { state: { user: props.user, creatorId: props.creatorId } })}
+      onClick={() => navigate(documentLink, { state: { user: props.user, creatorId: props.creatorId, editorArr: props.editAccess } })}
       className="flex items-center p-4 rounded-lg hover:bg-gray-100 text-gray-700 text-sm cursor-pointer"
     >
       <svg

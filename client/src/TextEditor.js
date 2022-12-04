@@ -38,6 +38,7 @@ export default function TextEditor() {
   const userEmail = location.state.user.email;
   const userId = location.state.user._id;
   const creatorId = location.state.creatorId;
+  const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
@@ -147,6 +148,7 @@ export default function TextEditor() {
         userEmail={userEmail}
         userId={userId}
         creatorId={creatorId}
+        editorArr={editorArr}
       />
       <div className="container" ref={wrapperRef}></div>
     </>
