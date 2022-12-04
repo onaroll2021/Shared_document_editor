@@ -94,7 +94,7 @@ async function findOrCreateDocument(URL, email) {
     URL: URL,
     data: defaultValue,
     creator: findUserarry[0]._id,
-    veiw_edit_access: [findUserarry[0]._id]
+    view_edit_access: [findUserarry[0]._id]
   });
 }
 
@@ -245,20 +245,27 @@ const main = async (text, email) => {
 };
 
 //add editor
-const addEditorByURL = async (email, URL) => {
+const addEditorByURL = async (email, URL, viewOnly) => {
+  
   const editor = await findUserByEmail(email);
   const document = await Document.findOne({ URL: URL });
   console.log("document!!!: ", document);
-  document.veiw_edit_access.push(editor[0]._id);
-  const addEditor = await document.save();
-  return addEditor;
+  if (viewOnly) {
+    document.view_access.push(editor[0]._id);
+    const addEditor = await document.save();
+    return addEditor;
+  } else {
+    document.view_edit_access.push(editor[0]._id);
+    const addEditor = await document.save();
+    return addEditor;
+  }
 };
 
 app.post("/api/send_mail", async (req, res) => {
-  let { text, sendToEmail, url } = req.body;
+  let { text, sendToEmail, url, viewOnly } = req.body;
   console.log("text: ", text);
   console.log("sendToEmail: ", sendToEmail);
-  addEditorByURL(sendToEmail, url)
+  addEditorByURL(sendToEmail, url, viewOnly)
   .then(() => main(text, sendToEmail))
   .then((messageId) => console.log('Message sent successfully:', messageId))
   .catch((err) => console.error(err));

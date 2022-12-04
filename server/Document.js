@@ -30,7 +30,7 @@ const Document = new Schema({
     },
   ],
 
-  veiw_edit_access: [
+  view_edit_access: [
     {
       type: Schema.Types.ObjectId,
       ref: "User",

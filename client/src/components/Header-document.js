@@ -9,6 +9,11 @@ export default function Documentheader(props) {
   const [title, setTitle] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = () => {
+    setChecked(!checked);
+  };
 
   const handleSend = async () => {
     setSent(true);
@@ -21,7 +26,8 @@ export default function Documentheader(props) {
         sendFromEmail: sendFromEmail,
         sendToEmail: sendToEmail,
         text: documentUrl,
-        url: url
+        url: url,
+        viewOnly: checked
       });
     } catch (error) {
       console.error(error);
@@ -101,7 +107,13 @@ export default function Documentheader(props) {
                 value={shareWithEmail}
                 onChange={(event) => setShareWithEmail(event.target.value)}
               />
-              <div className='flex items-center'><Checkbox />View Only</div>
+              <div className='flex items-center'>
+                <Checkbox
+                  value={checked}
+                  onChange={handleChange}
+                />
+                  View Only
+              </div>
               <Button onClick={handleSend}>Share</Button>
             </form>
           </>

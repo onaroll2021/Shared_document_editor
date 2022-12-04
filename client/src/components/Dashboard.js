@@ -50,7 +50,7 @@ export default function Dashboard() {
         title={document.title}
         url={document.URL}
         creator={document.creator.username}
-        editAccess={document.veiw_edit_access}
+        editAccess={document.view_edit_access}
         date={dateCreated}
         user={user}
       />
