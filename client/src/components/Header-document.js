@@ -1,22 +1,27 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { IconButton, Button, Input } from "@material-tailwind/react";
+import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Documentheader(props) {
   const [sent, setSent] = useState(false);
-  const [text, setText] = useState("");
+  const [shareWithEmail, setShareWithEmail] = useState("");
   const [title, setTitle] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
   const navigate = useNavigate();
 
   const handleSend = async () => {
     setSent(true);
-    // setText(props.url);
+    const sendFromEmail = props.userEmail;
+    const sendToEmail = shareWithEmail;
+    const url = props.url;
     const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
       await axios.post("/api/send_mail", {
+        sendFromEmail: sendFromEmail,
+        sendToEmail: sendToEmail,
         text: documentUrl,
+        url: url
       });
     } catch (error) {
       console.error(error);
@@ -83,7 +88,23 @@ export default function Documentheader(props) {
 
       <div className="flex flex-end space-x-2">
         {!sent ? (
-          <Button onClick={handleSend}>Share</Button>
+          <>
+            <form
+              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
+              onSubmit={event => event.preventDefault()} 
+              autoComplete="off"
+            >
+              <Input
+                label="Share with"
+                name="share"
+                type="text"
+                value={shareWithEmail}
+                onChange={(event) => setShareWithEmail(event.target.value)}
+              />
+              <div className='flex items-center'><Checkbox />View Only</div>
+              <Button onClick={handleSend}>Share</Button>
+            </form>
+          </>
         ) : (
           <h1>Email Sent</h1>
         )}

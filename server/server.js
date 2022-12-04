@@ -85,7 +85,7 @@ const defaultValue = "";
 
 async function findOrCreateDocument(URL, email) {
   const findUserarry = await findUserByEmail(email);
-  console.log("email", email);
+  console.log("!!!email", email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -94,6 +94,7 @@ async function findOrCreateDocument(URL, email) {
     URL: URL,
     data: defaultValue,
     creator: findUserarry[0]._id,
+    veiw_edit_access: [findUserarry[0]._id]
   });
 }
 
@@ -114,8 +115,8 @@ app.post("/api/login", (req, res) => {
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        res.send("Successfully Authenticated");
-        // console.log(req.user);
+        res.send(req.user);
+        console.log("lalala: ", req.user);
         // return res.redirect(`/users/dashboard`);
       });
     }
@@ -151,6 +152,7 @@ app.post("/api/signup", (req, res) => {
 });
 
 app.get("/api/users/dashboard", async (req, res) => {
+  // console.log("333req.user:", req.user);
   const findDocument = await findDocumentByEmail(req.user.email);
   //console.log(findDocument);
   //Search tittle contain "AA"
@@ -225,12 +227,13 @@ const fs = require("fs");
 const path = require("path");
 const sendMail = require("./gmail");
 
-const main = async (text) => {
+const main = async (text, email) => {
+
   const options = {
-    to: "lining04111223@gmail.com",
-    subject: "Hello Luke 🚀",
-    html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
-    textEncoding: "base64",
+    to: email,
+    subject: 'Hello Buddy 🚀',
+    html: `<p>🙋🏻‍♀️  &mdash; This document is shared to you: /n ${text}</p>`,
+    textEncoding: 'base64',
     headers: [
       { key: "X-Application-Developer", value: "Luke Li" },
       { key: "X-Application-Version", value: "v1.0.0.2" },
@@ -241,11 +244,24 @@ const main = async (text) => {
   return messageId;
 };
 
+//add editor
+const addEditorByURL = async (email, URL) => {
+  const editor = await findUserByEmail(email);
+  const document = await Document.findOne({ URL: URL });
+  console.log("document!!!: ", document);
+  document.veiw_edit_access.push(editor[0]._id);
+  const addEditor = await document.save();
+  return addEditor;
+};
+
 app.post("/api/send_mail", async (req, res) => {
-  let { text } = req.body;
-  main(text)
-    .then((messageId) => console.log("Message sent successfully:", messageId))
-    .catch((err) => console.error(err));
+  let { text, sendToEmail, url } = req.body;
+  console.log("text: ", text);
+  console.log("sendToEmail: ", sendToEmail);
+  addEditorByURL(sendToEmail, url)
+  .then(() => main(text, sendToEmail))
+  .then((messageId) => console.log('Message sent successfully:', messageId))
+  .catch((err) => console.error(err));
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
