@@ -14,12 +14,14 @@ export default function Documentheader(props) {
     setSent(true);
     const sendFromEmail = props.userEmail;
     const sendToEmail = shareWithEmail;
+    const url = props.url;
     const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
       await axios.post("/api/send_mail", {
         sendFromEmail: sendFromEmail,
         sendToEmail: sendToEmail,
         text: documentUrl,
+        url: url
       });
     } catch (error) {
       console.error(error);

@@ -176,43 +176,6 @@ app.post("/api/users/changeTitle", async (req, res) => {
   await changeTitleByURL(req.body.title, req.body.URL);
 });
 
-// nodemailer
-// app.post("/api/send_mail", async (req, res) => {
-//   let { text } = req.body;
-//   const transport = nodemailer.createTransport({
-//     host: process.env.MAIL_HOST,
-//     port: process.env.MAIL_PORT,
-//     secure: false, // TLS requires secureConnection to be false
-//     auth: {
-//       user: process.env.MAIL_USER,
-//       pass: process.env.MAIL_PASS
-//     },
-//     tls: {
-//       ciphers:'SSLv3'
-//     }
-//   });
-//   console.log("text:", text);
-//   console.log("host:", process.env.MAIL_HOST);
-
-//   await transport.sendMail({
-//     from: process.env.MAIL_FROM,
-//     to: "tank@test.com",
-//     subject: "test email",
-//     html: `<div className="email" style="
-//         border: 1px solid black;
-//         padding: 20px;
-//         font-family: sans-serif;
-//         line-height: 2;
-//         font-size: 20px; 
-//         ">
-//         <h2>Here is your email!</h2>
-//         <p>${text}</p>
-    
-//         <p>All the best, Darwin</p>
-//       </div>
-//     `
-//   });
-// });
 
 // gmail API
 const fs = require('fs');
@@ -236,11 +199,22 @@ const main = async (text, email) => {
   return messageId;
 };
 
+//add editor
+const addEditorByURL = async (email, URL) => {
+  const editor = await findUserByEmail(email);
+  const document = await Document.findOne({ URL: URL });
+  console.log("document!!!: ", document);
+  document.veiw_edit_access.push(editor[0]._id);
+  const addEditor = await document.save();
+  return addEditor;
+};
+
 app.post("/api/send_mail", async (req, res) => {
-  let { text, sendToEmail } = req.body;
+  let { text, sendToEmail, url } = req.body;
   console.log("text: ", text);
   console.log("sendToEmail: ", sendToEmail);
-  main(text, sendToEmail)
+  addEditorByURL(sendToEmail, url)
+  .then(() => main(text, sendToEmail))
   .then((messageId) => console.log('Message sent successfully:', messageId))
   .catch((err) => console.error(err));
 });
