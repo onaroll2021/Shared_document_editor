@@ -1,11 +1,16 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../App";
 
 export default function Application() {
-  const [newUsername, setNewUsername] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const info = useContext(Context);
+  const newUsername = info.state.newUsername;
+  const newEmail = info.state.newEmail;
+  const newPassword = info.state.newPassword;
+  const setNewUsername = info.setNewUsername;
+  const setNewEmail = info.setNewEmail;
+  const setNewPassword = info.setNewPassword;
 
   const navigate = useNavigate();
 

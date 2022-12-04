@@ -111,8 +111,6 @@ app.post("/api/login", (req, res) => {
       req.logIn(user, (err) => {
         if (err) throw err;
         res.send("Successfully Authenticated");
-        // console.log(req.user);
-        // return res.redirect(`/users/dashboard`);
       });
     }
   })(req, res);

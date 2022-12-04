@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Axios from "axios";
 import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../App";
 
 export default function Dashboard() {
-  const [data, setData] = useState(null);
+
+  const info = useContext(Context);
+  const data = info.state.data;
+  const setData = info.setData;
 
   useEffect(() => {
     Axios({
@@ -34,13 +38,10 @@ export default function Dashboard() {
   ) : (
     <></>
   );
-
-  // console.log("what is this", data.userDocuments);
-
   const generateRandomString = () => {
     return Math.random().toString(36).substring(2, 14);
   };
-
+    
   const newLink = `/documents/${generateRandomString()}`;
   const navigate = useNavigate();
 

@@ -1,20 +1,22 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../assets/login2.png";
 import { FcGoogle } from 'react-icons/fc'
 import {GrFacebook} from 'react-icons/gr'
 import { Checkbox } from "@material-tailwind/react";
+import { Context } from "../App"
 
 
 export default function Login() {
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
 
+  const info = useContext(Context);
+  const loginUsername = info.state.loginUsername;
+  const loginPassword = info.state.loginPassword;
+  const setLoginUsername = info.setLoginUsername;
+  const setLoginPassword = info.setLoginPassword;
   const navigate = useNavigate();
-
-
-
+  
   const login = () => {
     Axios({
       method: "POST",

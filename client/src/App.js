@@ -8,14 +8,17 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useState, createContext } from "react";
+import useAppData from "./hooks/useAppData";
 
-// const generateRandomString = () => {
-//   return Math.random().toString(36).substring(2, 14);
-// };
+export const Context = createContext(); 
 
 //create App component
 function App() {
+  const info = useAppData();
+
   return (
+    <Context.Provider value={info}>
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to={"/login"} />}></Route>
@@ -25,6 +28,7 @@ function App() {
         <Route path="users/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
+    </Context.Provider>
   );
 }
 
