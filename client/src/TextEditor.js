@@ -132,7 +132,10 @@ export default function TextEditor() {
 
   return (
     <>
-      <Documentheader url={documentId} />
+      <Documentheader
+        url={documentId}
+        userEmail={userEmail}
+      />
       <div className="container" ref={wrapperRef}></div>
     </>
   );
