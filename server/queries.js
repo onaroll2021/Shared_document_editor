@@ -2,7 +2,15 @@ const Document = require("./Document");
 const User = require("./User");
 
 const findDocumentByUserID = async (id) => {
-  let documents = await Document.find({ creator: id }).populate("creator");
+  let documents = [];
+  const editDocuments = await Document.find({ view_edit_access: id }).populate("creator").populate("view_access").populate("view_edit_access");
+  const viewDocuments = await Document.find({ view_access: id }).populate("creator").populate("view_access").populate("view_edit_access");
+  if (editDocuments.length) {
+    editDocuments.forEach(doc => documents.push(doc))
+  };
+  if (viewDocuments.length) {
+    viewDocuments.forEach(doc => documents.push(doc))
+  };
   return documents;
 };
 

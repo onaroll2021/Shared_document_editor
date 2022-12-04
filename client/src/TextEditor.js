@@ -36,8 +36,16 @@ export default function TextEditor() {
   const location = useLocation();
 
   const userEmail = location.state.user.email;
-  console.log(location);
-  console.log(userEmail);
+  const userId = location.state.user._id;
+  const userName = location.state.user.username;
+  const creatorId = location.state.creatorId;
+  const editorArr = location.state.editorArr;
+
+  const editPermission = (document, id) => {
+    return document.view_edit_access.includes(id);
+  };
+  // console.log(location);
+  // console.log(userEmail);
 
   //get user information
   // const [user, setUser] = useState({});
@@ -94,8 +102,11 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      quill.setContents(document);
-      quill.enable();
+      console.log("222document: ", document)
+      quill.setContents(document.data);
+      if (editPermission(document, userId)) {
+        quill.enable();
+      }
     });
     // const userEmail = location.state.user.email;
     // console.log(userEmail);
@@ -133,7 +144,14 @@ export default function TextEditor() {
 
   return (
     <>
-      <Documentheader url={documentId} />
+      <Documentheader
+        url={documentId}
+        userEmail={userEmail}
+        userId={userId}
+        userName={userName}
+        creatorId={creatorId}
+        editorArr={editorArr}
+      />
       <div className="container" ref={wrapperRef}></div>
     </>
   );

@@ -53,6 +53,9 @@ export default function Dashboard() {
         title={document.title}
         url={document.URL}
         creator={document.creator.username}
+        creatorId={document.creator._id}
+        editAccess={document.view_edit_access}
+        viewAccess={document.view_access}
         date={dateCreated}
         user={user}
       />
@@ -150,6 +153,8 @@ export default function Dashboard() {
 
             <p className="mr-12 flex-grow">Title</p>
             <p className="mr-12">Creator</p>
+            <p className="mr-12">Editor</p>
+            <p className="mr-12">Viewer</p>
             <p className="mr-12">Date Created</p>
             <p className="mr-12">Delete</p>
             <svg

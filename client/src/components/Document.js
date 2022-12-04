@@ -23,9 +23,37 @@ export default function Document(props) {
   };
 
   //check deleteDocument state first
+
+  let editor = "";
+  const editorArr = props.editAccess.filter(
+    (editor) => editor.username !== props.creator
+  );
+  if (editorArr) {
+    editorArr.forEach((e) => {
+      editor = editor + e.username + " ";
+    });
+    editor.trimEnd();
+  }
+
+  let viewer = "";
+  const viewerArr = props.viewAccess;
+  if (viewerArr) {
+    viewerArr.forEach((e) => {
+      viewer = viewer + e.username + " ";
+    });
+    viewer.trimEnd();
+  }
   return !deleteDocument ? (
     <div
-      onClick={() => navigate(documentLink, { state: { user: props.user } })}
+      onClick={() =>
+        navigate(documentLink, {
+          state: {
+            user: props.user,
+            creatorId: props.creatorId,
+            editorArr: props.editAccess,
+          },
+        })
+      }
       className="flex items-center p-4 rounded-lg hover:bg-gray-100 text-gray-700 text-sm cursor-pointer"
     >
       <svg
@@ -45,6 +73,8 @@ export default function Document(props) {
 
       <p className="flex-grow pl-5 w-10 pr-10 truncate">{props.title}</p>
       <p className="pr-5 text-sm">{props.creator}</p>
+      <p className="pr-5 text-sm">{editor}</p>
+      <p className="pr-5 text-sm">{viewer}</p>
       <p className="pr-5 text-sm">{props.date}</p>
 
       <Button color="red" onClick={handleDelete}>
