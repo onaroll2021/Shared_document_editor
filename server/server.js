@@ -176,6 +176,12 @@ app.post("/api/users/changeTitle", async (req, res) => {
   await changeTitleByURL(req.body.title, req.body.URL);
 });
 
+//Delete document
+app.post("/api/users/delete", async (req, res) => {
+  console.log("delete", req.body.id);
+  await Document.deleteOne({ _id: req.body.id });
+});
+
 // nodemailer
 // app.post("/api/send_mail", async (req, res) => {
 //   let { text } = req.body;
@@ -203,11 +209,11 @@ app.post("/api/users/changeTitle", async (req, res) => {
 //         padding: 20px;
 //         font-family: sans-serif;
 //         line-height: 2;
-//         font-size: 20px; 
+//         font-size: 20px;
 //         ">
 //         <h2>Here is your email!</h2>
 //         <p>${text}</p>
-    
+
 //         <p>All the best, Darwin</p>
 //       </div>
 //     `
@@ -215,20 +221,19 @@ app.post("/api/users/changeTitle", async (req, res) => {
 // });
 
 // gmail API
-const fs = require('fs');
-const path = require('path');
-const sendMail = require('./gmail');
+const fs = require("fs");
+const path = require("path");
+const sendMail = require("./gmail");
 
 const main = async (text) => {
-
   const options = {
-    to: '729298218@qq.com',
-    subject: 'Hello Luke 🚀',
+    to: "lining04111223@gmail.com",
+    subject: "Hello Luke 🚀",
     html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
-    textEncoding: 'base64',
+    textEncoding: "base64",
     headers: [
-      { key: 'X-Application-Developer', value: 'Luke Li' },
-      { key: 'X-Application-Version', value: 'v1.0.0.2' },
+      { key: "X-Application-Developer", value: "Luke Li" },
+      { key: "X-Application-Version", value: "v1.0.0.2" },
     ],
   };
 
@@ -239,8 +244,8 @@ const main = async (text) => {
 app.post("/api/send_mail", async (req, res) => {
   let { text } = req.body;
   main(text)
-  .then((messageId) => console.log('Message sent successfully:', messageId))
-  .catch((err) => console.error(err));
+    .then((messageId) => console.log("Message sent successfully:", messageId))
+    .catch((err) => console.error(err));
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
