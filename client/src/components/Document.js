@@ -81,10 +81,6 @@ export default function Document(props) {
       </td>
       <td>
         <div className="flex-grow pr-10 truncate">{props.title}</div>
-        {/* <p className="pr-5 text-sm">{props.creator}</p>
-            <p className="pr-5 text-sm">{editor}</p>
-            <p className="pr-5 text-sm">{viewer}</p>
-            <p className="pr-5 text-sm">{props.date}</p> */}
       </td>
       <td className="text-sm text-center">{props.creator}</td>
       <td className="text-sm text-center">{editor}</td>
