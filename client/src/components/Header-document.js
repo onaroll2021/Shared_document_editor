@@ -66,8 +66,7 @@ export default function Documentheader(props) {
       console.log(res);
     });
   };
-  const ss = props.documentTitle;
-  console.log("title", ss);
+
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
       <div className="flex space-x-5">
@@ -93,7 +92,6 @@ export default function Documentheader(props) {
 
         {!changeTittle ? (
           <>
-            {" "}
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
             <form onSubmit={handleEnterPress}>
               <fieldset
