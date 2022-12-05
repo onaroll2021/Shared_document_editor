@@ -104,9 +104,9 @@ async function findOrCreateDocument(URL, email) {
 
 //select data
 
-Document.find({ veiw_edit_access: "638c18ed82726ced756881ab" }).then((data) => {
-  console.log("ffff", data);
-});
+// Document.find({ veiw_edit_access: "638c18ed82726ced756881ab" }).then((data) => {
+//   console.log("ffff", data);
+// });
 
 //findDocumentByUserID("63866ba3d03a71f9898745b8");
 //async function aaa() {
