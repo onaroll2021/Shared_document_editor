@@ -110,46 +110,46 @@ export default function Dashboard() {
       <section className="bg-white px-10 md:px-0">
         <div className="w-3/5 mx-auto py-8 text-sm text-gray-700">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-200 shadow-md rounded-md">
+            <thead className="bg-gray-100 shadow-md rounded-md">
               <tr>
                 <th
                   scope="col"
-                  className="py-3 text-xs font-bold text-gray-500 uppercase "
+                  className="w-7 py-3 text-xs font-bold text-gray-500 uppercase "
                 >
                 </th>
                 <th
                   scope="col"
-                  className="w-50 py-3 text-xs font-bold text-left text-black uppercase "
+                  className="w-50 py-3 text-xs font-bold text-left text-gray-700 uppercase "
                 >
                   My Documents
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
                 >
                   Creator
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
                 >
                   Editor
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
                 >
                   Viewer
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
                 >
                   Date Created
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
                 >
                   Delete
                 </th>
