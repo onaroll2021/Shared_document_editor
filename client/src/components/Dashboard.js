@@ -45,7 +45,7 @@ export default function Dashboard() {
   // }) : <></>;
 
   const documentsList = documents.map((document) => {
-    const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
+    const dateCreated = moment(document.dateTime).startOf("second").fromNow();
     return (
       <Document
         key={document._id}
