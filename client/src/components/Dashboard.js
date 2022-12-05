@@ -150,14 +150,50 @@ export default function Dashboard() {
             />
           </form>
           <table className="min-w-full divide-y divide-gray-200">
-            <div className="flex justify-around rounded-lg bg-blue-500 shadow-lg shadow-cyan-500/50 text-black text-xl">
-              <div>My Documents</div>
-              <div>Creator</div>
-              <div>Editor</div>
-              <div>Viewer</div>
-              <div> Date Created</div>
-              <div> Delete</div>
-            </div>
+            <thead className="bg-gray-200 shadow-md rounded-md">
+              <tr>
+                <th
+                  scope="col"
+                  className="py-3 text-xs font-bold text-gray-500 uppercase "
+                ></th>
+                <th
+                  scope="col"
+                  className="w-50 py-3 text-xs font-bold text-left text-black uppercase "
+                >
+                  My Documents
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Creator
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Editor
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Viewer
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Date Created
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Delete
+                </th>
+              </tr>
+            </thead>
             <tbody className="divide-y divide-gray-200">{documentsList}</tbody>
           </table>
           {/*<p className="mr-12 flex-grow">Title</p>
