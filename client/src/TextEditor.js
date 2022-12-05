@@ -5,7 +5,7 @@ import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Documentheader from "./components/Header-document";
-import {Context} from "./App";
+import { Context } from "./App";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -31,14 +31,39 @@ const toolbarOptions = [
 ];
 
 export default function TextEditor() {
-
   const info = useContext(Context);
+  const setRequiredDirectURL = info.setRequiredDirectURL;
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log("state is ", info.state);
+  const username = info.state.data.user.username;
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const setRequiredDirectURL = info.setRequiredDirectURL;
+
+  // console.log("location.state", location.state);
+
+  const neededURL = location.pathname.replace("/documents/", "");
+  const searchDocuments = info.state.data.documents;
+  const currentUserId = info.state.data.user._id;
+  const searchNeededDocument = function(neededURL, searchDocuments) {
+    for (const document of searchDocuments) {
+      if (document.URL === neededURL) {
+        return document;
+      }
+    }
+    return null;
+  };
+  let neededDocument = searchNeededDocument(neededURL, searchDocuments);
+
+  console.log("neededDocument", neededDocument)
+  const editPermission = () => {
+    if (neededDocument['view_edit_access'].includes(currentUserId)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   //connect socket
   useEffect(() => {
@@ -82,7 +107,9 @@ export default function TextEditor() {
 
     socket.once("load-document", (document) => {
       quill.setContents(document);
-      quill.enable();
+      if (editPermission()) {
+        quill.enable();
+      }
     });
 
     socket.emit("get-document", documentId);
@@ -102,7 +129,7 @@ export default function TextEditor() {
 
   useEffect(() => {
     setRequiredDirectURL("");
-  }, [])
+  }, []);
 
   //create editor + toolbar only once
   const wrapperRef = useCallback((wrapper) => {
@@ -120,16 +147,18 @@ export default function TextEditor() {
     createQuill.setText("Loading...");
     setQuill(createQuill);
   }, []);
-
-  if (info.state.loginStatus) {
+  if(info.state.loginStatus) {
     return (
       <>
-        <Documentheader url={documentId} />
+        <Documentheader
+          url={documentId}
+          neededDocument={neededDocument}
+        />
         <div className="container" ref={wrapperRef}></div>
       </>
     );
   } else {
     setRequiredDirectURL(location.pathname.replace("/documents/", ""));
-    navigate('/login');
+    navigate("/login")
   }
 }

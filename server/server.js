@@ -12,6 +12,8 @@ const {
   findDocumentByEmail,
   findUserByEmail,
   findByTitle,
+  changeTitleByURL,
+  addEditorByURL,
 } = require("./queries");
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
@@ -19,23 +21,12 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
 const { resolve } = require("path");
-const nodemailer = require("nodemailer");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-//const cors = require("cors");
-// const bodyParser = require("body-parser")
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
 
-// Middleware
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
-//     methods: ["GET", "POST"],
-//   })
-// );
+//set up authentication
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
@@ -49,7 +40,6 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./passportConfig")(passport);
-//app.use(cors());
 
 //create mongoose connection
 mongoose
@@ -95,14 +85,6 @@ async function findOrCreateDocument(URL, email) {
     creator: findUserarry[0]._id,
   });
 }
-
-//select data
-//findDocumentByUserID("63866ba3d03a71f9898745b8");
-//async function aaa() {
-//  const aa = findUserByID("63866ba3d03a71f9898745b8");
-//  console.log("aa", aa);
-//}
-//console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
 
 // Routes
 app.post("/api/login", (req, res) => {
@@ -162,79 +144,39 @@ app.get("/api/users/dashboard", async (req, res) => {
 });
 
 //change title
-const changeTitleByURL = async (title, URL) => {
-  let changeTitle = await Document.updateOne({ URL: URL }, { title: title });
-  return changeTitle;
-};
-
 app.post("/api/users/changeTitle", async (req, res) => {
-  console.log("title", req.body.title);
+  // console.log("title", req.body.title);
   await changeTitleByURL(req.body.title, req.body.URL);
 });
-
-// nodemailer
-// app.post("/api/send_mail", async (req, res) => {
-//   let { text } = req.body;
-//   const transport = nodemailer.createTransport({
-//     host: process.env.MAIL_HOST,
-//     port: process.env.MAIL_PORT,
-//     secure: false, // TLS requires secureConnection to be false
-//     auth: {
-//       user: process.env.MAIL_USER,
-//       pass: process.env.MAIL_PASS
-//     },
-//     tls: {
-//       ciphers:'SSLv3'
-//     }
-//   });
-//   console.log("text:", text);
-//   console.log("host:", process.env.MAIL_HOST);
-
-//   await transport.sendMail({
-//     from: process.env.MAIL_FROM,
-//     to: "tank@test.com",
-//     subject: "test email",
-//     html: `<div className="email" style="
-//         border: 1px solid black;
-//         padding: 20px;
-//         font-family: sans-serif;
-//         line-height: 2;
-//         font-size: 20px; 
-//         ">
-//         <h2>Here is your email!</h2>
-//         <p>${text}</p>
-    
-//         <p>All the best, Darwin</p>
-//       </div>
-//     `
-//   });
-// });
 
 // gmail API
 const fs = require('fs');
 const path = require('path');
 const sendMail = require('./gmail');
 
-const main = async (text) => {
-
+const main = async (text, email, senderName, receiverName) => {
   const options = {
-    to: 'luke.li.9499@gmail.com',
-    subject: 'Hello Luke 🚀',
-    html: `<p>🙋🏻‍♀️  &mdash; This is a <b>test email</b> /n ${text}</p>`,
+    to: email,
+    subject: `Hello ${receiverName} 🚀`,
+    html: `<p>🙋🏻‍♀️  &mdash; ${senderName} shared a document with you: \n ${text}</p>`,
     textEncoding: 'base64',
     headers: [
       { key: 'X-Application-Developer', value: 'Luke Li' },
       { key: 'X-Application-Version', value: 'v1.0.0.2' },
     ],
   };
-
   const messageId = await sendMail(options);
   return messageId;
 };
 
+//add editor
+
 app.post("/api/send_mail", async (req, res) => {
-  let { text } = req.body;
-  main(text)
+  let { text, sendToEmail, url, viewOnly, senderName } = req.body;
+  const receiver = await User.findOne({email: sendToEmail});
+  const receiverName = receiver.username;
+  addEditorByURL(sendToEmail, url, viewOnly)
+  .then(() => main(text, sendToEmail, senderName, receiverName))
   .then((messageId) => console.log('Message sent successfully:', messageId))
   .catch((err) => console.error(err));
 });

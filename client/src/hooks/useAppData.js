@@ -52,6 +52,7 @@ export default function useAppData () {
   }
   return {
     state,
+    setState,
     setLoginUsername,
     setLoginPassword,
     setLoginStatus,

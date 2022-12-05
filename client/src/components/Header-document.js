@@ -1,46 +1,62 @@
 import axios from "axios";
 import { useEffect, useContext, useState } from "react";
-import { IconButton, Button, Input } from "@material-tailwind/react";
+import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { Context } from "../App";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { FcCandleSticks, FcElectricalSensor } from "react-icons/fc";
 
 export default function Documentheader(props) {
 
   const info = useContext(Context);
+  // console.log("info.state", info.state)
   const sent = info.state.sent;
   const setSent = info.setSent;
   const text = info.state.text;
   const setText = info.setText;
   let location = useLocation();
-  const neededURL = location.pathname.replace("/documents/", "");
+  // console.log("location", location)
   
-  // const url = info.state.data.user
-
-  // const documents = info.state.data.userDocuments
-  // userDocument array
-  // const findDoc = () =>  {
-  //   const shrinkedURL = document.URL.replace("http://localhost:3000/documents/", "");
-  //   for (const document of documents ) {
-  //     if ( shrinkedURL === props.url ) {
-  //       return document;
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  // }
-  // const requireDoc = findDoc();
-  // console.log("requireDoc", requireDoc)
+  // console.log("neededURL", neededURL);
   const [title, setTitle] = useState();
+  const[shareWithEmail, setShareWithEmail] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
+  const  neededDocument = props.neededDocument;
+  // console.log("neededDoc", neededDocument) 
+
+  const clickCheckbox = () => {
+    setChecked(!checked);
+  };
+  const canShare = () => {
+    return (neededDocument['creator']['_id'] === info['state']['data']['user']['_id']) ? true : false;
+  }
+  const canChangeTitle = () => {
+    const viewEditAccessIds = neededDocument['view_edit_access'];
+    const currentUserId = info.state.data.user._id;
+    if (viewEditAccessIds.includes(currentUserId)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const handleSend = async () => {
-    setSent(true);
+    setShareWithEmail("");
+    setChecked(false);
+    const sendFromEmail = info.state.data.user.email;
+    const sendToEmail = shareWithEmail;
+    const url = neededDocument.URL;
     const documentUrl = `http://localhost:3000/documents/${props.url}`;
     try {
       await axios.post("/api/send_mail", {
+        sendFromEmail: sendFromEmail,
+        sendToEmail: sendToEmail,
         text: documentUrl,
+        url: url,
+        viewOnly: checked,
+        senderName: info.state.data.user.name,
       });
     } catch (error) {
       console.error(error);
@@ -93,11 +109,16 @@ export default function Documentheader(props) {
               className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
               onSubmit={handleEnterPress}
             >
+            <fieldset
+                className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+                disabled={!canChangeTitle()}
+              >
               <Input
                 label="Tittle"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              </fieldset>
             </form>
           </>
         ) : (
@@ -106,11 +127,39 @@ export default function Documentheader(props) {
       </div>
 
       <div className="flex flex-end space-x-2">
-        {!sent ? (
-          <Button onClick={handleSend}>Share</Button>
-        ) : (
-          <h1>Email Sent</h1>
-        )}
+      <>
+            <form
+              onSubmit={event => event.preventDefault()} 
+              autoComplete="off"
+            >
+              <fieldset
+                className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
+                disabled={!canShare()}
+              >
+                <Input
+                  label="Share with"
+                  name="share"
+                  type="text"
+                  value={shareWithEmail}
+                  onChange={(event) => setShareWithEmail(event.target.value)}
+                />
+                <div className='flex items-center'>
+                  <Checkbox
+                    checked={checked}
+                    value={checked}
+                    onChange={clickCheckbox}
+                    label={"View Only"}
+                  />
+                </div>
+                <Button
+                  className="mx-3"
+                  onClick={handleSend}
+                >
+                  Share
+                </Button>
+              </fieldset>
+            </form>
+          </>
         <img
           loading="lazy"
           className="cursor-pointer h-12 w-12 rounded-full ml-2"

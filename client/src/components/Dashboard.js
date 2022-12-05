@@ -12,6 +12,7 @@ export default function Dashboard() {
   const user = info.state.data.user;
   const documents = info.state.data.documents;
   const setData= info.setData;
+  const navigate = useNavigate();
 
   useEffect(() => {
     Axios({
@@ -19,7 +20,7 @@ export default function Dashboard() {
       url: "/api/users/dashboard",
     })
       .then((res) => {
-        console.log("res", res.data);
+        // console.log("res", res.data);
         setData(res.data);
       })
       .catch((err) => {
@@ -27,6 +28,15 @@ export default function Dashboard() {
       });
   }, []);
   // console.log("dashb-info", info.state)
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(info.state.requiredDirectURL) {
+        navigate(`/documents/${info.state.requiredDirectURL}`)
+      }
+    }, 2000)
+
+  }, [])
 
   const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
@@ -50,7 +60,7 @@ export default function Dashboard() {
   };
     
   const newLink = `/documents/${generateRandomString()}`;
-  const navigate = useNavigate();
+  
 
   return (
     <div>

@@ -32,12 +32,8 @@ export default function Login() {
     }).then((res) => {
       if (res.data === 'Successfully Authenticated') {
         setLoginStatus(true);
-      if (info.state.requiredDirectURL === "") {
         navigate("/users/dashboard");
-      } else {
-          navigate(`/documents/${info.state.requiredDirectURL}`);     
-      }
-    };
+      } 
   });
   };
 
