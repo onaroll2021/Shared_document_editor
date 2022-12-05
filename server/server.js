@@ -111,25 +111,25 @@ async function findOrCreateDocument(URL, email) {
 //console.log("11111", findDocumentByEmail("lining04111223@gmail.com"));
 
 // Routes
-app.post("/api/login", (req, res) => {
+app.post("/api/login", (req, res, next) => {
   console.log(req.body);
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.send("No User Exists");
     else {
       req.logIn(user, (err) => {
-        if (err) throw err;
+        if (err) { return next(err); }
         res.send(req.user);
         console.log("lalala: ", req.user);
-        // return res.redirect(`/users/dashboard`);
+        // res.redirect('/users/dashboard');
       });
     }
-  })(req, res);
+  })(req, res, next);
 });
 
-app.post("/api/signup", (req, res) => {
+app.post("/api/signup", (req, res, next) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
-    if (err) throw err;
+    if (err) { return next(err); }
     if (doc) res.send("User Already Exists");
     if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -141,17 +141,25 @@ app.post("/api/signup", (req, res) => {
       });
       await newUser.save();
       passport.authenticate("local", (err, user) => {
-        if (err) throw err;
+        if (err) { return next(err); }
         if (!user) res.send("No User Exists");
         else {
           req.logIn(user, (err) => {
-            if (err) throw err;
-            res.send("Successfully Authenticated");
+            if (err) { return next(err); }
+            res.send(req.user);
+            // res.redirect('/users/dashboard');
             console.log(req.user);
           });
         }
-      })(req, res);
+      })(req, res, next);
     }
+  });
+});
+
+app.post('/api/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
   });
 });
 

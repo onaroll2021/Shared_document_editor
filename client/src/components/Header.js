@@ -1,8 +1,24 @@
 import React from 'react';
-import { IconButton } from "@material-tailwind/react";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Button, IconButton } from "@material-tailwind/react";
 
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    Axios({
+      method: "POST",
+      withCredentials: true,
+      url: "/api/logout",
+    }).then((res) => {
+      navigate("/");
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
   return (
     <div className='flex items-center sticky z-50 top-0 px-4 py-2 shadow-md bg-white'>
     <button className="button button-icon px-5" >
@@ -27,6 +43,7 @@ export default function Header() {
     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
     </svg>
     </button>
+    <Button onClick={logOut}>Log Out</Button>
     <img loading="lazy" className="cursor-pointer h-12 w-12 rounded-full ml-2" alt="" src='https://c8.alamy.com/comp/2AE4838/profile-of-a-teenage-indian-boy-looking-at-outsides-2AE4838.jpg' />
     </div>
   )
