@@ -108,8 +108,58 @@ export default function Dashboard() {
         </div>
       </section>
       <section className="bg-white px-10 md:px-0">
-        <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
-          <div className="flex items-center justify-between pb-5">
+        <div className="w-3/5 mx-auto py-8 text-sm text-gray-700">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-200 shadow-md rounded-md">
+              <tr>
+                <th
+                  scope="col"
+                  className="py-3 text-xs font-bold text-gray-500 uppercase "
+                >
+                </th>
+                <th
+                  scope="col"
+                  className="w-50 py-3 text-xs font-bold text-left text-black uppercase "
+                >
+                  My Documents
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Creator
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Editor
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Viewer
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Date Created
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-bold text-center text-black uppercase "
+                >
+                  Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {documentsList}
+            </tbody>
+          </table>
+          {/* <div className="flex items-center justify-between pb-5">
             <h2 className="font-medium flex-grow">My Documents</h2>
             <p className="mr-12">Creator</p>
             <p className="mr-12">Editor</p>
@@ -130,10 +180,10 @@ export default function Dashboard() {
                 d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
               />
             </svg>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <div>{documentsList}</div>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>
