@@ -66,7 +66,8 @@ export default function Documentheader(props) {
       console.log(res);
     });
   };
-
+  const ss = props.documentTitle;
+  console.log("title", ss);
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
       <div className="flex space-x-5">
@@ -100,7 +101,7 @@ export default function Documentheader(props) {
                 disabled={!canChangeTitle()}
               >
                 <Input
-                  label="Tittle"
+                  placeholder={props.documentTitle}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -116,10 +117,10 @@ export default function Documentheader(props) {
         <>
           <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
             <fieldset
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
+              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
               disabled={!canShare()}
             >
-              <div className='w-50'>
+              <div className="w-50">
                 <Input
                   label="Share with"
                   name="share"
@@ -128,7 +129,7 @@ export default function Documentheader(props) {
                   onChange={(event) => setShareWithEmail(event.target.value)}
                 />
               </div>
-              <div className='flex items-center'>
+              <div className="flex items-center">
                 <Checkbox
                   checked={checked}
                   value={checked}
@@ -136,10 +137,7 @@ export default function Documentheader(props) {
                   label={"View Only"}
                 />
               </div>
-              <Button
-                className="mx-3"
-                onClick={handleSend}
-              >
+              <Button className="mx-3" onClick={handleSend}>
                 Share
               </Button>
             </fieldset>

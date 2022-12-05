@@ -44,7 +44,7 @@ export default function TextEditor() {
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
   };
-
+  console.log("documentTitle", document.title);
   // console.log(location);
   // console.log(userEmail);
 
@@ -103,7 +103,7 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      console.log("222document: ", document);
+      console.log("222document: ", document.title);
       quill.setContents(document.data);
       if (editPermission(document, userId)) {
         quill.enable();
@@ -153,6 +153,7 @@ export default function TextEditor() {
         userName={userName}
         creatorId={creatorId}
         editorArr={editorArr}
+        documentTitle={document.title}
       />
       <div className="container" ref={wrapperRef}></div>
     </>
