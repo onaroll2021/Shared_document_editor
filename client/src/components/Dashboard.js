@@ -27,6 +27,7 @@ export default function Dashboard() {
     })
       .then((res) => {
         setDocuments(res.data.userDocuments);
+        setShowDocuments(res.data.userDocuments);
         setUser(res.data.user);
         console.log("XXXX", res.data);
         console.log("fffff", res.data.userDocuments);
@@ -53,6 +54,7 @@ export default function Dashboard() {
     const docList = [...documents];
     const newDocList = docList.filter(doc => doc._id !== Id);
     setDocuments(newDocList);
+    setShowDocuments(newDocList);
     Axios({
       method: "POST",
       data: {
@@ -64,7 +66,7 @@ export default function Dashboard() {
     });
   };
 
-  const documentsList = documents.map((document) => {
+  const documentsList = showDocuments.map((document) => {
     const dateCreated = moment(document.dateTime).startOf("second").fromNow();
     return (
       <Document
@@ -91,7 +93,7 @@ export default function Dashboard() {
       el.title.toLowerCase().includes(query.toLowerCase())
     );
     console.log("search", result);
-    setDocuments(result);
+    setShowDocuments(result);
   };
 
   
@@ -99,16 +101,7 @@ export default function Dashboard() {
   const closeSearch = () => {
     // event.stopPropagation();
     setSearch("") ;
-    Axios({
-      method: "GET",
-      url: "/api/users/dashboard",
-    })
-      .then((res) => {
-        setDocuments(res.data.userDocuments);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    setShowDocuments(documents);
   };
 
   console.log("mysearch", search);
