@@ -169,6 +169,17 @@ const main = async (text, email, senderName, receiverName) => {
   return messageId;
 };
 
+//delete document
+app.post("/api/users/delete", async (req, res) => {
+  console.log("req.body", req.body)
+  await Document.deleteOne({ _id: req.body.id})
+  const findDocument = await findDocumentByEmail(req.body.user.email);
+  const dataForDashboard = {
+    documents: findDocument,
+    user: req.body.user,
+  }
+    res.send(dataForDashboard);
+})
 //add editor
 
 app.post("/api/send_mail", async (req, res) => {

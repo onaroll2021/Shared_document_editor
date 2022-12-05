@@ -39,12 +39,13 @@ const addEditorByURL = async (email, URL, viewOnly) => {
   const editor = await findUserByEmail(email);
   const document = await Document.findOne({ URL: URL });
   // console.log("document!!!: ", document);
+  // console.log("editor", editor)
   if (viewOnly) {
     document.view_access.push(editor[0]._id);
     const addEditor = await document.save();
     return addEditor;
   } else {
-    document.view_edit_access.push(editor[0]._id);
+    document['view_edit_access'].push(editor[0]._id);
     const addEditor = await document.save();
     return addEditor;
   }
