@@ -90,7 +90,7 @@ export default function Document(props) {
       <td className="text-sm text-center">{editor}</td>
       <td className="text-sm text-center">{viewer}</td>
       <td className="text-sm text-center">{props.date}</td>
-      <td className="text-sm text-center">
+      <td className="text-center px-3 py-1.5 my-1.5">
         <Button disabled={canDelete()} color="red" onClick={handleDelete}>
           Delete
         </Button>

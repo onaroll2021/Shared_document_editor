@@ -116,17 +116,19 @@ export default function Documentheader(props) {
         <>
           <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
             <fieldset
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
               disabled={!canShare()}
             >
-              <Input
-                label="Share with"
-                name="share"
-                type="text"
-                value={shareWithEmail}
-                onChange={(event) => setShareWithEmail(event.target.value)}
-              />
-              <div className="flex items-center">
+              <div className='w-50'>
+                <Input
+                  label="Share with"
+                  name="share"
+                  type="text"
+                  value={shareWithEmail}
+                  onChange={(event) => setShareWithEmail(event.target.value)}
+                />
+              </div>
+              <div className='flex items-center'>
                 <Checkbox
                   checked={checked}
                   value={checked}
@@ -134,7 +136,10 @@ export default function Documentheader(props) {
                   label={"View Only"}
                 />
               </div>
-              <Button className="mx-3" onClick={handleSend}>
+              <Button
+                className="mx-3"
+                onClick={handleSend}
+              >
                 Share
               </Button>
             </fieldset>
