@@ -75,7 +75,7 @@ export default function Application() {
     <div className='relative w-full h-screen'>
       <img src={loginImg} className='absolute w-full h-full object-cover mix-blend-darken' alt="/" />
       <div className='flex justify-center items-center h-full' onSubmit={event => event.preventDefault()} autoComplete="off">
-        <form className='z-10 max-w-[400px] mx-auto bg-white/5 p-8'>
+        <form className='z-10 max-w-[400px] mx-auto bg-white/10 p-8'>
           <h2 className='text-4xl font-bold py-4 text-center'>Shared Editor</h2>
           <div className="flex justify-between py-8">
             <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center"><GrFacebook className='mr-2'/> Facebook</p>
