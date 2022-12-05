@@ -12,6 +12,7 @@ export default function Dashboard() {
 
   const info = useContext(Context);
   const user = info.state.data.user;
+  console.log("user", user);
   const documents = info.state.data.documents;
   const data = info.state.data;
   const setData= info.setData;
@@ -117,7 +118,7 @@ export default function Dashboard() {
         <div>
           <div
             className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700"
-            onClick={() => navigate(newLink, { state: { user: user } })}
+            onClick={() => navigate(newLink, { state: { user: user, creator: user._id } })}
           >
             <img layout="fill" src="https://links.papareact.com/pju" alt="" />
           </div>

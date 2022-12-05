@@ -56,10 +56,10 @@ mongoose
 
 // socket connect in server
 io.on("connection", (socket) => {
-  socket.on("get-document", async (documentId) => {
-    const document = await findOrCreateDocument(documentId);
+  socket.on("get-document", async (documentId, userEmail) => {
+    const document = await findOrCreateDocument(documentId, userEmail);
     socket.join(documentId);
-    socket.emit("load-document", document.data);
+    socket.emit("load-document", document);
 
     socket.on("send-changes", (delta) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta);
@@ -78,11 +78,16 @@ async function findOrCreateDocument(URL, email) {
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
-  if (document) return document;
+  if (document){
+    if (document.view_access.includes(findUserarry[0]._id) || document.view_edit_access.includes(findUserarry[0]._id)) {
+      return document;
+    }
+  };
   return await Document.create({
     URL: URL,
     data: defaultValue,
     creator: findUserarry[0]._id,
+    view_edit_access: [findUserarry[0]._id],
   });
 }
 

@@ -9,6 +9,7 @@ import { FcCandleSticks, FcElectricalSensor } from "react-icons/fc";
 export default function Documentheader(props) {
 
   const info = useContext(Context);
+  const data = info.state.data;
   // console.log("info.state", info.state)
   const sent = info.state.sent;
   const setSent = info.setSent;
@@ -23,27 +24,49 @@ export default function Documentheader(props) {
   const [changeTittle, setChangeTittle] = useState(false);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
-  const  neededDocument = props.neededDocument;
   // console.log("neededDoc", neededDocument) 
+
+  const neededURL = location.pathname.replace("/documents/", "");
+  const searchDocuments = info.state.data.documents;
+  const currentUserId = info.state.data.user._id;
+  const searchNeededDocument = function(neededURL, searchDocuments) {
+    for (const document of searchDocuments) {
+      if (document.URL === neededURL) {
+        return document;
+      }
+    }
+    return {};
+  };
+  let neededDocument = searchNeededDocument(neededURL, searchDocuments);
+  // console.log("neededDocument", neededDocument)
 
   const clickCheckbox = () => {
     setChecked(!checked);
   };
-  const canShare = () => {
-    return (neededDocument['creator']['_id'] === info['state']['data']['user']['_id']) ? true : false;
-  }
+
+  console.log("location", location)
   const canChangeTitle = () => {
-    const viewEditAccessIds = neededDocument['view_edit_access'];
-    const currentUserId = info.state.data.user._id;
-    if (viewEditAccessIds.includes(currentUserId)) {
+    if (props.creator === info.state.data.user._id) {
+      return true
+    } else if (neededDocument && neededDocument['view_edit_access'].includes(info.state.data.user._id)) {
       return true;
     } else {
       return false;
     }
   }
 
+  const canShare = () => {
+      if (location && location.state && location.state.creator === info['state']['data']['user']['_id']) {
+        return true;
+      } else if (neededDocument && neededDocument['creator'] === info['state']['data']['user']['_id']) {
+        return true;
+      } else {
+        return false
+      }
+    }
+
+
   const handleSend = async () => {
-    setShareWithEmail("");
     setChecked(false);
     const sendFromEmail = info.state.data.user.email;
     const sendToEmail = shareWithEmail;
@@ -77,6 +100,7 @@ export default function Documentheader(props) {
       console.log(res);
     });
   };
+
 
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">

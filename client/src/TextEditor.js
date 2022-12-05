@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Documentheader from "./components/Header-document";
 import { Context } from "./App";
+import update from 'immutability-helper';
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -30,8 +31,9 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-export default function TextEditor() {
+export default function TextEditor(props) {
   const info = useContext(Context);
+  const setData = info.setData;
   const setRequiredDirectURL = info.setRequiredDirectURL;
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,23 +49,34 @@ export default function TextEditor() {
   const searchDocuments = info.state.data.documents;
   const currentUserId = info.state.data.user._id;
   const searchNeededDocument = function(neededURL, searchDocuments) {
+    console.log("searchDocuments", searchDocuments)
     for (const document of searchDocuments) {
       if (document.URL === neededURL) {
         return document;
       }
     }
-    return null;
+    return {};
   };
   let neededDocument = searchNeededDocument(neededURL, searchDocuments);
-
+  const userEmail = info.state.data.user.email;
   console.log("neededDocument", neededDocument)
-  const editPermission = () => {
-    if (neededDocument['view_edit_access'].includes(currentUserId)) {
-      return true;
-    } else {
-      return false;
-    }
+  const editPermission = (document, userId) => {
+    console.log("document", document)
+    return document.view_edit_access.includes(userId);
   };
+
+  const updateDocState = (document) => {
+    const newDocumentsState = info.state.data.documents.map( arrDoc => {
+      if (arrDoc.URL === document.URL) {
+        const newArrDoc = update(arrDoc, {
+          $set: document
+        })
+        return newArrDoc;
+      }
+      return arrDoc;
+    })
+    setData({"user": info.state.data.user, "documents": newDocumentsState});
+  }
 
   //connect socket
   useEffect(() => {
@@ -82,7 +95,6 @@ export default function TextEditor() {
       socket.emit("send-changes", delta);
     };
     quill.on("text-change", handler);
-
     return () => {
       quill.off("text-change", handler);
     };
@@ -106,14 +118,15 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      quill.setContents(document);
-      if (editPermission()) {
+      // console.log("document", document)
+      quill.setContents(document.data);
+      updateDocState(document);
+      if (editPermission(document, currentUserId)) {
         quill.enable();
       }
     });
-
-    socket.emit("get-document", documentId);
-  }, [socket, quill, documentId]);
+    socket.emit("get-document", documentId, userEmail)
+  }, [socket, quill, documentId, userEmail]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
@@ -152,7 +165,7 @@ export default function TextEditor() {
       <>
         <Documentheader
           url={documentId}
-          neededDocument={neededDocument}
+          creator={info.state.data.user._id}
         />
         <div className="container" ref={wrapperRef}></div>
       </>
