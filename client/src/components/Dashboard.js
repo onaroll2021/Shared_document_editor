@@ -4,7 +4,11 @@ import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@material-tailwind/react";
+import { Button, Input, IconButton } from "@material-tailwind/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
+
 
 export default function Dashboard() {
   // useEffect(() => {
@@ -12,6 +16,7 @@ export default function Dashboard() {
   // })
 
   const [documents, setDocuments] = useState([]);
+  const [showDocuments, setShowDocuments] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
 
@@ -80,12 +85,30 @@ export default function Dashboard() {
 
   //search function
 
-  const searchResult = (arr, query) => {
+  const searchResult = (event, arr, query) => {
+    event.preventDefault();
     let result = arr.filter((el) =>
       el.title.toLowerCase().includes(query.toLowerCase())
     );
     console.log("search", result);
-    return setDocuments(result);
+    setDocuments(result);
+  };
+
+  
+
+  const closeSearch = () => {
+    // event.stopPropagation();
+    setSearch("") ;
+    Axios({
+      method: "GET",
+      url: "/api/users/dashboard",
+    })
+      .then((res) => {
+        setDocuments(res.data.userDocuments);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   console.log("mysearch", search);
@@ -138,7 +161,8 @@ export default function Dashboard() {
       <section className="bg-white px-10 md:px-0">
         <form
           className="w-1/4 mt-6 ml-72 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-          onSubmit={() => searchResult(documents, search)}
+          onSubmit={(e) => searchResult(e, documents, search)}
+          autoComplete="off"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -163,6 +187,7 @@ export default function Dashboard() {
             onChange={(e) => setSearch(e.target.value)}
             className="flex-grow px-5 text-base bg-transparent outline-none"
           />
+        {search && (<button type="button" onClick={closeSearch}><FontAwesomeIcon icon={faXmark} /></button>)}
         </form>
         <div className="w-3/5 mx-auto py-4 text-sm text-gray-700">
           <table className="min-w-full divide-y divide-gray-200">
