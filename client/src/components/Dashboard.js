@@ -3,6 +3,7 @@ import Axios from "axios";
 import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
+import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../App";
 
@@ -36,7 +37,13 @@ export default function Dashboard() {
       }
     }, 2000)
 
-  }, [])
+  }, []);
+
+<button type="button" class="bg-indigo-500 ..." disabled>
+  <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+  </svg>
+  `Redirecting to ${}...`
+</button>
 
   const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
@@ -126,6 +133,7 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
+      <Modal visible={info.state.requiredDirectURL} />
     </div>
   );
 }
