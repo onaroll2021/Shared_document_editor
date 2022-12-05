@@ -34,6 +34,7 @@ export default function TextEditor() {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+  const [showTitle, setShowTittle] = useState();
 
   const location = useLocation();
 
@@ -41,14 +42,11 @@ export default function TextEditor() {
   const userId = location.state.user._id;
   const userName = location.state.user.username;
   const creatorId = location.state.creatorId;
-  const title = location.state.title;
-  const documents = location.state.documents;
   const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
   };
-  console.log("SSSSS", title);
   // console.log(location);
   // console.log(userEmail);
 
@@ -108,6 +106,7 @@ export default function TextEditor() {
 
     socket.once("load-document", (document) => {
       console.log("222document: ", document.title);
+      setShowTittle(document.title);
 
       quill.setContents(document.data);
       if (editPermission(document, userId)) {
@@ -158,7 +157,7 @@ export default function TextEditor() {
         userName={userName}
         creatorId={creatorId}
         editorArr={editorArr}
-        documentTitle={document.title}
+        documentTitle={showTitle}
       />
       <div className="container" ref={wrapperRef}></div>
     </>

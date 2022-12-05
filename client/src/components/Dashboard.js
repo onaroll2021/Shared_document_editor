@@ -60,7 +60,6 @@ export default function Dashboard() {
         viewAccess={document.view_access}
         date={dateCreated}
         user={user}
-        documents={documents}
       />
     );
   });
@@ -114,7 +113,7 @@ export default function Dashboard() {
               className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700"
               onClick={() =>
                 navigate(newLink, {
-                  state: { user: user, documents: documents },
+                  state: { user: user },
                 })
               }
             >

@@ -57,7 +57,6 @@ export default function Document(props) {
           state: {
             user: props.user,
             creatorId: props.creatorId,
-            title: props.title,
             editorArr: props.editAccess,
           },
         })

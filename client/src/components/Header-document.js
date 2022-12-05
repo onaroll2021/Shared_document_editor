@@ -101,7 +101,7 @@ export default function Documentheader(props) {
                 disabled={!canChangeTitle()}
               >
                 <Input
-                  placeholder={props.documentTitle}
+                  label={props.documentTitle}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
