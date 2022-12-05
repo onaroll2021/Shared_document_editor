@@ -16,19 +16,19 @@ export default function Documentheader(props) {
   };
 
   const canShare = () => {
-    return props.creatorId? (props.userId === props.creatorId): true;
-  }
+    return props.creatorId ? props.userId === props.creatorId : true;
+  };
 
   const canChangeTitle = () => {
     let editor = [];
     if (props.editorArr) {
-      props.editorArr.forEach(element => {
-        editor.push(element._id)
+      props.editorArr.forEach((element) => {
+        editor.push(element._id);
       });
     }
-    const result = props.creatorId? editor.includes(props.userId): true;
+    const result = props.creatorId ? editor.includes(props.userId) : true;
     return result;
-  }
+  };
 
   const handleSend = async () => {
     // setSent(true);
@@ -38,16 +38,18 @@ export default function Documentheader(props) {
     const sendToEmail = shareWithEmail;
     const url = props.url;
     const documentUrl = `http://localhost:3000/documents/${props.url}`;
-    axios.post("/api/send_mail", {
+    axios
+      .post("/api/send_mail", {
         sendFromEmail: sendFromEmail,
         sendToEmail: sendToEmail,
         text: documentUrl,
         url: url,
         viewOnly: checked,
-        senderName: props.userName
-    }).catch( (error) => {
-      console.log(error);
-    })
+        senderName: props.userName,
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleEnterPress = () => {
@@ -92,9 +94,7 @@ export default function Documentheader(props) {
           <>
             {" "}
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
-            <form
-              onSubmit={handleEnterPress}
-            >
+            <form onSubmit={handleEnterPress}>
               <fieldset
                 className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
                 disabled={!canChangeTitle()}
@@ -106,7 +106,6 @@ export default function Documentheader(props) {
                 />
               </fieldset>
             </form>
-            
           </>
         ) : (
           <h1 className="ml-2 mt-3 text-gray-700 text-2xl">{title}</h1>
@@ -114,40 +113,33 @@ export default function Documentheader(props) {
       </div>
 
       <div className="flex flex-end space-x-2">
-        
-          <>
-            <form
-              onSubmit={event => event.preventDefault()} 
-              autoComplete="off"
+        <>
+          <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
+            <fieldset
+              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+              disabled={!canShare()}
             >
-              <fieldset
-                className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md" 
-                disabled={!canShare()}
-              >
-                <Input
-                  label="Share with"
-                  name="share"
-                  type="text"
-                  value={shareWithEmail}
-                  onChange={(event) => setShareWithEmail(event.target.value)}
+              <Input
+                label="Share with"
+                name="share"
+                type="text"
+                value={shareWithEmail}
+                onChange={(event) => setShareWithEmail(event.target.value)}
+              />
+              <div className="flex items-center">
+                <Checkbox
+                  checked={checked}
+                  value={checked}
+                  onChange={clickCheckbox}
+                  label={"View Only"}
                 />
-                <div className='flex items-center'>
-                  <Checkbox
-                    checked={checked}
-                    value={checked}
-                    onChange={clickCheckbox}
-                    label={"View Only"}
-                  />
-                </div>
-                <Button
-                  className="mx-3"
-                  onClick={handleSend}
-                >
-                  Share
-                </Button>
-              </fieldset>
-            </form>
-          </>
+              </div>
+              <Button className="mx-3" onClick={handleSend}>
+                Share
+              </Button>
+            </fieldset>
+          </form>
+        </>
 
         <img
           loading="lazy"

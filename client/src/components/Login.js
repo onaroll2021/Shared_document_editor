@@ -11,6 +11,9 @@ export default function Login() {
   const [loginPassword, setLoginPassword] = useState("");
 
   const navigate = useNavigate();
+  const pStyle = {
+    elevation: 3,
+  };
 
   const login = () => {
     Axios({
@@ -82,14 +85,14 @@ export default function Login() {
             <Checkbox />
             Remember me
           </div>
-          <p className="text-center mt-8">
-            Not a member?
-            <a href="/signup" className="text-blue underline">
-              Sign up now
-            </a>
-          </p>
         </form>
       </div>
+      <p className="text-center mt-8" style={pStyle}>
+        Not a member?{" "}
+        <a href="/signup" className="text-blue underline">
+          Sign up now
+        </a>
+      </p>
     </div>
   );
 }
