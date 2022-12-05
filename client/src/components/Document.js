@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 
 export default function Document(props) {
   const [deleteDocument, setDeleteDocument] = useState(false);
+  //const [canDelete, setCanDelete] = useState(false);
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
 
@@ -34,7 +35,6 @@ export default function Document(props) {
     });
     editor.trimEnd();
   }
-
   let viewer = "";
   const viewerArr = props.viewAccess;
   if (viewerArr) {
@@ -43,6 +43,16 @@ export default function Document(props) {
     });
     viewer.trimEnd();
   }
+
+  const vie = viewerArr.map((vie) => vie.username);
+
+  const canDelete = () => {
+    return vie.includes(props.user.username);
+  };
+
+  console.log("viewerArr", vie);
+  console.log("username", props.user.username);
+
   return !deleteDocument ? (
     <div
       onClick={() =>
@@ -77,7 +87,7 @@ export default function Document(props) {
       <p className="pr-5 text-sm">{viewer}</p>
       <p className="pr-5 text-sm">{props.date}</p>
 
-      <Button color="red" onClick={handleDelete}>
+      <Button disabled={canDelete()} color="red" onClick={handleDelete}>
         Delete
       </Button>
 

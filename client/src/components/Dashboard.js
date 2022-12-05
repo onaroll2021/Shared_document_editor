@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Axios from "axios";
 import Header from "./Header";
 import moment from "moment";
@@ -63,13 +63,15 @@ export default function Dashboard() {
   });
 
   //search function
+
   const searchResult = (arr, query) => {
     let result = arr.filter((el) =>
       el.title.toLowerCase().includes(query.toLowerCase())
     );
     console.log("search", result);
-    setDocuments(result);
+    return setDocuments(result);
   };
+
   console.log("mysearch", search);
   // console.log("what is this", data.userDocuments);
 
@@ -122,9 +124,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between pb-5">
             <form
               className="mx-5 md:mx-10 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-              onSubmit={() => {
-                searchResult(documents, search);
-              }}
+              onSubmit={() => searchResult(documents, search)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

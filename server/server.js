@@ -94,7 +94,7 @@ async function findOrCreateDocument(URL, email) {
     URL: URL,
     data: defaultValue,
     creator: findUserarry[0]._id,
-    view_edit_access: [findUserarry[0]._id]
+    view_edit_access: [findUserarry[0]._id],
   });
 }
 
@@ -148,7 +148,7 @@ app.post("/api/signup", (req, res) => {
           req.logIn(user, (err) => {
             if (err) throw err;
             res.send("Successfully Authenticated");
-            console.log(req.user);
+            console.log("user", req.user);
           });
         }
       })(req, res);
@@ -233,12 +233,11 @@ const path = require("path");
 const sendMail = require("./gmail");
 
 const main = async (text, email, senderName, receiverName) => {
-
   const options = {
     to: email,
     subject: `Hello ${receiverName} 🚀`,
     html: `<p>🙋🏻‍♀️  &mdash; ${senderName} shared a document with you: \n ${text}</p>`,
-    textEncoding: 'base64',
+    textEncoding: "base64",
     headers: [
       { key: "X-Application-Developer", value: "Luke Li" },
       { key: "X-Application-Version", value: "v1.0.0.2" },
@@ -251,7 +250,6 @@ const main = async (text, email, senderName, receiverName) => {
 
 //add editor
 const addEditorByURL = async (email, URL, viewOnly) => {
-  
   const editor = await findUserByEmail(email);
   const document = await Document.findOne({ URL: URL });
   console.log("document!!!: ", document);
@@ -268,14 +266,14 @@ const addEditorByURL = async (email, URL, viewOnly) => {
 
 app.post("/api/send_mail", async (req, res) => {
   let { text, sendToEmail, url, viewOnly, senderName } = req.body;
-  const receiver = await User.findOne({email: sendToEmail});
+  const receiver = await User.findOne({ email: sendToEmail });
   const receiverName = receiver.username;
   console.log("text: ", text);
   console.log("sendToEmail: ", sendToEmail);
   addEditorByURL(sendToEmail, url, viewOnly)
-  .then(() => main(text, sendToEmail, senderName, receiverName))
-  .then((messageId) => console.log('Message sent successfully:', messageId))
-  .catch((err) => console.error(err));
+    .then(() => main(text, sendToEmail, senderName, receiverName))
+    .then((messageId) => console.log("Message sent successfully:", messageId))
+    .catch((err) => console.error(err));
 });
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

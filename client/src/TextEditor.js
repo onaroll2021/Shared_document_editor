@@ -44,6 +44,7 @@ export default function TextEditor() {
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
   };
+
   // console.log(location);
   // console.log(userEmail);
 
@@ -102,11 +103,12 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      console.log("222document: ", document)
+      console.log("222document: ", document);
       quill.setContents(document.data);
       if (editPermission(document, userId)) {
         quill.enable();
       }
+      console.log("editPermission", editPermission(document, userId));
     });
     // const userEmail = location.state.user.email;
     // console.log(userEmail);
