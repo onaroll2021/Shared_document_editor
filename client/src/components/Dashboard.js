@@ -5,6 +5,7 @@ import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@material-tailwind/react";
+import { GrDocumentStore } from "react-icons/gr";
 
 export default function Dashboard() {
   // useEffect(() => {
@@ -46,6 +47,7 @@ export default function Dashboard() {
 
   const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
+
     return (
       <Document
         key={document._id}
@@ -58,6 +60,7 @@ export default function Dashboard() {
         viewAccess={document.view_access}
         date={dateCreated}
         user={user}
+        documents={documents}
       />
     );
   });
@@ -71,7 +74,7 @@ export default function Dashboard() {
     console.log("search", result);
     return setDocuments(result);
   };
-
+  console.log("documents", documents);
   console.log("mysearch", search);
   // console.log("what is this", data.userDocuments);
 
@@ -109,7 +112,11 @@ export default function Dashboard() {
           <div>
             <div
               className="relative h-52 w-40 boarder-2 cursor-pointer hover:border-blue-700"
-              onClick={() => navigate(newLink, { state: { user: user } })}
+              onClick={() =>
+                navigate(newLink, {
+                  state: { user: user, documents: documents },
+                })
+              }
             >
               <img layout="fill" src="https://links.papareact.com/pju" alt="" />
             </div>

@@ -5,6 +5,7 @@ import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useLocation } from "react-router-dom";
 import Documentheader from "./components/Header-document";
+import { GrDocumentSound } from "react-icons/gr";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -33,18 +34,21 @@ export default function TextEditor() {
   const { id: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
+
   const location = useLocation();
 
   const userEmail = location.state.user.email;
   const userId = location.state.user._id;
   const userName = location.state.user.username;
   const creatorId = location.state.creatorId;
+  const title = location.state.title;
+  const documents = location.state.documents;
   const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
   };
-  console.log("documentTitle", document.title);
+  console.log("SSSSS", title);
   // console.log(location);
   // console.log(userEmail);
 
@@ -104,6 +108,7 @@ export default function TextEditor() {
 
     socket.once("load-document", (document) => {
       console.log("222document: ", document.title);
+
       quill.setContents(document.data);
       if (editPermission(document, userId)) {
         quill.enable();
@@ -113,7 +118,7 @@ export default function TextEditor() {
     // const userEmail = location.state.user.email;
     // console.log(userEmail);
     socket.emit("get-document", documentId, userEmail);
-  }, [socket, quill, documentId, userEmail]);
+  }, [socket, quill, documentId, userEmail, userId]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
