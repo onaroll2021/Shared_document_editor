@@ -11,7 +11,10 @@ const findDocumentByUserID = async (id) => {
   if (viewDocuments.length) {
     viewDocuments.forEach(doc => documents.push(doc))
   };
-  return documents;
+  const sortedDoc = documents.sort(
+    (objA, objB) => Number(objB.dateTime) - Number(objA.dateTime)
+  );
+  return sortedDoc;
 };
 
 const findUserByID = async (id) => {

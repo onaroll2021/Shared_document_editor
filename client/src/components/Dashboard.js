@@ -120,38 +120,47 @@ export default function Dashboard() {
         </div>
       </section>
       <section className="bg-white px-10 md:px-0">
-        <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
-          <div className="flex items-center justify-between pb-5">
-            <form
-              className="mx-5 md:mx-10 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-              onSubmit={() => searchResult(documents, search)}
+        <div className="w-3/5 mx-auto py-8 text-sm text-gray-700">
+          <form
+            className="mx-5 md:mx-10 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+            onSubmit={() => searchResult(documents, search)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              color="gray"
+              size="3xl"
+              className="w-6 h-6"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                color="gray"
-                size="3xl"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search Document"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="flex-grow px-5 text-base bg-transparent outline-none"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
               />
-            </form>
-
-            <p className="mr-12 flex-grow">Title</p>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search Document"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-grow px-5 text-base bg-transparent outline-none"
+            />
+          </form>
+          <table className="min-w-full divide-y divide-gray-200">
+            <div className="flex justify-around rounded-lg bg-blue-500 shadow-lg shadow-cyan-500/50 text-black text-xl">
+              <div>My Documents</div>
+              <div>Creator</div>
+              <div>Editor</div>
+              <div>Viewer</div>
+              <div> Date Created</div>
+              <div> Delete</div>
+            </div>
+            <tbody className="divide-y divide-gray-200">{documentsList}</tbody>
+          </table>
+          {/*<p className="mr-12 flex-grow">Title</p>
             <p className="mr-12">Creator</p>
             <p className="mr-12">Editor</p>
             <p className="mr-12">Viewer</p>
@@ -175,7 +184,7 @@ export default function Dashboard() {
 
           <div>
             <div className="flex flex-col-reverse">{documentsList}</div>
-          </div>
+          </div>*/}
         </div>
       </section>
     </div>
