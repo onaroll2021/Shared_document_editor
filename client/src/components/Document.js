@@ -9,19 +9,19 @@ export default function Document(props) {
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
 
-  const handleDelete = (e) => {
-    e.stopPropagation();
-    setDeleteDocument(true);
-    Axios({
-      method: "POST",
-      data: {
-        id: props.id,
-      },
-      url: "/api/users/delete",
-    }).then((res) => {
-      console.log(res);
-    });
-  };
+  // const handleDelete = (e) => {
+  //   e.stopPropagation();
+  //   setDeleteDocument(true);
+  //   Axios({
+  //     method: "POST",
+  //     data: {
+  //       id: props.id,
+  //     },
+  //     url: "/api/users/delete",
+  //   }).then((res) => {
+  //     console.log(res);
+  //   });
+  // };
 
   //check deleteDocument state first
 
@@ -50,7 +50,7 @@ export default function Document(props) {
     return vie.includes(props.user.username);
   };
 
-  return !deleteDocument ? (
+  return (
     <tr
       onClick={() =>
         navigate(documentLink, {
@@ -91,12 +91,10 @@ export default function Document(props) {
       <td className="text-sm text-center">{viewer}</td>
       <td className="text-sm text-center">{props.date}</td>
       <td className="text-center px-3 py-1.5 my-1.5">
-        <Button disabled={canDelete()} color="red" onClick={handleDelete}>
+        <Button className='z-10' disabled={canDelete()} color="red" onClick={(e)=>{props.handleDelete(e, props.id)}}>
           Delete
         </Button>
       </td>
     </tr>
-  ) : (
-    <Link to="#" />
   );
 }

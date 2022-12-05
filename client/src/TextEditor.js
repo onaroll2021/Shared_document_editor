@@ -113,7 +113,7 @@ export default function TextEditor() {
     // const userEmail = location.state.user.email;
     // console.log(userEmail);
     socket.emit("get-document", documentId, userEmail);
-  }, [socket, quill, documentId, userEmail]);
+  }, [socket, quill, documentId, userEmail, userId]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;

@@ -43,6 +43,21 @@ export default function Dashboard() {
   //     />
   //   );
   // }) : <></>;
+  const handleDelete = (event, Id) => {
+    event.stopPropagation();
+    const docList = [...documents];
+    const newDocList = docList.filter(doc => doc._id !== Id);
+    setDocuments(newDocList);
+    Axios({
+      method: "POST",
+      data: {
+        id: Id,
+      },
+      url: "/api/users/delete",
+    }).then((res) => {
+      console.log(res);
+    });
+  };
 
   const documentsList = documents.map((document) => {
     const dateCreated = moment(document.dateTime).startOf("second").fromNow();
@@ -58,6 +73,7 @@ export default function Dashboard() {
         viewAccess={document.view_access}
         date={dateCreated}
         user={user}
+        handleDelete={handleDelete}
       />
     );
   });
