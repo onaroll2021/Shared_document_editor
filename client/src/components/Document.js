@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 
 export default function Document(props) {
-  const [deleteDocument, setDeleteDocument] = useState(false);
+  // const [deleteDocument, setDeleteDocument] = useState(false);
   //const [canDelete, setCanDelete] = useState(false);
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
@@ -45,9 +45,10 @@ export default function Document(props) {
   }
 
   //disable delete button when view status
-  const vie = viewerArr.map((vie) => vie.username);
+  // const vie = viewerArr.map((vie) => vie.username);
   const canDelete = () => {
-    return vie.includes(props.user.username);
+    // return vie.includes(props.user.username);
+    return props.user._id === props.creatorId;
   };
 
   return (
@@ -91,7 +92,7 @@ export default function Document(props) {
       <td className="text-sm text-center">{viewer}</td>
       <td className="text-sm text-center">{props.date}</td>
       <td className="text-center px-3 py-1.5 my-1.5">
-        <Button className='z-10' disabled={canDelete()} color="red" onClick={(e)=>{props.handleDelete(e, props.id)}}>
+        <Button className='z-10' disabled={!canDelete()} color="red" onClick={(e)=>{props.handleDelete(e, props.id)}}>
           Delete
         </Button>
       </td>
