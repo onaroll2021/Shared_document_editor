@@ -42,6 +42,7 @@ export default function TextEditor() {
   let userName;
   let creatorId;
   let editorArr;
+  let userPic;
 
   if (location.state) {
     userEmail = location.state.user.email;
@@ -49,6 +50,7 @@ export default function TextEditor() {
     userName = location.state.user.username;
     creatorId = location.state.creatorId;
     editorArr = location.state.editorArr;
+    userPic = location.state.user.profilePic;
   }
   // const userEmail = location.state.user.email;
   // const userId = location.state.user._id;
@@ -170,6 +172,7 @@ export default function TextEditor() {
           userEmail={userEmail}
           userId={userId}
           userName={userName}
+          userPic={userPic}
           creatorId={creatorId}
           editorArr={editorArr}
           documentTitle={showTitle}

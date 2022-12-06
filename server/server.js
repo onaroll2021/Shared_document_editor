@@ -288,4 +288,11 @@ app.post("/api/send_mail", async (req, res) => {
     .catch((err) => console.error(err));
 });
 
+// const updatePic = async (e, p) => {
+//   let changePic = await User.updateOne({ email: e }, { profilePic: p });
+//   return changePic;
+// };
+
+// updatePic("thomastank0926@gmail.com", "https://i.pinimg.com/originals/87/31/91/873191b4606bfec20e44f4ad2bbcee30.jpg")
+
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

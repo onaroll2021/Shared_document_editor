@@ -69,6 +69,12 @@ export default function Documentheader(props) {
   };
   const ss = props.documentTitle;
   console.log("title", ss);
+
+  const creatorUrl = props.userPic? props.userPic : "http://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/f11f3a292df5e0fe72bc1435596034a85edf725a.jpg"
+
+
+
+
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
       <div className="flex space-x-5">
@@ -147,9 +153,9 @@ export default function Documentheader(props) {
 
         <img
           loading="lazy"
-          className="cursor-pointer h-12 w-12 rounded-full ml-2"
+          className="cursor-pointer h-12 w-12 mt-1.5 rounded-full ml-2"
           alt=""
-          src="https://c8.alamy.com/comp/2AE4838/profile-of-a-teenage-indian-boy-looking-at-outsides-2AE4838.jpg"
+          src={creatorUrl}
         />
       </div>
     </div>

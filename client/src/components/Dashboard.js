@@ -122,7 +122,9 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header
+        user={user}
+      />
       <section className="bg-[#F8F9FA] pb-10 px-5">
         <div className="w-3/5 mx-auto">
           <div className="flex items-center justify-between py-6">
