@@ -15,6 +15,7 @@ export default function Dashboard() {
   const [documents, setDocuments] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     Axios({
@@ -45,34 +46,39 @@ export default function Dashboard() {
   //   );
   // }) : <></>;
 
-  const documentsList = documents.map((document) => {
-    const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
+  const currentList = (docs) => {
+    return docs.map((document) => {
+      const dateCreated = moment(document.dateTime).format("DD-MMM-YYYY");
 
-    return (
-      <Document
-        key={document._id}
-        id={document._id}
-        title={document.title}
-        url={document.URL}
-        creator={document.creator.username}
-        creatorId={document.creator._id}
-        editAccess={document.view_edit_access}
-        viewAccess={document.view_access}
-        date={dateCreated}
-        user={user}
-      />
-    );
-  });
+      return (
+        <Document
+          key={document._id}
+          id={document._id}
+          title={document.title}
+          url={document.URL}
+          creator={document.creator.username}
+          creatorId={document.creator._id}
+          editAccess={document.view_edit_access}
+          viewAccess={document.view_access}
+          date={dateCreated}
+          user={user}
+        />
+      );
+    });
+  };
 
   //search function
+
+  //useEffect(()=>{,[]};
 
   const searchResult = (arr, query) => {
     let result = arr.filter((el) =>
       el.title.toLowerCase().includes(query.toLowerCase())
     );
     console.log("search", result);
-    return setDocuments(result);
+    setFilter(result);
   };
+
   console.log("documents", documents);
   console.log("mysearch", search);
   // console.log("what is this", data.userDocuments);
@@ -200,7 +206,9 @@ export default function Dashboard() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">{documentsList}</tbody>
+            <tbody className="divide-y divide-gray-200">
+              {currentList(filter.length > 0 ? filter : documents)}
+            </tbody>
           </table>
         </div>
       </section>
