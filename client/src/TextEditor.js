@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Navigate } from "react-router-dom";
 import Documentheader from "./components/Header-document";
-import { GrDocumentSound } from "react-icons/gr";
+// import { GrDocumentSound } from "react-icons/gr";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -33,11 +33,28 @@ export default function TextEditor() {
 
   const location = useLocation();
 
-  const userEmail = location.state.user.email;
-  const userId = location.state.user._id;
-  const userName = location.state.user.username;
-  const creatorId = location.state.creatorId;
-  const editorArr = location.state.editorArr;
+  // const navigate = useNavigate();
+
+  console.log("location.state: ", location.state);
+
+  let userEmail;
+  let userId;
+  let userName;
+  let creatorId;
+  let editorArr;
+
+  if (location.state) {
+    userEmail = location.state.user.email;
+    userId = location.state.user._id;
+    userName = location.state.user.username;
+    creatorId = location.state.creatorId;
+    editorArr = location.state.editorArr;
+  }
+  // const userEmail = location.state.user.email;
+  // const userId = location.state.user._id;
+  // const userName = location.state.user.username;
+  // const creatorId = location.state.creatorId;
+  // const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
@@ -143,18 +160,24 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return (
-    <>
-      <Documentheader
-        url={documentId}
-        userEmail={userEmail}
-        userId={userId}
-        userName={userName}
-        creatorId={creatorId}
-        editorArr={editorArr}
-        documentTitle={showTitle}
-      />
-      <div className="container" ref={wrapperRef}></div>
-    </>
-  );
+  // const directLink = "/documents/" + documentId;
+
+  if(location.state) {
+    return (
+      <>
+        <Documentheader
+          url={documentId}
+          userEmail={userEmail}
+          userId={userId}
+          userName={userName}
+          creatorId={creatorId}
+          editorArr={editorArr}
+          documentTitle={showTitle}
+        />
+        <div className="container" ref={wrapperRef}></div>
+      </>
+    );
+  } else {
+    return <Navigate to={"/login"} />
+  }
 }

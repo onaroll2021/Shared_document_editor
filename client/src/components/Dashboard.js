@@ -19,6 +19,12 @@ export default function Dashboard() {
   const [showDocuments, setShowDocuments] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
+  // const [direct, setDirect] = useState("");
+
+  const navigate = useNavigate();
+  
+
+ 
 
   useEffect(() => {
     Axios({
@@ -112,7 +118,7 @@ export default function Dashboard() {
   };
 
   const newLink = `/documents/${generateRandomString()}`;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="flex flex-col">
