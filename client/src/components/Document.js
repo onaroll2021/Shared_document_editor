@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export default function Document(props) {
   // const [deleteDocument, setDeleteDocument] = useState(false);
@@ -90,7 +90,14 @@ export default function Document(props) {
       <td className="text-sm text-center">{viewer}</td>
       <td className="text-sm text-center">{props.date}</td>
       <td className="text-center px-3 py-1.5 my-1.5">
-        <Button className='z-10 px-4 py-2' disabled={!canDelete()} color="red" onClick={(e)=>{props.handleDelete(e, props.id)}}>
+        <Button
+          className="z-10 px-4 py-2"
+          disabled={!canDelete()}
+          color="red"
+          onClick={(e) => {
+            props.handleDelete(e, props.id);
+          }}
+        >
           <FontAwesomeIcon icon={faTrashCan} />
         </Button>
       </td>
