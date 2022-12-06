@@ -20,7 +20,7 @@ export default function Header(props) {
     });
   };
 
-  const picUrl = props.user.profilePic? props.user.profilePic : "http://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/f11f3a292df5e0fe72bc1435596034a85edf725a.jpg"
+  const picUrl = props.user.profilePic;
 
   return (
     <div className="flex justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">

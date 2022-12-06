@@ -44,6 +44,9 @@ export default function TextEditor() {
   let creatorId;
   let editorArr;
   let userPic;
+  let editorOnlyArr;
+  let viewerArr;
+  let creatorPic;
 
   if (location.state) {
     userEmail = location.state.user.email;
@@ -52,6 +55,9 @@ export default function TextEditor() {
     creatorId = location.state.creatorId;
     editorArr = location.state.editorArr;
     userPic = location.state.user.profilePic;
+    editorOnlyArr = location.state.editorOnlyArr;
+    viewerArr = location.state.viewerArr;
+    creatorPic = location.state.creatorPic;
   }
   // const userEmail = location.state.user.email;
   // const userId = location.state.user._id;
@@ -190,8 +196,11 @@ export default function TextEditor() {
           userName={userName}
           userPic={userPic}
           creatorId={creatorId}
+          creatorPic={creatorPic}
           editorArr={editorArr}
           documentTitle={showTitle}
+          editorOnlyArr={editorOnlyArr}
+          viewerArr={viewerArr}
         />
         <div className="container" ref={wrapperRef}></div>
       </>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import DocumentPic from "./DocumentPic";
 import React, { useState } from "react";
 import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +71,19 @@ export default function Documentheader(props) {
   const ss = props.documentTitle;
   console.log("title", ss);
 
-  const creatorUrl = props.userPic? props.userPic : "http://gss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/f11f3a292df5e0fe72bc1435596034a85edf725a.jpg"
+  let picUrl = [];
+
+  const creatorUrl = props.creatorPic? props.creatorPic: props.userPic;
+  picUrl.push(creatorUrl);
+  if(props.editorOnlyArr) {props.editorOnlyArr.forEach(editor => picUrl.push(editor.profilePic))};
+  if(props.viewerArr) {props.viewerArr.forEach(editor => picUrl.push(editor.profilePic))};
+
+  const picList = picUrl.map(url => {return (
+    <DocumentPic
+      url={url}
+    />
+    );
+  });
 
 
 
@@ -121,42 +134,37 @@ export default function Documentheader(props) {
       </div>
 
       <div className="flex flex-end space-x-2">
-        <>
-          <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
-            <fieldset
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-              disabled={!canShare()}
-            >
-              <div className="w-50">
-                <Input
-                  label="Share with"
-                  name="share"
-                  type="text"
-                  value={shareWithEmail}
-                  onChange={(event) => setShareWithEmail(event.target.value)}
-                />
-              </div>
-              <div className="flex items-center">
-                <Checkbox
-                  checked={checked}
-                  value={checked}
-                  onChange={clickCheckbox}
-                  label={"View Only"}
-                />
-              </div>
-              <Button className="mx-3" onClick={handleSend}>
-                Share
-              </Button>
-            </fieldset>
-          </form>
-        </>
+        <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
+          <fieldset
+            className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+            disabled={!canShare()}
+          >
+            <div className="w-50">
+              <Input
+                label="Share with"
+                name="share"
+                type="text"
+                value={shareWithEmail}
+                onChange={(event) => setShareWithEmail(event.target.value)}
+              />
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                checked={checked}
+                value={checked}
+                onChange={clickCheckbox}
+                label={"View Only"}
+              />
+            </div>
+            <Button className="mx-3" onClick={handleSend}>
+              Share
+            </Button>
+          </fieldset>
+        </form>
+        <div className="flex">
+          {picList}
+        </div>
 
-        <img
-          loading="lazy"
-          className="cursor-pointer h-12 w-12 mt-1.5 rounded-full ml-2"
-          alt=""
-          src={creatorUrl}
-        />
       </div>
     </div>
   );

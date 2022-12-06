@@ -82,6 +82,7 @@ export default function Dashboard() {
         url={document.URL}
         creator={document.creator.username}
         creatorId={document.creator._id}
+        creatorPic={document.creator.profilePic}
         editAccess={document.view_edit_access}
         viewAccess={document.view_access}
         date={dateCreated}
