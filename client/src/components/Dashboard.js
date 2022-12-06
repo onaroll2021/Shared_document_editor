@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   const info = useContext(Context);
   const user = info.state.data.user;
-  console.log("user", user);
+  // console.log("user", user);
   const documents = info.state.data.documents;
   const data = info.state.data;
   const setData= info.setData;

@@ -30,7 +30,7 @@ export default function Login() {
       // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       url: "/api/login",
     }).then((res) => {
-      if (res.data === 'Successfully Authenticated') {
+      if (res.data.message === 'Successfully Authenticated') {
         setLoginStatus(true);
         navigate("/users/dashboard");
       } 
@@ -42,8 +42,9 @@ export default function Login() {
       <img src={loginImg} className='absolute w-full h-full object-cover mix-blend-darken' alt="/" />
 
       <div className='flex justify-center items-center h-full' onSubmit={event => event.preventDefault()} autoComplete="off">
-        <form className='max-w-[400px] mx-auto bg-white p-8'>
+        <form className="z-10 max-w-[400px] mx-auto bg-white/10 p-8">
           <h2 className='text-4xl font-bold py-4 text-center'>Shared Editor</h2>
+          <h3 className="text-3xl pt-4 text-left">Sign In</h3>
           <div className="flex justify-between py-8">
             <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center"><GrFacebook className='mr-2'/> Facebook</p>
             <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center"><FcGoogle className='mr-2'/> Google</p>
@@ -70,7 +71,7 @@ export default function Login() {
           </div>
           <button onClick={login} className='w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white'>Sign In</button>
           <div className='flex items-center'><Checkbox />Remember me</div>
-          <p className='text-center mt-8'>Not a member? <a href="/signup" className="text-blue underline">Sign up now</a></p>
+          <p className='text-center mt-8'>Not a member?&nbsp;&nbsp;<a href="/signup" className="text-blue underline">Sign up now</a></p>
         </form>
       </div>
 		</div>

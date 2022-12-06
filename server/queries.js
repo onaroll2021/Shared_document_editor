@@ -2,8 +2,19 @@ const Document = require("./Document");
 const User = require("./User");
 
 const findDocumentByUserID = async (id) => {
-  let documents = await Document.find({ creator: id }).populate("creator");
-  return documents;
+  let documents = [];
+  const editDocuments = await Document.find({ view_edit_access: id }).populate("creator").populate("view_access").populate("view_edit_access");
+  const viewDocuments = await Document.find({ view_access: id }).populate("creator").populate("view_access").populate("view_edit_access");
+  if (editDocuments.length) {
+    editDocuments.forEach(doc => documents.push(doc))
+  };
+  if (viewDocuments.length) {
+    viewDocuments.forEach(doc => documents.push(doc))
+  };
+  const sortedDoc = documents.sort(
+    (objA, objB) => Number(objB.dateTime) - Number(objA.dateTime)
+  );
+  return sortedDoc;
 };
 
 const findUserByID = async (id) => {

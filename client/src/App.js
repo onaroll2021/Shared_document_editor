@@ -27,6 +27,10 @@ function App() {
           path="/"
           element={<Navigate to={"/login"} />}
         ></Route>
+        <Route
+          path="/users"
+          element={<Navigate to={"users/dashboard"} />}
+        ></Route>
         <Route path="/documents/:id" element={<TextEditor
           // key={state.user._id}
           // email={state.user.email}

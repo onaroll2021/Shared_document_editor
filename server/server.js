@@ -100,15 +100,15 @@ app.post("/api/login", (req, res) => {
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        res.send("Successfully Authenticated");
+        res.send({message: "Successfully Authenticated", user: req.user });
       });
     }
   })(req, res);
 });
 
-app.post("/api/signup", (req, res) => {
+app.post("/api/signup", (req, res, next) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
-    if (err) throw err;
+    if (err) { return next(err); }
     if (doc) res.send("User Already Exists");
     if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -120,16 +120,17 @@ app.post("/api/signup", (req, res) => {
       });
       await newUser.save();
       passport.authenticate("local", (err, user) => {
-        if (err) throw err;
+        if (err) { return next(err); }
         if (!user) res.send("No User Exists");
         else {
           req.logIn(user, (err) => {
-            if (err) throw err;
-            res.send("Successfully Authenticated");
+            if (err) { return next(err); }
+            res.send(req.user);
+            // res.redirect('/users/dashboard');
             console.log(req.user);
           });
         }
-      })(req, res);
+      })(req, res, next);
     }
   });
 });
@@ -148,6 +149,17 @@ app.get("/api/users/dashboard", async (req, res) => {
   res.send(dataForDashboard);
 });
 
+//logout
+
+app.post("/api/logout", function(req, res, next){
+  req.logout(function(err){
+    if(err) {
+      return next(err);
+    }
+    res.redirect('/')
+  })
+})
+
 //change title
 app.post("/api/users/changeTitle", async (req, res) => {
   // console.log("title", req.body.title);
@@ -158,6 +170,7 @@ app.post("/api/users/changeTitle", async (req, res) => {
 const fs = require('fs');
 const path = require('path');
 const sendMail = require('./gmail');
+const { error } = require("console");
 
 const main = async (text, email, senderName, receiverName) => {
   const options = {
