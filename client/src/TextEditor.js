@@ -20,7 +20,7 @@ const toolbarOptions = [
   [{ indent: "-1" }, { indent: "+1" }, { direction: "rtl" }], // outdent/indent
 
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  ["image", "blockquote", "code-block"], //code,image
+  ["link", "image", "blockquote", "code-block"], //code,image
 
   ["clean"], // remove formatting button
 ];
