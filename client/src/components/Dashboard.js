@@ -103,10 +103,24 @@ export default function Dashboard() {
 
   const searchContent = (event, arr, query) => {
     event.preventDefault();
-    let result2 = arr.filter((el) =>
-      el.data.ops[0].insert.toLowerCase().includes(query.toLowerCase())
-    );
-    console.log("search2", result2);
+    const result2 = [];
+    for (const element of arr) {
+      if (element.data === "") {
+        continue;
+      }
+      const ops = element.data.ops;
+      if (ops.length > 0) {
+        for (const op of ops) {
+          if (
+            typeof op.insert === "string" &&
+            op.insert.toLowerCase().includes(query.toLowerCase())
+          ) {
+            result2.push(element);
+            break;
+          }
+        }
+      }
+    }
     setShowDocuments(result2);
   };
 
@@ -117,8 +131,11 @@ export default function Dashboard() {
   };
 
   //console.log("documents", documents);
-  //console.log("mysearch2", search2);
   //console.log("mysearch", search);
+  //console.log("mysearch2", search2);
+  //console.log("result", result);
+  //console.log("result2", result2);
+
   // console.log("what is this", data.userDocuments);
 
   const generateRandomString = () => {
