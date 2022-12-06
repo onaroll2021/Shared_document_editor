@@ -69,8 +69,6 @@ export default function Dashboard() {
 
   //search function
 
-  //useEffect(()=>{,[]};
-
   const searchResult = (arr, query) => {
     let result = arr.filter((el) =>
       el.title.toLowerCase().includes(query.toLowerCase())
