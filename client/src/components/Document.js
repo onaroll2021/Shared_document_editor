@@ -2,26 +2,28 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 export default function Document(props) {
-  const [deleteDocument, setDeleteDocument] = useState(false);
+  // const [deleteDocument, setDeleteDocument] = useState(false);
   //const [canDelete, setCanDelete] = useState(false);
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
 
-  const handleDelete = (e) => {
-    e.stopPropagation();
-    setDeleteDocument(true);
-    Axios({
-      method: "POST",
-      data: {
-        id: props.id,
-      },
-      url: "/api/users/delete",
-    }).then((res) => {
-      console.log(res);
-    });
-  };
+  // const handleDelete = (e) => {
+  //   e.stopPropagation();
+  //   setDeleteDocument(true);
+  //   Axios({
+  //     method: "POST",
+  //     data: {
+  //       id: props.id,
+  //     },
+  //     url: "/api/users/delete",
+  //   }).then((res) => {
+  //     console.log(res);
+  //   });
+  // };
 
   //check deleteDocument state first
 
@@ -45,12 +47,13 @@ export default function Document(props) {
   }
 
   //disable delete button when view status
-  const vie = viewerArr.map((vie) => vie.username);
+  // const vie = viewerArr.map((vie) => vie.username);
   const canDelete = () => {
-    return vie.includes(props.user.username);
+    // return vie.includes(props.user.username);
+    return props.user._id === props.creatorId;
   };
 
-  return !deleteDocument ? (
+  return (
     <tr
       onClick={() =>
         navigate(documentLink, {
@@ -87,12 +90,10 @@ export default function Document(props) {
       <td className="text-sm text-center">{viewer}</td>
       <td className="text-sm text-center">{props.date}</td>
       <td className="text-center px-3 py-1.5 my-1.5">
-        <Button disabled={canDelete()} color="red" onClick={handleDelete}>
-          Delete
+        <Button className='z-10 px-4 py-2' disabled={!canDelete()} color="red" onClick={(e)=>{props.handleDelete(e, props.id)}}>
+          <FontAwesomeIcon icon={faTrashCan} />
         </Button>
       </td>
     </tr>
-  ) : (
-    <Link to="#" />
   );
 }
