@@ -60,8 +60,8 @@ export default function Document(props) {
       </td>
       
       <td className="text-center text-sm">{props.creator}</td>
-      <td className="text-center text-sm">here is the name</td>
-      <td className="text-center text-sm">here is the info</td>
+      <td className="text-center text-sm"></td>
+      <td className="text-center text-sm"></td>
       <td className="text-center text-sm">{props.date}</td>
       <td className="text-center px-3 py-1.5 my-1.5">
       <Button color="red" disabled={!deleteAccess()} onClick={handleDelete}>Delete</Button>
