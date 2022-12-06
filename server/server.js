@@ -125,7 +125,7 @@ app.post("/api/login", (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) { return next(err); }
         res.send(req.user);
-        console.log("lalala: ", req.user);
+        // console.log("lalala: ", req.user);
         // res.redirect('/users/dashboard');
       });
     }

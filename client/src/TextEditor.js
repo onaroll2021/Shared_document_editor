@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 // import Axios from "axios";
 import Quill from "quill";
+// import QuillCursors from 'quill-cursors';
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useLocation, Navigate } from "react-router-dom";
@@ -94,7 +95,20 @@ export default function TextEditor() {
       if (source !== "user") return;
       socket.emit("send-changes", delta);
     };
+
     quill.on("text-change", handler);
+    
+    // const cursorsOne = quill.getModule('cursors');
+    // cursorsOne.createCursor('cursor', 'User 2', 'blue');
+    // const selectionChangeHandler = (cursors) => {
+    //   return function(range, oldRange, source) {
+    //     if (source === 'user') {
+    //       cursors.moveCursor('cursor', range)
+    //     }
+    //   };
+    // };
+    
+    // quill.on('selection-change', selectionChangeHandler(cursorsOne));
 
     return () => {
       quill.off("text-change", handler);
@@ -151,10 +165,12 @@ export default function TextEditor() {
     wrapper.innerHTML = "";
     const editor = document.createElement("div");
     wrapper.append(editor);
+    // Quill.register('modules/cursors', QuillCursors);
     const createQuill = new Quill(editor, {
       theme: "snow",
       modules: {
         toolbar: toolbarOptions,
+        // cursors: true,
       },
     });
     createQuill.disable();
