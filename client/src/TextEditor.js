@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 // import Axios from "axios";
 import Quill from "quill";
+// import QuillCursors from 'quill-cursors';
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Navigate } from "react-router-dom";
 import Documentheader from "./components/Header-document";
-import { GrDocumentSound } from "react-icons/gr";
+// import { GrDocumentSound } from "react-icons/gr";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -33,11 +34,36 @@ export default function TextEditor() {
 
   const location = useLocation();
 
-  const userEmail = location.state.user.email;
-  const userId = location.state.user._id;
-  const userName = location.state.user.username;
-  const creatorId = location.state.creatorId;
-  const editorArr = location.state.editorArr;
+  // const navigate = useNavigate();
+
+  console.log("location.state: ", location.state);
+
+  let userEmail;
+  let userId;
+  let userName;
+  let creatorId;
+  let editorArr;
+  let userPic;
+  let editorOnlyArr;
+  let viewerArr;
+  let creatorPic;
+
+  if (location.state) {
+    userEmail = location.state.user.email;
+    userId = location.state.user._id;
+    userName = location.state.user.username;
+    creatorId = location.state.creatorId;
+    editorArr = location.state.editorArr;
+    userPic = location.state.user.profilePic;
+    editorOnlyArr = location.state.editorOnlyArr;
+    viewerArr = location.state.viewerArr;
+    creatorPic = location.state.creatorPic;
+  }
+  // const userEmail = location.state.user.email;
+  // const userId = location.state.user._id;
+  // const userName = location.state.user.username;
+  // const creatorId = location.state.creatorId;
+  // const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
@@ -75,7 +101,20 @@ export default function TextEditor() {
       if (source !== "user") return;
       socket.emit("send-changes", delta);
     };
+
     quill.on("text-change", handler);
+    
+    // const cursorsOne = quill.getModule('cursors');
+    // cursorsOne.createCursor('cursor', 'User 2', 'blue');
+    // const selectionChangeHandler = (cursors) => {
+    //   return function(range, oldRange, source) {
+    //     if (source === 'user') {
+    //       cursors.moveCursor('cursor', range)
+    //     }
+    //   };
+    // };
+    
+    // quill.on('selection-change', selectionChangeHandler(cursorsOne));
 
     return () => {
       quill.off("text-change", handler);
@@ -132,10 +171,12 @@ export default function TextEditor() {
     wrapper.innerHTML = "";
     const editor = document.createElement("div");
     wrapper.append(editor);
+    // Quill.register('modules/cursors', QuillCursors);
     const createQuill = new Quill(editor, {
       theme: "snow",
       modules: {
         toolbar: toolbarOptions,
+        // cursors: true,
       },
     });
     createQuill.disable();
@@ -143,18 +184,28 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  return (
-    <>
-      <Documentheader
-        url={documentId}
-        userEmail={userEmail}
-        userId={userId}
-        userName={userName}
-        creatorId={creatorId}
-        editorArr={editorArr}
-        documentTitle={showTitle}
-      />
-      <div className="container" ref={wrapperRef}></div>
-    </>
-  );
+  // const directLink = "/documents/" + documentId;
+
+  if(location.state) {
+    return (
+      <>
+        <Documentheader
+          url={documentId}
+          userEmail={userEmail}
+          userId={userId}
+          userName={userName}
+          userPic={userPic}
+          creatorId={creatorId}
+          creatorPic={creatorPic}
+          editorArr={editorArr}
+          documentTitle={showTitle}
+          editorOnlyArr={editorOnlyArr}
+          viewerArr={viewerArr}
+        />
+        <div className="container" ref={wrapperRef}></div>
+      </>
+    );
+  } else {
+    return <Navigate to={"/login"} />
+  }
 }

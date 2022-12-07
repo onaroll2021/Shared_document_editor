@@ -15,10 +15,16 @@ export default function Dashboard() {
 
   const [documents, setDocuments] = useState([]);
   const [showDocuments, setShowDocuments] = useState([]);
-  const [showDocuments2, setShowDocuments2] = useState([]);
+  // const [showDocuments2, setShowDocuments2] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
   const [search2, setSearch2] = useState("");
+  // const [direct, setDirect] = useState("");
+
+  const navigate = useNavigate();
+  
+
+ 
 
   useEffect(() => {
     Axios({
@@ -76,6 +82,7 @@ export default function Dashboard() {
         url={document.URL}
         creator={document.creator.username}
         creatorId={document.creator._id}
+        creatorPic={document.creator.profilePic}
         editAccess={document.view_edit_access}
         viewAccess={document.view_access}
         date={dateCreated}
@@ -143,11 +150,13 @@ export default function Dashboard() {
   };
 
   const newLink = `/documents/${generateRandomString()}`;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header
+        user={user}
+      />
       <section className="bg-[#F8F9FA] pb-10 px-5">
         <div className="w-3/5 mx-auto">
           <div className="flex items-center justify-between py-6">

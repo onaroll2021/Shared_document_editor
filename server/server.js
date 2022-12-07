@@ -68,7 +68,7 @@ mongoose
 io.on("connection", (socket) => {
   socket.on("get-document", async (documentId, userEmail) => {
     const document = await findOrCreateDocument(documentId, userEmail);
-    console.log("AA", userEmail);
+    // console.log("AA", userEmail);
     socket.join(documentId);
     socket.emit("load-document", document);
 
@@ -85,7 +85,7 @@ const defaultValue = "";
 
 async function findOrCreateDocument(URL, email) {
   const findUserarry = await findUserByEmail(email);
-  console.log("!!!email", email);
+  // console.log("!!!email", email);
 
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
@@ -117,7 +117,7 @@ async function findOrCreateDocument(URL, email) {
 
 // Routes
 app.post("/api/login", (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.send("No User Exists");
@@ -125,7 +125,7 @@ app.post("/api/login", (req, res, next) => {
       req.logIn(user, (err) => {
         if (err) { return next(err); }
         res.send(req.user);
-        console.log("lalala: ", req.user);
+        // console.log("lalala: ", req.user);
         // res.redirect('/users/dashboard');
       });
     }
@@ -169,7 +169,7 @@ app.post("/api/signup", (req, res, next) => {
             if (err) { return next(err); }
             res.send(req.user);
             // res.redirect('/users/dashboard');
-            console.log(req.user);
+            // console.log(req.user);
           });
         }
       })(req, res, next);
@@ -207,13 +207,13 @@ const changeTitleByURL = async (title, URL) => {
 };
 
 app.post("/api/users/changeTitle", async (req, res) => {
-  console.log("title", req.body.title);
+  // console.log("title", req.body.title);
   await changeTitleByURL(req.body.title, req.body.URL);
 });
 
 //Delete document
 app.post("/api/users/delete", async (req, res) => {
-  console.log("delete", req.body.id);
+  // console.log("delete", req.body.id);
   await Document.deleteOne({ _id: req.body.id });
 });
 
@@ -280,7 +280,7 @@ const main = async (text, email, senderName, receiverName) => {
 const addEditorByURL = async (email, URL, viewOnly) => {
   const editor = await findUserByEmail(email);
   const document = await Document.findOne({ URL: URL });
-  console.log("document!!!: ", document);
+  // console.log("document!!!: ", document);
   if (viewOnly) {
     document.view_access.push(editor[0]._id);
     const addEditor = await document.save();
@@ -295,13 +295,21 @@ const addEditorByURL = async (email, URL, viewOnly) => {
 app.post("/api/send_mail", async (req, res) => {
   let { text, sendToEmail, url, viewOnly, senderName } = req.body;
   const receiver = await User.findOne({ email: sendToEmail });
-  const receiverName = receiver.username;
-  console.log("text: ", text);
-  console.log("sendToEmail: ", sendToEmail);
+  if(!receiver) {return res.status(403).send('<html><body><p>Wrong e-mail address, <a href="/signin">sign in</a> again or go to <a href="/register">register</a>.</p></body></html>');}
+  let receiverName = receiver.username;
+  // console.log("text: ", text);
+  // console.log("sendToEmail: ", sendToEmail);
   addEditorByURL(sendToEmail, url, viewOnly)
     .then(() => main(text, sendToEmail, senderName, receiverName))
     .then((messageId) => console.log("Message sent successfully:", messageId))
     .catch((err) => console.error(err));
 });
+
+// const updatePic = async (e, p) => {
+//   let changePic = await User.updateOne({ email: e }, { profilePic: p });
+//   return changePic;
+// };
+
+// updatePic("thomastank0926@gmail.com", "https://i.pinimg.com/originals/87/31/91/873191b4606bfec20e44f4ad2bbcee30.jpg")
 
 server.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

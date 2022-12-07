@@ -18,6 +18,7 @@ const User = new Schema({
 
   profilePic: {
     type: String,
+    default: "https://i02piccdn.sogoucdn.com/88a059cd94768c2a",
   },
 
   documents: {

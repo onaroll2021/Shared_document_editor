@@ -28,11 +28,11 @@ export default function Document(props) {
   //check deleteDocument state first
 
   let editor = "";
-  const editorArr = props.editAccess.filter(
+  const editorOnlyArr = props.editAccess.filter(
     (editor) => editor.username !== props.creator
   );
-  if (editorArr) {
-    editorArr.forEach((e) => {
+  if (editorOnlyArr) {
+    editorOnlyArr.forEach((e) => {
       editor = editor + e.username + " ";
     });
     editor.trimEnd();
@@ -61,6 +61,9 @@ export default function Document(props) {
             user: props.user,
             creatorId: props.creatorId,
             editorArr: props.editAccess,
+            editorOnlyArr: editorOnlyArr,
+            viewerArr: viewerArr,
+            creatorPic: props.creatorPic
           },
         })
       }

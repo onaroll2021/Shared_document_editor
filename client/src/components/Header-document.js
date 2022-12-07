@@ -1,7 +1,9 @@
 import axios from "axios";
+import DocumentPic from "./DocumentPic";
 import React, { useState } from "react";
 import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+
 
 export default function Documentheader(props) {
   // const [sent, setSent] = useState(false);
@@ -48,6 +50,7 @@ export default function Documentheader(props) {
         senderName: props.userName,
       })
       .catch((error) => {
+        alert("Oops! Cannot find this user.")
         console.log(error);
       });
   };
@@ -66,6 +69,26 @@ export default function Documentheader(props) {
       console.log(res);
     });
   };
+  // const ss = props.documentTitle;
+  // console.log("title", ss);
+
+  let picUrl = [];
+
+  const creatorUrl = props.creatorPic? props.creatorPic: props.userPic;
+  picUrl.push(creatorUrl);
+  if(props.editorOnlyArr) {props.editorOnlyArr.forEach(editor => picUrl.push(editor.profilePic))};
+  if(props.viewerArr) {props.viewerArr.forEach(editor => picUrl.push(editor.profilePic))};
+
+  const picList = picUrl.map((url,index) => {return (
+    <DocumentPic
+      key={index}
+      url={url}
+    />
+    );
+  });
+
+
+
 
   return (
     <div className="flex items-center justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
@@ -112,42 +135,37 @@ export default function Documentheader(props) {
       </div>
 
       <div className="flex flex-end space-x-2">
-        <>
-          <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
-            <fieldset
-              className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-              disabled={!canShare()}
-            >
-              <div className="w-50">
-                <Input
-                  label="Share with"
-                  name="share"
-                  type="text"
-                  value={shareWithEmail}
-                  onChange={(event) => setShareWithEmail(event.target.value)}
-                />
-              </div>
-              <div className="flex items-center">
-                <Checkbox
-                  checked={checked}
-                  value={checked}
-                  onChange={clickCheckbox}
-                  label={"View Only"}
-                />
-              </div>
-              <Button className="mx-3" onClick={handleSend}>
-                Share
-              </Button>
-            </fieldset>
-          </form>
-        </>
+        <form onSubmit={(event) => event.preventDefault()} autoComplete="off">
+          <fieldset
+            className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+            disabled={!canShare()}
+          >
+            <div className="w-50">
+              <Input
+                label="Share with"
+                name="share"
+                type="text"
+                value={shareWithEmail}
+                onChange={(event) => setShareWithEmail(event.target.value)}
+              />
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                checked={checked}
+                value={checked}
+                onChange={clickCheckbox}
+                label={"View Only"}
+              />
+            </div>
+            <Button className="mx-3" onClick={handleSend}>
+              Share
+            </Button>
+          </fieldset>
+        </form>
+        <div className="flex">
+          {picList}
+        </div>
 
-        <img
-          loading="lazy"
-          className="cursor-pointer h-12 w-12 rounded-full ml-2"
-          alt=""
-          src="https://c8.alamy.com/comp/2AE4838/profile-of-a-teenage-indian-boy-looking-at-outsides-2AE4838.jpg"
-        />
       </div>
     </div>
   );

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Button, IconButton } from "@material-tailwind/react";
 
 
-export default function Header() {
+
+export default function Header(props) {
   const navigate = useNavigate();
 
   const logOut = () => {
@@ -18,6 +19,8 @@ export default function Header() {
       console.log(err);
     });
   };
+
+  const picUrl = props.user.profilePic;
 
   return (
     <div className="flex justify-between sticky z-50 top-0 px-4 py-2 shadow-md bg-white">
@@ -62,7 +65,7 @@ export default function Header() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
         </svg>
         </button>
-        <img loading="lazy" className="cursor-pointer h-12 w-12 rounded-full ml-2" alt="" src='https://c8.alamy.com/comp/2AE4838/profile-of-a-teenage-indian-boy-looking-at-outsides-2AE4838.jpg' />
+        <img loading="lazy" className="cursor-pointer h-12 w-12 rounded-full ml-2" alt="" src={picUrl} />
         <div className="ml-2"><Button onClick={logOut}>Log Out</Button></div>
       </div>
     </div>
