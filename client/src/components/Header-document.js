@@ -79,8 +79,9 @@ export default function Documentheader(props) {
   if(props.editorOnlyArr) {props.editorOnlyArr.forEach(editor => picUrl.push(editor.profilePic))};
   if(props.viewerArr) {props.viewerArr.forEach(editor => picUrl.push(editor.profilePic))};
 
-  const picList = picUrl.map(url => {return (
+  const picList = picUrl.map((url,index) => {return (
     <DocumentPic
+      key={index}
       url={url}
     />
     );
