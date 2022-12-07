@@ -195,21 +195,12 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-      <section className="bg-white px-10 md:px-0">
-        <form
-          className="w-1/4 mt-6 ml-72 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-          onSubmit={(e) => searchResult(e, documents, search)}
-          autoComplete="off"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            color="gray"
-            size="3xl"
-            className="w-6 h-6"
+      <section className="bg-white px-10 md:px-0 flex flex-col items-center">
+        <div className="w-3/5 flex justify-between">
+          <form
+            className="mt-6 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+            onSubmit={(e) => searchResult(e, documents, search)}
+            autoComplete="off"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -221,10 +212,28 @@ export default function Dashboard() {
               size="3xl"
               className="w-6 h-6"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                color="gray"
+                size="3xl"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Title Search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-grow px-5 text-base bg-transparent outline-none"
               />
             </svg>
             <input
@@ -234,35 +243,17 @@ export default function Dashboard() {
               onChange={(e) => setSearch(e.target.value)}
               className="flex-grow px-5 text-base bg-transparent outline-none"
             />
-          </svg>
-          <input
-            type="text"
-            placeholder="Title Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-grow px-5 text-base bg-transparent outline-none"
-          />
-          {search && (
-            <button type="button" onClick={closeSearch}>
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
-          )}
-        </form>
+            {search && (
+              <button type="button" onClick={closeSearch}>
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            )}
+          </form>
 
-        <form
-          className="w-1/4 mt-6 ml-72 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
-          onSubmit={(e) => searchContent(e, documents, search2)}
-          autoComplete="off"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            color="gray"
-            size="3xl"
-            className="w-6 h-6"
+          <form
+            className="mt-6 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+            onSubmit={(e) => searchContent(e, documents, search2)}
+            autoComplete="off"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -274,10 +265,28 @@ export default function Dashboard() {
               size="3xl"
               className="w-6 h-6"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                color="gray"
+                size="3xl"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Content Search"
+                value={search2}
+                onChange={(e) => setSearch2(e.target.value)}
+                className="flex-grow px-5 text-base bg-transparent outline-none"
               />
             </svg>
             <input
@@ -287,21 +296,13 @@ export default function Dashboard() {
               onChange={(e) => setSearch2(e.target.value)}
               className="flex-grow px-5 text-base bg-transparent outline-none"
             />
-          </svg>
-          <input
-            type="text"
-            placeholder="Content Search"
-            value={search2}
-            onChange={(e) => setSearch2(e.target.value)}
-            className="flex-grow px-5 text-base bg-transparent outline-none"
-          />
-          {search2 && (
-            <button type="button" onClick={closeSearch2}>
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
-          )}
-        </form>
-
+            {search2 && (
+              <button type="button" onClick={closeSearch2}>
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            )}
+          </form>
+        </div>
         <div className="w-3/5 mx-auto py-4 text-sm text-gray-700">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100 shadow-md rounded-md">
