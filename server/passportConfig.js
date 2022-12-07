@@ -38,7 +38,7 @@ module.exports = function (passport) {
 // The USER object is the "authenticated user" from the done() in authUser function.
 // serializeUser() will attach this user to "req.session.passport.user.{user}", so that it is tied to the session object for each session. 
   passport.serializeUser((user, cb) => {
-    console.log("user", user)
+    // console.log("user", user)
     cb(null, user);
   });
   passport.deserializeUser((user, cb) => {
