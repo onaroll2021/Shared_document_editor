@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 // import Axios from "axios";
 import Quill from "quill";
-// import QuillCursors from 'quill-cursors';
+import QuillCursors from 'quill-cursors';
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useLocation, Navigate } from "react-router-dom";
@@ -99,7 +99,11 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
     const handler = (delta, oldDelta, source) => {
       if (source !== "user") return;
-      socket.emit("send-changes", delta);
+      const cursorsOne = quill.getModule('cursors');
+      const cursorData = cursorsOne.createCursor(userId, userName, 'blue');
+      console.log("delta: ",delta);
+      console.log("cursor: ", cursorData);
+      socket.emit("send-changes", delta, cursorData);
     };
 
     quill.on("text-change", handler);
@@ -124,8 +128,21 @@ export default function TextEditor() {
   //create event handler- receive text change
   useEffect(() => {
     if (socket == null || quill == null) return;
-    const handler = (delta) => {
+    const handler = (delta, cursorData) => {
+      console.log("deltaRecieved: ",delta);
+      console.log("cursorRecieved: ", cursorData);
       quill.updateContents(delta);
+      const cursorTwo = quill.getModule('cursors');
+      cursorTwo.createCursor(cursorData.id, cursorData.name, cursorData.color);
+      const selectionChangeHandler = (cursor) => {
+          return function(range, oldRange, source) {
+            
+              cursor.moveCursor(cursor.id, range)
+            
+          };
+        };
+        
+        quill.on('selection-change', selectionChangeHandler(cursorTwo));
     };
     socket.on("receive-changes", handler);
 
@@ -171,12 +188,12 @@ export default function TextEditor() {
     wrapper.innerHTML = "";
     const editor = document.createElement("div");
     wrapper.append(editor);
-    // Quill.register('modules/cursors', QuillCursors);
+    Quill.register('modules/cursors', QuillCursors);
     const createQuill = new Quill(editor, {
       theme: "snow",
       modules: {
         toolbar: toolbarOptions,
-        // cursors: true,
+        cursors: true,
       },
     });
     createQuill.disable();

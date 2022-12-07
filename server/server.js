@@ -72,8 +72,10 @@ io.on("connection", (socket) => {
     socket.join(documentId);
     socket.emit("load-document", document);
 
-    socket.on("send-changes", (delta) => {
-      socket.broadcast.to(documentId).emit("receive-changes", delta);
+    socket.on("send-changes", (delta, cursorData) => {
+      console.log("delta: ",delta);
+      console.log("cursor: ", cursorData);
+      socket.broadcast.to(documentId).emit("receive-changes", delta, cursorData);
     });
     socket.on("save-document", async (data) => {
       await Document.findOneAndUpdate({ URL: documentId }, { data: data });
