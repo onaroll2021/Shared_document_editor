@@ -49,8 +49,12 @@ export default function Documentheader(props) {
         viewOnly: checked,
         senderName: props.userName,
       })
+      .then((res) => {
+        console.log("alert message:", res.data);
+        alert(res.data);
+      })
       .catch((error) => {
-        alert("Oops! Cannot find this user.")
+        // alert("Oops! Cannot find this user.")
         console.log(error);
       });
   };
