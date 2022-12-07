@@ -37,19 +37,18 @@ export default function Login() {
 
       <div
         className="flex justify-center items-center h-full"
-        onSubmit={(event) => event.preventDefault()}
         autoComplete="off"
       >
-        <form className="z-10 max-w-[400px] mx-auto bg-white/10 p-8">
+        <div className="z-10 max-w-[400px] mx-auto bg-white/10 p-8">
           <h2 className="text-4xl font-bold py-4 text-center">Shared Editor</h2>
           <h3 className="text-3xl pt-4 text-left">Sign In</h3>
           <div className="flex justify-between py-8">
-            <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center">
-              <GrFacebook className="mr-2" /> Facebook
-            </p>
-            <p className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center">
-              <FcGoogle className="mr-2" /> Google
-            </p>
+            <div className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center">
+              <GrFacebook className="mr-2" />Facebook</div>
+              <form action="http://localhost:3001/auth/google" method="GET">
+              <button className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center" type="submit">
+              <FcGoogle className="mr-2" />Google</button>
+              </form>
           </div>
           <div className="flex flex-col mb-4">
             <label>Username</label>
@@ -89,7 +88,7 @@ export default function Login() {
               Sign up now
             </a>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );

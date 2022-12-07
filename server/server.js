@@ -132,6 +132,22 @@ app.post("/api/login", (req, res, next) => {
   })(req, res, next);
 });
 
+app.get('/auth/google',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+app.get('/auth/google/callback',
+    passport.authenticate( 'google', {
+        successRedirect: 'http://localhost:3000/users/dashboard',
+        failureRedirect: 'http://localhost:3000/login'
+}));
+
+checkAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) { return next() }
+  res.redirect("/login")
+}
+
 app.post("/api/signup", (req, res, next) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) { return next(err); }
@@ -168,7 +184,7 @@ app.post('/api/logout', function(req, res, next){
   });
 });
 
-app.get("/api/users/dashboard", async (req, res) => {
+app.get("/api/users/dashboard", checkAuthenticated, async (req, res) => {
   // console.log("333req.user:", req.user);
   const findDocument = await findDocumentByEmail(req.user.email);
   //console.log(findDocument);

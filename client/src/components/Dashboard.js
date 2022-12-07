@@ -5,10 +5,8 @@ import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
 // import { Button, Input, IconButton } from "@material-tailwind/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dashboard() {
   // useEffect(() => {
@@ -17,8 +15,10 @@ export default function Dashboard() {
 
   const [documents, setDocuments] = useState([]);
   const [showDocuments, setShowDocuments] = useState([]);
+  const [showDocuments2, setShowDocuments2] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
+  const [search2, setSearch2] = useState("");
 
   useEffect(() => {
     Axios({
@@ -52,7 +52,7 @@ export default function Dashboard() {
   const handleDelete = (event, Id) => {
     event.stopPropagation();
     const docList = [...documents];
-    const newDocList = docList.filter(doc => doc._id !== Id);
+    const newDocList = docList.filter((doc) => doc._id !== Id);
     setDocuments(newDocList);
     setShowDocuments(newDocList);
     Axios({
@@ -85,8 +85,7 @@ export default function Dashboard() {
     );
   });
 
-  //search function
-
+  //search tittle
   const searchResult = (event, arr, query) => {
     event.preventDefault();
     let result = arr.filter((el) =>
@@ -96,15 +95,30 @@ export default function Dashboard() {
     setShowDocuments(result);
   };
 
-  
-
   const closeSearch = () => {
     // event.stopPropagation();
-    setSearch("") ;
+    setSearch("");
     setShowDocuments(documents);
   };
-  console.log("documents", documents);
-  console.log("mysearch", search);
+
+  const searchContent = (event, arr, query) => {
+    event.preventDefault();
+    let result2 = arr.filter((el) =>
+      el.data.ops[0].insert.toLowerCase().includes(query.toLowerCase())
+    );
+    console.log("search2", result2);
+    setShowDocuments(result2);
+  };
+
+  const closeSearch2 = () => {
+    // event.stopPropagation();
+    setSearch2("");
+    setShowDocuments(documents);
+  };
+
+  //console.log("documents", documents);
+  //console.log("mysearch2", search2);
+  //console.log("mysearch", search);
   // console.log("what is this", data.userDocuments);
 
   const generateRandomString = () => {
@@ -189,7 +203,7 @@ export default function Dashboard() {
             </svg>
             <input
               type="text"
-              placeholder="Search Document"
+              placeholder="Title Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="flex-grow px-5 text-base bg-transparent outline-none"
@@ -197,13 +211,71 @@ export default function Dashboard() {
           </svg>
           <input
             type="text"
-            placeholder="Search Document"
+            placeholder="Title Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-grow px-5 text-base bg-transparent outline-none"
           />
-        {search && (<button type="button" onClick={closeSearch}><FontAwesomeIcon icon={faXmark} /></button>)}
+          {search && (
+            <button type="button" onClick={closeSearch}>
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          )}
         </form>
+
+        <form
+          className="w-1/4 mt-6 ml-72 flex flex-grow items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
+          onSubmit={(e) => searchContent(e, documents, search2)}
+          autoComplete="off"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            color="gray"
+            size="3xl"
+            className="w-6 h-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              color="gray"
+              size="3xl"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Content Search"
+              value={search2}
+              onChange={(e) => setSearch2(e.target.value)}
+              className="flex-grow px-5 text-base bg-transparent outline-none"
+            />
+          </svg>
+          <input
+            type="text"
+            placeholder="Content Search"
+            value={search2}
+            onChange={(e) => setSearch2(e.target.value)}
+            className="flex-grow px-5 text-base bg-transparent outline-none"
+          />
+          {search2 && (
+            <button type="button" onClick={closeSearch2}>
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          )}
+        </form>
+
         <div className="w-3/5 mx-auto py-4 text-sm text-gray-700">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100 shadow-md rounded-md">
