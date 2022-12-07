@@ -188,7 +188,7 @@ export default function TextEditor() {
 
   if(location.state) {
     return (
-      <>
+      <div className="flex flex-col items-center">
         <Documentheader
           url={documentId}
           userEmail={userEmail}
@@ -203,7 +203,7 @@ export default function TextEditor() {
           viewerArr={viewerArr}
         />
         <div className="container" ref={wrapperRef}></div>
-      </>
+      </div>
     );
   } else {
     return <Navigate to={"/login"} />

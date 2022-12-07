@@ -3,6 +3,8 @@ import DocumentPic from "./DocumentPic";
 import React, { useState } from "react";
 import { IconButton, Button, Input, Checkbox } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Documentheader(props) {
@@ -158,7 +160,7 @@ export default function Documentheader(props) {
                 checked={checked}
                 value={checked}
                 onChange={clickCheckbox}
-                label={"View Only"}
+                label={<FontAwesomeIcon icon={faEye} />}
               />
             </div>
             <Button className="mx-3" onClick={handleSend}>
