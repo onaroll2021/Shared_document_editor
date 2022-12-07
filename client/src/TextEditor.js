@@ -154,6 +154,7 @@ export default function TextEditor() {
         editorArr={editorArr}
         documentTitle={showTitle}
       />
+      {/*<button>dark</button>*/}
       <div className="container" ref={wrapperRef}></div>
     </>
   );

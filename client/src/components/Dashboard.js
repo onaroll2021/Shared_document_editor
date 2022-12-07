@@ -4,7 +4,7 @@ import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
-// import { Button, Input, IconButton } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -15,10 +15,11 @@ export default function Dashboard() {
 
   const [documents, setDocuments] = useState([]);
   const [showDocuments, setShowDocuments] = useState([]);
-  const [showDocuments2, setShowDocuments2] = useState([]);
+
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
   const [search2, setSearch2] = useState("");
+  const [arr, setArr] = useState("");
 
   useEffect(() => {
     Axios({
@@ -36,6 +37,27 @@ export default function Dashboard() {
         console.log(err.message);
       });
   }, []);
+
+  //sort
+  const sortByCreator = (event, arr) => {
+    event.preventDefault();
+    arr.sort((a, b) => {
+      if (a.creator.username !== user.username) return -1;
+      console.log("11111", new Date(a.dateTime).getTime());
+
+      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
+    });
+    //arr.sort((a, b) => {
+    //  const aTime = new Date(a.dateTime).getTime();
+    //  const bTime = new Date(b.dateTime).getTime();
+    //  if (!(aTime - bTime)) return -1;
+    //  console.log("11111", aTime);
+    //  return a.creator.username === user.username;
+    //});
+
+    setArr(arr);
+    console.log("arr", arr);
+  };
 
   // const documents = data ? data.userDocuments.map(document => {
   //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
@@ -68,6 +90,7 @@ export default function Dashboard() {
 
   const documentsList = showDocuments.map((document) => {
     const dateCreated = moment(document.dateTime).startOf("second").fromNow();
+    console.log("dateCreated", dateCreated);
     return (
       <Document
         key={document._id}
@@ -152,22 +175,6 @@ export default function Dashboard() {
         <div className="w-3/5 mx-auto">
           <div className="flex items-center justify-between py-6">
             <h2 className="text-gray-700 text-lg">Start a new document</h2>
-            <button className="button button-icon px-5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
-                />
-              </svg>
-            </button>
           </div>
           <div>
             <div
@@ -180,9 +187,6 @@ export default function Dashboard() {
             >
               <img layout="fill" src="https://links.papareact.com/pju" alt="" />
             </div>
-            <p className="ml-2 mt-2 font-semibold text-sm text-gray-700">
-              Blank
-            </p>
           </div>
         </div>
       </section>
@@ -307,11 +311,17 @@ export default function Dashboard() {
                 >
                   My Documents
                 </th>
+
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase "
+                  className="px-6 py-3 text-xs font-bold text-center text-gray-700 uppercase bg-gray-100 bg-violet-500 hover:bg-violet-600"
                 >
-                  Creator
+                  <Button
+                    className="group/item hover:bg-slate-100 text-gray-700 uppercase bg-gray-100"
+                    onClick={(e) => sortByCreator(e, documents)}
+                  >
+                    CREATOR
+                  </Button>
                 </th>
                 <th
                   scope="col"
