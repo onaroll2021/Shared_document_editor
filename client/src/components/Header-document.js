@@ -50,6 +50,7 @@ export default function Documentheader(props) {
         senderName: props.userName,
       })
       .catch((error) => {
+        alert("Oops, cannot find the user!")
         console.log(error);
       });
   };

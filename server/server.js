@@ -279,7 +279,8 @@ const addEditorByURL = async (email, URL, viewOnly) => {
 app.post("/api/send_mail", async (req, res) => {
   let { text, sendToEmail, url, viewOnly, senderName } = req.body;
   const receiver = await User.findOne({ email: sendToEmail });
-  const receiverName = receiver.username;
+  if(!receiver) {return res.status(403).send('<html><body><p>Wrong e-mail address, <a href="/signin">sign in</a> again or go to <a href="/register">register</a>.</p></body></html>');}
+  let receiverName = receiver.username;
   console.log("text: ", text);
   console.log("sendToEmail: ", sendToEmail);
   addEditorByURL(sendToEmail, url, viewOnly)
