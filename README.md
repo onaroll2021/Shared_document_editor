@@ -37,25 +37,25 @@ Shared document editor can use login with google authentication and share docume
 
 # Screenshots
 
-### Component Flow of the App
+### Multiple User Edit
 
-![Component Flow](https://github.com/lining04111223/scheduler/blob/master/docs/scheduler_flow_chart.png?raw=true)
+![Multiple User Edit](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Multiple%20User%20Edit.gif?raw=true)
 
-### Main View
+### Login Page Screen Shot
 
-![Screenshot 1](https://github.com/lining04111223/scheduler/blob/master/docs/main_menu.png?raw=true)
+![Login Page Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Login%20Page%20Screen%20Shot.png?raw=true)
 
-### Different Mode
+### Dashboard Screen Shot
 
-![Screenshot 2](https://github.com/lining04111223/scheduler/blob/master/docs/different_mode.png?raw=true)
+![Dashboard Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Dashboard%20Screen%20Shot.png?raw=true)
 
-### Error Status
+### Share link and Google accout login
 
-![Screenshot 3](https://github.com/lining04111223/scheduler/blob/master/docs/error.png?raw=true)
+![Share link and google accout login](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Share%20link%20and%20google%20accout%20login.gif?raw=true)
 
-### Storybook
+### Content Search Screen Shot
 
-![Screenshot 4](https://github.com/lining04111223/scheduler/blob/master/docs/storybook.png?raw=true)
+![Content Search Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Content%20Search%20Screen%20Shot.png?raw=true)
 
 # Setup Instructions:
 
