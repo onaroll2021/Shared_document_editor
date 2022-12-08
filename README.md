@@ -55,11 +55,11 @@ Shared document editor can use login with google authentication and share docume
 
 ### Title Search Screen Shot
 
-![Title Search Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Title%20Search%20Screen%20Shot.png?raw=true)
+![Title Search Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Title_Search%20Screen%20Shot.png?raw=true)
 
 ### Content Search Screen Shot
 
-![Content Search Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Content%20Search%20Screen%20Shot.png?raw=true)
+![Content Search Screen Shot](https://github.com/onaroll2021/Shared_document_editor/blob/main/docs/Content_Search%20Screen%20Shot.png?raw=true)
 
 # Setup Instructions:
 
