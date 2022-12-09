@@ -17,6 +17,7 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
+const MongoDbId = process.env.MongoDB_URL;
 
 const { resolve } = require("path");
 const nodemailer = require("nodemailer");
@@ -53,9 +54,7 @@ require("./passportConfig")(passport);
 
 //create mongoose connection
 mongoose
-  .connect(
-    "mongodb+srv://william0225:3vcTf%40-hxTXRak3@cluster0.ixblkvn.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(MongoDbId)
   .then(() => {
     console.log("Connected to MongoDB atlas.");
   })
@@ -90,7 +89,10 @@ async function findOrCreateDocument(URL, email) {
   if (URL == null) return;
   const document = await Document.findOne({ URL: URL });
   if (document) {
-    if (document.view_access.includes(findUserarry[0]._id) || document.view_edit_access.includes(findUserarry[0]._id)) {
+    if (
+      document.view_access.includes(findUserarry[0]._id) ||
+      document.view_edit_access.includes(findUserarry[0]._id)
+    ) {
       return document;
     }
   }
@@ -123,7 +125,9 @@ app.post("/api/login", (req, res, next) => {
     if (!user) res.send("No User Exists");
     else {
       req.logIn(user, (err) => {
-        if (err) { return next(err); }
+        if (err) {
+          return next(err);
+        }
         res.send(req.user);
         // console.log("lalala: ", req.user);
         // res.redirect('/users/dashboard');
@@ -132,25 +136,31 @@ app.post("/api/login", (req, res, next) => {
   })(req, res, next);
 });
 
-app.get('/auth/google',
-  passport.authenticate('google', { scope:
-      [ 'email', 'profile' ] }
-));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 
-app.get('/auth/google/callback',
-    passport.authenticate( 'google', {
-        successRedirect: 'http://localhost:3000/users/dashboard',
-        failureRedirect: 'http://localhost:3000/login'
-}));
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:3000/users/dashboard",
+    failureRedirect: "http://localhost:3000/login",
+  })
+);
 
 checkAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next() }
-  res.redirect("/login")
-}
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+};
 
 app.post("/api/signup", (req, res, next) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
-    if (err) { return next(err); }
+    if (err) {
+      return next(err);
+    }
     if (doc) res.send("User Already Exists");
     if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -162,11 +172,15 @@ app.post("/api/signup", (req, res, next) => {
       });
       await newUser.save();
       passport.authenticate("local", (err, user) => {
-        if (err) { return next(err); }
+        if (err) {
+          return next(err);
+        }
         if (!user) res.send("No User Exists");
         else {
           req.logIn(user, (err) => {
-            if (err) { return next(err); }
+            if (err) {
+              return next(err);
+            }
             res.send(req.user);
             // res.redirect('/users/dashboard');
             // console.log(req.user);
@@ -177,10 +191,12 @@ app.post("/api/signup", (req, res, next) => {
   });
 });
 
-app.post('/api/logout', function(req, res, next){
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/');
+app.post("/api/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
   });
 });
 
@@ -295,7 +311,9 @@ const addEditorByURL = async (email, URL, viewOnly) => {
 app.post("/api/send_mail", async (req, res) => {
   let { text, sendToEmail, url, viewOnly, senderName } = req.body;
   const receiver = await User.findOne({ email: sendToEmail });
-  if(!receiver) {return res.send("Oops! Can't find the user.");}
+  if (!receiver) {
+    return res.send("Oops! Can't find the user.");
+  }
   let receiverName = receiver.username;
   // console.log("text: ", text);
   // console.log("sendToEmail: ", sendToEmail);
